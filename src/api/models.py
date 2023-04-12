@@ -3,6 +3,7 @@ from datetime import datetime
 from enum import Enum
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import ForeignKey
+
 db = SQLAlchemy()
 
 class User(db.Model):
@@ -33,8 +34,8 @@ class Role(db.Model):
 
 class UserRole(db.Model):
     __tablename__ = 'user_roles'
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), primary_key=True)
+    user_id = db.Column(db.Integer, ForeignKey('users.id'), primary_key=True)
+    role_id = db.Column(db.Integer, ForeignKey('roles.id'), primary_key=True)
 
     def __repr__(self):
         return f'<UserRole {self.user_id}-{self.role_id}>'
@@ -54,7 +55,7 @@ class Product(db.Model):
     description = db.Column(db.String(500), nullable=False)
     price = db.Column(db.Float, nullable=False)
     image = db.Column(db.String(500), nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
+    category_id = db.Column(db.Integer, ForeignKey('categories.id'))
     category = db.relationship('Category', backref=db.backref('products', lazy=True))
 
     def __repr__(self):
@@ -73,7 +74,7 @@ class Product(db.Model):
 class PaymentItem(db.Model):
     __tablename__ = 'payment_items'
     id = db.Column(db.Integer, primary_key=True)
-    product_id = db.Column(db.Integer, db.ForeignKey('products.id'))
+    product_id = db.Column(db.Integer, ForeignKey('products.id'))
     product = db.relationship('Product')
     quantity = db.Column(db.Integer, nullable=False)
 
@@ -84,10 +85,10 @@ class Payment(db.Model):
     __tablename__ = 'payments'
     id = db.Column(db.Integer, primary_key=True)
     amount = db.Column(db.Float, nullable=False)
-    payment_items = db.relationship('PaymentItem', backref='payment', lazy=True)
 
     def __repr__(self):
         return f'<Payment {self.id}>'
+
 
 class Order(db.Model):
     __tablename__ = 'orders'
@@ -113,3 +114,23 @@ class Review(db.Model):
 
     def __repr__(self):
         return f'<Review {self.id}>'
+
+class Cart(db.Model):
+    __tablename__ = 'carts'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user = db.relationship('User', backref='carts')
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    items = db.relationship('CartItem', backref='cart', lazy=True)
+
+class CartItem(db.Model):
+    __tablename__ = 'cart_items'
+    id = db.Column(db.Integer, primary_key=True)
+    cart_id = db.Column(db.Integer, db.ForeignKey('carts.id'), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+
+    product = db.relationship('Product')
+
+    def __repr__(self):
+        return f'<CartItem {self.id}>'
