@@ -1,71 +1,73 @@
-import os
-from flask import Flask, request, jsonify, url_for, send_from_directory
-from flask_migrate import Migrate
-from flask_swagger import swagger
-from flask_cors import CORS
-from api.utils import APIException, generate_sitemap
+from flask import Flask, request, jsonify, url_for, Blueprint
+from api.models import db, User
+from api.utils import generate_sitemap, APIException
+import bcrypt
 
-from api.routes import api
-from api.admin import setup_admin
-from api.commands import setup_commands
+from flask_jwt_extended import create_access_token, jwt_required
 
-from api.models import db, User, Role, UserRole, Category, Product, PaymentItem, Payment, Order, Review
+api = Blueprint('api', __name__)
 
-ENV = os.getenv("FLASK_ENV")
-static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../public/')
-app = Flask(__name__)
-app.url_map.strict_slashes = False
+@api.route('/hello', methods=['POST', 'GET'])
+def handle_hello():
+    response_body = {
+        "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
+    }
+    return jsonify(response_body), 200
 
-# database configuration
-db_url = os.getenv("DATABASE_URL")
-if db_url is not None:
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_url.replace("postgres://", "postgresql://")
-else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////tmp/test.db"
+# Signup endpoint
+@api.route('/signup', methods=['POST'])
+def signup():
+    data = request.json
+    email = data.get('email')
+    password = data.get('password')
+    first_name = data.get('first_name')
+    last_name = data.get('last_name')
+    date_of_birth = data.get('date_of_birth')
+    address = data.get('address')
+    city = data.get('city')
+    country = data.get('country')
+    phone_number = data.get('phone_number')
+    avatar = data.get('avatar')
 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-MIGRATE = Migrate(app, db, compare_type=True)
-db.init_app(app)
+    if not email or not password:
+        raise APIException('Email and password are required', status_code=400)
 
-# Allow CORS requests to this API
-CORS(app)
+    existing_user = User.query.filter_by(email=email).first()
+    if existing_user:
+        raise APIException('User already exists', status_code=409)
 
-# add the admin
-setup_admin(app)
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
-# add the admin
-setup_commands(app)
+    new_user = User(email=email, password=hashed_password, is_active=True, first_name=first_name, last_name=last_name,
+                    date_of_birth=date_of_birth, address=address, city=city, country=country, phone_number=phone_number, avatar=avatar)
+    db.session.add(new_user)
+    db.session.commit()
 
-# Add all endpoints from the API with a "api" prefix
-app.register_blueprint(api, url_prefix='/api')
+    return jsonify({'message': 'User created successfully'}), 201
 
-# Handle/serialize errors like a JSON object
-@app.errorhandler(APIException)
-def handle_invalid_usage(error):
-    return jsonify(error.to_dict()), error.status_code
+@api.route('/login', methods=['POST'])
+def login():
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
 
-# generate sitemap with all your endpoints
-@app.route('/')
-def sitemap():
-    if ENV == "development":
-        return generate_sitemap(app)
-    return send_from_directory(static_file_dir, 'index.html')
+    email = request.json.get('email', None)
+    password = request.json.get('password', None)
 
-# any other endpoint will try to serve it like a static file
+    if not email:
+        return jsonify({"msg": "Missing email parameter"}), 400
+    if not password:
+        return jsonify({"msg": "Missing password parameter"}), 400
 
+    user = User.query.filter_by(email=email).first()
+    if user is None or not bcrypt.checkpw(password.encode('utf-8'), user.password):
+        return jsonify({"msg": "Bad email or password"}), 401
 
-@app.route('/<path:path>', methods=['GET'])
-def serve_any_other_file(path):
-    if not os.path.isfile(os.path.join(static_file_dir, path)):
-        path = 'index.html'
-    response = send_from_directory(static_file_dir, path)
-    response.cache_control.max_age = 0  # avoid cache memory
-    return response
+    access_token = create_access_token(identity=email)
+    return jsonify(access_token=access_token), 200
 
-
-
-
-# this only runs if `$ python app.py` is executed
-if __name__ == '__main__':
-    PORT = int(os.environ.get('PORT', 3001))
-    app.run(host='0.0.0.0', port=PORT, debug=True)
+@api.route('/users', methods=['GET'])
+@jwt_required()
+def get_users():
+    users = User.query.all()
+    serialized_users = [user.serialize() for user in users]
+    return jsonify(serialized_users), 200
