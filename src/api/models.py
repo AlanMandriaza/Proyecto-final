@@ -1,13 +1,13 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
 from datetime import datetime
 from enum import Enum
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import ForeignKey
-import jwt
-from flask_bcrypt import Bcrypt
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
+
 
 class User(db.Model):
     __tablename__ = 'users'
