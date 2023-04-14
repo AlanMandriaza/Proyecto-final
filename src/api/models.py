@@ -1,8 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
-from enum import Enum
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, func
 from sqlalchemy.orm import relationship
-from sqlalchemy.sql.schema import ForeignKey
+
+from datetime import datetime, timedelta
 
 db = SQLAlchemy()
 
