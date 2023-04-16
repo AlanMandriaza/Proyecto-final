@@ -6,7 +6,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 
 from app import db
-from api.models import User
+from api.models import User, Category
 
 
 user_api = Blueprint('user_api', __name__, url_prefix='/users')
@@ -101,3 +101,4 @@ def delete_user(user_id):
     db.session.commit()
 
     return jsonify({'message': 'User deleted successfully'}), 200
+    

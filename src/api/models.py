@@ -56,6 +56,12 @@ class Role(db.Model):
     def __repr__(self):
         return f'<Role {self.name}>'
 
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name
+        }
+
 class UserRole(db.Model):
     __tablename__ = 'user_roles'
     user_id = db.Column(db.Integer, ForeignKey('users.id'), primary_key=True)
@@ -63,6 +69,13 @@ class UserRole(db.Model):
 
     def __repr__(self):
         return f'<UserRole {self.user_id}-{self.role_id}>'
+
+    def serialize(self):
+        return {
+            'user_id': self.user_id,
+            'role_id': self.role_id
+        }
+
 
 class Category(db.Model):
     __tablename__ = 'categories'

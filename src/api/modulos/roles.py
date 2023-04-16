@@ -1,25 +1,29 @@
 from flask import Blueprint, jsonify, request
 from app import db
-from models import Role
+from api.models import Role
 
-roles_bp = Blueprint('roles', __name__, url_prefix='/roles')
+role_api = Blueprint('roles', __name__, url_prefix='/roles')
 
-@roles_bp.route('/', methods=['GET'])
+@role_api.route('/', methods=['GET'])
 def get_roles():
     roles = Role.query.all()
     return jsonify([role.serialize() for role in roles]), 200
 
-@roles_bp.route('/<int:id>', methods=['GET'])
+@role_api.route('/<int:id>', methods=['GET'])
 def get_role(id):
     role = Role.query.get_or_404(id)
     return jsonify(role.serialize()), 200
 
-@roles_bp.route('/', methods=['POST'])
+@role_api.route('/', methods=['POST'])
 def create_role():
     name = request.json.get('name')
 
     if not name:
         return jsonify({"msg": "El nombre del rol es requerido"}), 400
+
+    existing_role = Role.query.filter_by(name=name).first()
+    if existing_role:
+        return jsonify({"msg": "El rol ya existe"}), 409
 
     role = Role(name=name)
     db.session.add(role)
@@ -27,7 +31,8 @@ def create_role():
 
     return jsonify(role.serialize()), 201
 
-@roles_bp.route('/<int:id>', methods=['PUT'])
+
+@role_api.route('/<int:id>', methods=['PUT'])
 def update_role(id):
     role = Role.query.get_or_404(id)
     name = request.json.get('name')
@@ -35,15 +40,24 @@ def update_role(id):
     if not name:
         return jsonify({"msg": "El nombre del rol es requerido"}), 400
 
+    if name == role.name:
+        return jsonify({"msg": "El nombre del rol no ha cambiado"}), 400
+
     role.name = name
     db.session.commit()
 
-    return jsonify(role.serialize()), 200
+    return jsonify({'message': 'Rol modificado exitosamente'}), 200
 
-@roles_bp.route('/<int:id>', methods=['DELETE'])
+
+
+@role_api.route('/<int:id>', methods=['DELETE'])
 def delete_role(id):
     role = Role.query.get_or_404(id)
     db.session.delete(role)
     db.session.commit()
 
-    return '', 204
+    return jsonify({'message': 'Rol eliminado correctamente'}), 200
+
+
+
+
