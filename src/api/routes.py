@@ -1,57 +1,24 @@
-from flask import Blueprint, jsonify, request
-from api.models import db, User
+from flask import Blueprint
+from api.modulos.users import user_api
+#from api.modulos.roles import role_api
+#from api.modulos.categories import category_api
+#from api.modulos.products import product_api
+#from api.modulos.payment_items import payment_item_api
+#from api.modulos.payments import payment_api
+#from api.modulos.orders import order_api
+#from api.modulos.reviews import review_api
+#from api.modulos.carts import cart_api
+#from api.modulos.cart_items import cart_item_api
 
+api_bp = Blueprint('api', __name__)
 
-def get_all(resource_name, model_class):
-    def get_all_items():
-        all_items = model_class.query.all()
-        result = [item.serialize() for item in all_items]
-        return jsonify(result), 200
-    return get_all_items
-
-
-def create_api_blueprint(resource_name, model_class):
-    api = Blueprint(resource_name, __name__)
-
-    @api.route(f'/{resource_name}', methods=['GET'])
-    def get_all_items():
-        return get_all(resource_name, model_class)()
-
-    @api.route(f'/{resource_name}/<int:item_id>', methods=['GET'])
-    def get_single_item(item_id):
-        item = model_class.query.filter_by(id=item_id).first()
-        if item is None:
-            return jsonify({'message': f'{resource_name.capitalize()} not found'}), 404
-        return jsonify(item.serialize()), 200
-
-    @api.route(f'/{resource_name}', methods=['POST'])
-    def create_item():
-        request_data = request.get_json()
-        item = model_class(**request_data)
-        db.session.add(item)
-        db.session.commit()
-        return jsonify({'message': f'{resource_name.capitalize()} created successfully'}), 201
-
-    @api.route(f'/{resource_name}/<int:item_id>', methods=['PUT'])
-    def update_item(item_id):
-        item = model_class.query.filter_by(id=item_id).first()
-        if item is None:
-            return jsonify({'message': f'{resource_name.capitalize()} not found'}), 404
-        request_data = request.get_json()
-        for key, value in request_data.items():
-            setattr(item, key, value)
-        db.session.commit()
-        return jsonify({'message': f'{resource_name.capitalize()} updated successfully'}), 200
-
-    @api.route(f'/{resource_name}/int:item_id>', methods=['DELETE'])
-    def delete_item(item_id):
-        item = model_class.query.filter_by(id=item_id).first()
-        if item is None:
-            return jsonify({'message': f'{resource_name.capitalize()} not found'}), 404
-        db.session.delete(item)
-        db.session.commit()
-        return jsonify({'message': f'{resource_name.capitalize()} deleted successfully'}), 200
-
-    return api
-
-api = create_api_blueprint("users", User)
+api_bp.register_blueprint(user_api)
+#api_bp.register_blueprint(role_api)
+#api_bp.register_blueprint(category_api)
+#api_bp.register_blueprint(product_api)
+#api_bp.register_blueprint(payment_item_api)
+#api_bp.register_blueprint(payment_api)
+#api_bp.register_blueprint(order_api)
+#api_bp.register_blueprint(review_api)
+#api_bp.register_blueprint(cart_api)
+#api_bp.register_blueprint(cart_item_api)
