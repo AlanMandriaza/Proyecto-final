@@ -10,6 +10,8 @@ from flask_jwt_extended import JWTManager, jwt_required
 
 from api.admin import setup_admin
 from api.commands import setup_commands
+from api.modulos.categories import category_api
+
 
 ENV = os.getenv("FLASK_ENV")
 static_file_dir = os.path.join(os.path.dirname(

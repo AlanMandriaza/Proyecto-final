@@ -1,7 +1,7 @@
 from flask import Blueprint
 from api.modulos.users import user_api
 #from api.modulos.roles import role_api
-#from api.modulos.categories import category_api
+from api.modulos.categories import category_api
 #from api.modulos.products import product_api
 #from api.modulos.payment_items import payment_item_api
 #from api.modulos.payments import payment_api
@@ -14,7 +14,7 @@ api_bp = Blueprint('api', __name__)
 
 api_bp.register_blueprint(user_api)
 #api_bp.register_blueprint(role_api)
-#api_bp.register_blueprint(category_api)
+api_bp.register_blueprint(category_api)
 #api_bp.register_blueprint(product_api)
 #api_bp.register_blueprint(payment_item_api)
 #api_bp.register_blueprint(payment_api)

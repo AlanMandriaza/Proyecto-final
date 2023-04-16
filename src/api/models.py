@@ -72,6 +72,13 @@ class Category(db.Model):
     def __repr__(self):
         return f'<Category {self.name}>'
 
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+        }
+
+
 class Product(db.Model):
     __tablename__ = 'products'
     id = db.Column(db.Integer, primary_key=True)

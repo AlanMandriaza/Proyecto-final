@@ -31,11 +31,6 @@ def login():
     refresh_token = create_refresh_token(identity=user.id)
     return jsonify({'message': 'Login successful', 'access_token': access_token, 'refresh_token': refresh_token}), 200
 
-@user_api.route('', methods=['GET'])
-@jwt_required()
-def get_all_users():
-    users = User.query.all()
-    return jsonify([user.serialize() for user in users]), 200
 
 @user_api.route('/<int:user_id>', methods=['GET'])
 @jwt_required()
@@ -46,7 +41,7 @@ def get_user_by_id(user_id):
     else:
         return jsonify({'error': 'User not found'}), 404
 
-@user_api.route('', methods=['POST'])
+@user_api.route('/signup', methods=['POST'])
 def create_user():
     data = request.get_json()
     if not data:
@@ -66,7 +61,8 @@ def create_user():
     db.session.add(user)
     db.session.commit()
 
-    return jsonify(user.serialize()), 201
+    return jsonify({'message': 'User created successfully'}), 201
+
 
 @user_api.route('/<int:user_id>', methods=['PUT'])
 @jwt_required()
