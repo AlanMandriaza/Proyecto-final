@@ -13,8 +13,9 @@ tasks:
   - init: |
       touch .env &&
       pipenv install &&
-      psql -U gitpod -c 'CREATE DATABASE example;' &&
-      psql -U gitpod -c 'CREATE EXTENSION unaccent;' -d example &&
+      psql -U gitpod -c 'CREATE DATABASE "4geeks";' &&
+      psql -U gitpod -c 'CREATE EXTENSION unaccent;' -d 4geeks
+
       psql -c "ALTER USER gitpod PASSWORD 'postgres';" &&
       bash database.sh &&
       python docs/assets/greeting.py back
