@@ -7,7 +7,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				{
 				  nombre: "Polera Hombre",
 				  precio: 16990,
-				  cantidad: 3,
+				  cantidad: 5,
 				  img: "https://cdn.shopify.com/s/files/1/0249/8255/2638/products/33_2000x.png?v=1668118317",
 				},
 				{
