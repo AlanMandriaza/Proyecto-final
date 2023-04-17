@@ -22,7 +22,7 @@ tasks:
   - command: |
       echo "export FLASK_DEBUG=1" >> ~/.bashrc
       source ~/.bashrc
-      cat .env.example >> .env &&
+      cat .env.4geeks >> .env &&
       echo BACKEND_URL=$(gp url 3001) >> .env && 
       npm install &&
       python docs/assets/greeting.py front
