@@ -8,35 +8,58 @@ cart_api = Blueprint('cart_api', __name__, url_prefix='/cart')
 
 @cart_api.route('', methods=['POST'])
 def create_cart():
-    current_user_id = session.get('user_id')
-    user = User.query.get(current_user_id) if current_user_id else None
+    user_id = session.get('user_id')
+    user = User.query.get(user_id) if user_id else None
 
     cart = Cart(user=user)
     db.session.add(cart)
     db.session.commit()
 
+    session['cart_id'] = cart.id # guardar el ID del carrito en la sesión para usuarios no registrados
+
     return jsonify(cart.serialize()), 201
 
-@cart_api.route('/<int:cart_id>', methods=['GET'])
-@jwt_required()
-def get_cart(cart_id):
-    current_user_id = get_jwt_identity()
-    cart = Cart.query.filter_by(id=cart_id, user_id=current_user_id).first()
 
-    if not cart:
-        return jsonify({'msg': 'Cart not found'}), 404
+@cart_api.route('/<int:cart_id>', methods=['GET'])
+@jwt_required(optional=True)
+def get_cart(cart_id):
+    user_id = get_jwt_identity()
+
+    if user_id: # si el usuario está autenticado
+        cart = Cart.query.get(cart_id)
+        if not cart:
+            return jsonify({'msg': 'Cart not found'}), 404
+        elif cart.user_id != user_id:
+            return jsonify({'msg': 'Unauthorized access to cart'}), 401
+    else: # si el usuario no está autenticado
+        cart_id = session.get('cart_id')
+        if not cart_id:
+            return jsonify({'msg': 'Cart not found'}), 404
+        elif cart_id != cart_id:
+            return jsonify({'msg': 'Unauthorized access to cart'}), 401
+        else:
+            cart = Cart.query.get(cart_id)
 
     return jsonify(cart.serialize()), 200
 
 
 @cart_api.route('/<int:cart_id>', methods=['PUT'])
-@jwt_required()
+@jwt_required(optional=True)
 def update_cart(cart_id):
-    current_user_id = get_jwt_identity()
-    cart = Cart.query.filter_by(id=cart_id, user_id=current_user_id).first()
+    user_id = get_jwt_identity()
 
-    if not cart:
-        return jsonify({'msg': 'Cart not found'}), 404
+    if user_id: # si el usuario está autenticado
+        cart = Cart.query.filter_by(id=cart_id, user_id=user_id).first()
+        if not cart:
+            return jsonify({'msg': 'Cart not found'}), 404
+    else: # si el usuario no está autenticado
+        cart_id = session.get('cart_id')
+        if not cart_id:
+            return jsonify({'msg': 'Cart not found'}), 404
+        elif cart_id != cart_id:
+            return jsonify({'msg': 'Unauthorized access to cart'}), 401
+        else:
+            cart = Cart.query.get(cart_id)
 
     cart_items = request.json.get('items')
 
@@ -64,15 +87,9 @@ def update_cart(cart_id):
 
 
 @cart_api.route('/<int:cart_id>', methods=['DELETE'])
-@jwt_required()
+@jwt_required(optional=True)
 def delete_cart(cart_id):
-    current_user_id = get_jwt_identity()
-    cart = Cart.query.filter_by(id=cart_id, user_id=current_user_id).first()
+    user_id = get_jwt_identity()
 
-    if not cart:
-        return jsonify({'msg': 'Cart not found'}), 404
-
-    db.session.delete(cart)
-    db.session.commit()
-
-    return '', 204
+    if user_id: # si el usuario está autenticado
+        cart = Cart.query.filter_by(id=cart_id, user_id=user_id).first
