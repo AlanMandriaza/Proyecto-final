@@ -1,29 +1,17 @@
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
-
+from api.models import Cart, User, Product, CartItem
 from app import db
-from models import Cart, User, Product, CartItem
 
-carts_bp = Blueprint('carts', __name__, url_prefix='/carts')
+cart_api = Blueprint('cart_api', __name__, url_prefix='/cart')
 
-
-@carts_bp.route('', methods=['GET'])
-@jwt_required()
-def get_carts():
-    current_user_id = get_jwt_identity()
-    carts = Cart.query.filter_by(user_id=current_user_id).all()
-
-    return jsonify([cart.serialize() for cart in carts]), 200
-
-
-@carts_bp.route('', methods=['POST'])
-@jwt_required()
+@cart_api.route('', methods=['POST'])
 def create_cart():
-    current_user_id = get_jwt_identity()
-    user = User.query.get(current_user_id)
-
-    if not user:
-        return jsonify({'msg': 'User not found'}), 404
+    current_user_id = session.get('user_id')
+    if current_user_id:
+        user = User.query.get(current_user_id)
+    else:
+        user = None
 
     cart = Cart(user=user)
     db.session.add(cart)
@@ -32,7 +20,11 @@ def create_cart():
     return jsonify(cart.serialize()), 201
 
 
-@carts_bp.route('/<int:cart_id>', methods=['GET'])
+
+
+
+
+@cart_api.route('/<int:cart_id>', methods=['GET'])
 @jwt_required()
 def get_cart(cart_id):
     current_user_id = get_jwt_identity()
@@ -44,7 +36,7 @@ def get_cart(cart_id):
     return jsonify(cart.serialize()), 200
 
 
-@carts_bp.route('/<int:cart_id>', methods=['PUT'])
+@cart_api.route('/<int:cart_id>', methods=['PUT'])
 @jwt_required()
 def update_cart(cart_id):
     current_user_id = get_jwt_identity()
@@ -78,7 +70,7 @@ def update_cart(cart_id):
     return jsonify(cart.serialize()), 200
 
 
-@carts_bp.route('/<int:cart_id>', methods=['DELETE'])
+@cart_api.route('/<int:cart_id>', methods=['DELETE'])
 @jwt_required()
 def delete_cart(cart_id):
     current_user_id = get_jwt_identity()

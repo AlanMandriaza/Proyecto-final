@@ -1,13 +1,11 @@
 from flask import Blueprint, jsonify, request
 from app import db
-from models import Cart, Product, CartItem
-from schemas import CartItemSchema
+from api.models import Cart, Product, CartItem
 
-cart_items_bp = Blueprint('cart_items', __name__, url_prefix='/carts/<int:cart_id>/items')
-cart_item_schema = CartItemSchema()
+cart_items_api = Blueprint('cart_items_api', __name__, url_prefix='/carts/<int:cart_id>/items')
 
 # Endpoint para crear un nuevo item de carrito
-@cart_items_bp.route('', methods=['POST'])
+@cart_items_api.route('', methods=['POST'])
 def create_cart_item(cart_id):
     # Verificar si el carrito existe
     cart = Cart.query.get_or_404(cart_id)
@@ -23,12 +21,17 @@ def create_cart_item(cart_id):
     db.session.add(new_cart_item)
     db.session.commit()
 
-    # Serializar el item de carrito y retornarlo en la respuesta
-    result = cart_item_schema.dump(new_cart_item)
+    # Retornar el item de carrito creado como JSON
+    result = {
+        'id': new_cart_item.id,
+        'cart_id': new_cart_item.cart_id,
+        'product_id': new_cart_item.product_id,
+        'quantity': new_cart_item.quantity
+    }
     return jsonify(result)
 
 # Endpoint para actualizar un item de carrito existente
-@cart_items_bp.route('/<int:item_id>', methods=['PUT'])
+@cart_items_api.route('/<int:item_id>', methods=['PUT'])
 def update_cart_item(cart_id, item_id):
     # Verificar si el carrito existe
     Cart.query.get_or_404(cart_id)
@@ -44,12 +47,17 @@ def update_cart_item(cart_id, item_id):
     cart_item.quantity = request_data['quantity']
     db.session.commit()
 
-    # Serializar el item de carrito actualizado y retornarlo en la respuesta
-    result = cart_item_schema.dump(cart_item)
+    # Retornar el item de carrito actualizado como JSON
+    result = {
+        'id': cart_item.id,
+        'cart_id': cart_item.cart_id,
+        'product_id': cart_item.product_id,
+        'quantity': cart_item.quantity
+    }
     return jsonify(result)
 
 # Endpoint para eliminar un item de carrito existente
-@cart_items_bp.route('/<int:item_id>', methods=['DELETE'])
+@cart_items_api.route('/<int:item_id>', methods=['DELETE'])
 def delete_cart_item(cart_id, item_id):
     # Verificar si el carrito existe
     Cart.query.get_or_404(cart_id)
