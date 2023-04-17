@@ -10,19 +10,15 @@ ports:
   - port: 5432
     onOpen: ignore
 tasks:
-  - init: |
-      touch .env &&
+  - init: >
+      (touch .env || true) &&
       pipenv install &&
-      psql -U gitpod -c 'CREATE DATABASE "4geeks";' &&
-      psql -U gitpod -c 'CREATE EXTENSION unaccent;' -d 4geeks
-
-      psql -c "ALTER USER gitpod PASSWORD 'postgres';" &&
+      psql -U gitpod -c 'CREATE DATABASE example;' &&
+      psql -U gitpod -c 'CREATE EXTENSION unaccent;' -d example &&
       bash database.sh &&
       python docs/assets/greeting.py back
-  - command: |
-      echo "export FLASK_DEBUG=1" >> ~/.bashrc
-      source ~/.bashrc
-      cat .env.4geeks >> .env &&
+  - command: >
+      cat .env.example >> .env &&
       echo BACKEND_URL=$(gp url 3001) >> .env && 
       npm install &&
       python docs/assets/greeting.py front
