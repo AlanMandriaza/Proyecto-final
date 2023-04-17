@@ -162,13 +162,24 @@ class Review(db.Model):
     def __repr__(self):
         return f'<Review {self.id}>'
 
+
+
 class Cart(db.Model):
     __tablename__ = 'carts'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
     user = db.relationship('User', backref='carts')
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     items = db.relationship('CartItem', backref='cart', lazy=True)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'created_at': self.created_at.isoformat(),
+            'items': [item.serialize() for item in self.items]
+        }
+
 
 class CartItem(db.Model):
     __tablename__ = 'cart_items'

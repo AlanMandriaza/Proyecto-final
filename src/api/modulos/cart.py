@@ -2,27 +2,20 @@ from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from api.models import Cart, User, Product, CartItem
 from app import db
+from flask import session
 
 cart_api = Blueprint('cart_api', __name__, url_prefix='/cart')
 
 @cart_api.route('', methods=['POST'])
 def create_cart():
     current_user_id = session.get('user_id')
-    if current_user_id:
-        user = User.query.get(current_user_id)
-    else:
-        user = None
+    user = User.query.get(current_user_id) if current_user_id else None
 
     cart = Cart(user=user)
     db.session.add(cart)
     db.session.commit()
 
     return jsonify(cart.serialize()), 201
-
-
-
-
-
 
 @cart_api.route('/<int:cart_id>', methods=['GET'])
 @jwt_required()

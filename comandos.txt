@@ -7,10 +7,6 @@ pipenv install flask_jwt
 pipenv install flask-bcrypt
 
 
-pipenv run migrate
-pipenv run upgrade
-pipenv run start
-
 
 
 npm install
