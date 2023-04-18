@@ -180,6 +180,7 @@ class Cart(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
     user = db.relationship('User', backref='carts')
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    ordered = db.Column(db.Boolean(), nullable=False, default=False)
     items = db.relationship('CartItem', backref='cart', lazy=True)
 
     def serialize(self):
@@ -187,8 +188,10 @@ class Cart(db.Model):
             'id': self.id,
             'user_id': self.user_id,
             'created_at': self.created_at.isoformat(),
+            'ordered': self.ordered,
             'items': [item.serialize() for item in self.items]
         }
+
 
 
 class CartItem(db.Model):
@@ -202,3 +205,10 @@ class CartItem(db.Model):
 
     def __repr__(self):
         return f'<CartItem {self.id}>'
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'product': self.product.serialize(),
+            'quantity': self.quantity
+        }

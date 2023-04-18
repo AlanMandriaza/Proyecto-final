@@ -88,7 +88,8 @@ ALTER SEQUENCE public.cart_items_id_seq OWNED BY public.cart_items.id;
 CREATE TABLE public.carts (
     id integer NOT NULL,
     user_id integer,
-    created_at timestamp without time zone NOT NULL
+    created_at timestamp without time zone NOT NULL,
+    ordered boolean NOT NULL
 );
 
 
@@ -496,7 +497,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 --
 
 COPY public.alembic_version (version_num) FROM stdin;
-174e842f07f3
+322e37d3c86c
 \.
 
 
@@ -505,6 +506,7 @@ COPY public.alembic_version (version_num) FROM stdin;
 --
 
 COPY public.cart_items (id, cart_id, product_id, quantity) FROM stdin;
+7	6	6	2
 \.
 
 
@@ -512,7 +514,8 @@ COPY public.cart_items (id, cart_id, product_id, quantity) FROM stdin;
 -- Data for Name: carts; Type: TABLE DATA; Schema: public; Owner: gitpod
 --
 
-COPY public.carts (id, user_id, created_at) FROM stdin;
+COPY public.carts (id, user_id, created_at, ordered) FROM stdin;
+6	\N	2023-04-18 05:44:28.190183	f
 \.
 
 
@@ -521,6 +524,18 @@ COPY public.carts (id, user_id, created_at) FROM stdin;
 --
 
 COPY public.categories (id, name) FROM stdin;
+1	Camisetas
+2	Pantalones
+3	Zapatos
+4	Chaquetas
+5	Vestidos
+6	Accesorios
+7	Calcetines
+8	Ropa interior
+9	Ropa de deporte
+10	Ropa de baño
+11	Zapatillas
+12	Deporte
 \.
 
 
@@ -553,6 +568,28 @@ COPY public.payments (id, amount) FROM stdin;
 --
 
 COPY public.products (id, name, description, price, image, category_id, quantity) FROM stdin;
+1	Zapatilla	zapatilla bonita	40000	https://res.cloudinary.com/dfpfb6yon/image/upload/v1680642513/cld-sample-5.jpg	11	100
+2	Zapatilla barata	zapatilla barata	5000	https://res.cloudinary.com/dfpfb6yon/image/upload/v1680642513/cld-sample-5.jpg	11	100
+3	Botas de cuero	Botas de cuero para hombre, de color marrón oscuro.	75000	https://via.placeholder.com/300x300.png?text=Botas+de+cuero	3	75
+4	Chaqueta impermeable	Chaqueta impermeable para mujer, ideal para días lluviosos.	45000	https://via.placeholder.com/300x300.png?text=Chaqueta+impermeable	4	60
+5	Pantalones de mezclilla	Pantalones de mezclilla para hombre, de color negro.	55000	https://via.placeholder.com/300x300.png?text=Pantalones+de+mezclilla	2	80
+6	Vestido de noche	Vestido de noche para mujer, con detalles de encaje y pedrería.	95000	https://via.placeholder.com/300x300.png?text=Vestido+de+noche	5	45
+7	Accesorios para cabello	Set de accesorios para cabello, que incluye pasadores, broches y pinzas.	12000	https://via.placeholder.com/300x300.png?text=Accesorios+para+cabello	6	120
+8	Calcetines deportivos	Calcetines deportivos para hombre, de color blanco y gris.	8000	https://via.placeholder.com/300x300.png?text=Calcetines+deportivos	7	90
+9	Ropa interior femenina	Set de 3 prendas de ropa interior femenina, de encaje y algodón.	25000	https://via.placeholder.com/300x300.png?text=Ropa+interior+femenina	8	65
+10	Jeans deslavados	Jeans de alta calidad, lavado a la piedra y desgastado, de color azul oscuro.	45000	https://example.com/jeans-deslavados.jpg	2	80
+11	Chaqueta de cuero	Chaqueta de cuero para hombre, color marrón, con cierre de cremallera y bolsillos con cremallera.	89000	https://example.com/chaqueta-cuero.jpg	4	30
+12	Sudadera con capucha	Sudadera de algodón con capucha para mujer, de color rosa con estampado floral.	35000	https://example.com/sudadera-capucha.jpg	1	70
+13	Zapatillas deportivas	Zapatillas deportivas para hombre, de color negro con suela blanca y logo en relieve.	78000	https://example.com/zapatillas-deportivas.jpg	11	50
+14	Vestido de noche	Vestido de noche para mujer, de color rojo oscuro con encaje negro en la parte superior.	125000	https://example.com/vestido-noche.jpg	5	20
+15	Pantalón de jogging	Pantalón de jogging para hombre, de color gris claro con ribetes negros y cordón en la cintura.	55000	https://example.com/pantalon-jogging.jpg	9	60
+16	Bolso de mano	Bolso de mano para mujer, de cuero marrón con cierre de cremallera y asa larga.	98000	https://example.com/bolso-mano.jpg	6	25
+17	Vestido de verano	Vestido de tela fresca para el verano con estampado de flores.	35000	https://example.com/images/vestido_verano.jpg	5	75
+18	Pantalón de cuero	Pantalón de cuero negro para mujer con cierre de cremallera en la parte trasera.	80000	https://example.com/images/pantalon_cuero.jpg	2	20
+19	Sandalias de plataforma	Sandalias de plataforma con tiras de tela en tonos pastel y suela de yute.	45000	https://example.com/images/sandalias_plataforma.jpg	3	40
+20	Camisa a rayas	Camisa para hombre a rayas azules y blancas con cuello clásico.	25000	https://example.com/images/camisa_rayas.jpg	1	60
+21	Jersey de lana	Jersey de lana para mujer en tonos rosas con cuello redondo.	55000	https://example.com/images/jersey_lana.jpg	4	15
+22	Bikini	Bikini de dos piezas en tonos verdes con estampado de hojas.	40000	https://example.com/images/bikini.jpg	10	30
 \.
 
 
@@ -642,21 +679,21 @@ COPY public.users (id, email, password, is_active, first_name, last_name, date_o
 -- Name: cart_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitpod
 --
 
-SELECT pg_catalog.setval('public.cart_items_id_seq', 1, false);
+SELECT pg_catalog.setval('public.cart_items_id_seq', 7, true);
 
 
 --
 -- Name: carts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitpod
 --
 
-SELECT pg_catalog.setval('public.carts_id_seq', 1, false);
+SELECT pg_catalog.setval('public.carts_id_seq', 6, true);
 
 
 --
 -- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitpod
 --
 
-SELECT pg_catalog.setval('public.categories_id_seq', 1, false);
+SELECT pg_catalog.setval('public.categories_id_seq', 11, true);
 
 
 --
@@ -684,7 +721,7 @@ SELECT pg_catalog.setval('public.payments_id_seq', 1, false);
 -- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitpod
 --
 
-SELECT pg_catalog.setval('public.products_id_seq', 1, false);
+SELECT pg_catalog.setval('public.products_id_seq', 22, true);
 
 
 --
