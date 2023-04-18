@@ -25,10 +25,19 @@ class User(db.Model):
     avatar = db.Column(db.String(120), unique=False, nullable=True)
     roles = db.relationship('Role', secondary='user_roles')
 
-    def __init__(self, email, password, is_active=True, **kwargs):
+    def __init__(self, email, password, is_active=True, first_name=None, last_name=None, date_of_birth=None,
+                 address=None, city=None, country=None, phone_number=None, avatar=None, **kwargs):
         self.email = email
+        self.password = password
         self.is_active = is_active
-        self.password = password  # Ahora almacenamos la contraseña sin cifrar
+        self.first_name = first_name
+        self.last_name = last_name
+        self.date_of_birth = date_of_birth
+        self.address = address
+        self.city = city
+        self.country = country
+        self.phone_number = phone_number
+        self.avatar = avatar
         super(User, self).__init__(**kwargs)
 
     def __repr__(self):
@@ -47,6 +56,7 @@ class User(db.Model):
             "phone_number": self.phone_number,
             "avatar": self.avatar
         }
+
 
 class Role(db.Model):
     __tablename__ = 'roles'

@@ -49,6 +49,14 @@ def create_user():
 
     email = data.get('email')
     password = data.get('password')
+    first_name = data.get('first_name')
+    last_name = data.get('last_name')
+    date_of_birth = data.get('date_of_birth')
+    address = data.get('address')
+    city = data.get('city')
+    country = data.get('country')
+    phone_number = data.get('phone_number')
+    avatar = data.get('avatar')
 
     if not email or not password:
         return jsonify({'error': 'Email and password are required'}), 400
@@ -57,11 +65,12 @@ def create_user():
         return jsonify({'error': 'Email already exists'}), 400
 
     hashed_password = generate_password_hash(password)
-    user = User(email=email, password=hashed_password)
+    user = User(email=email, password=hashed_password, first_name=first_name, last_name=last_name, date_of_birth=date_of_birth, address=address, city=city, country=country, phone_number=phone_number, avatar=avatar)
     db.session.add(user)
     db.session.commit()
 
     return jsonify({'message': 'User created successfully'}), 201
+
 
 
 @user_api.route('/<int:user_id>', methods=['PUT'])
