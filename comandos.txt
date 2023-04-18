@@ -15,5 +15,5 @@ npm install
 npm run start
 
 
-pg_dump -U gitpod example > dbexport.pgsql
-psql -U gitpod example < dbexport.pgsql
+crear archivo pg_dump -U gitpod example > dbexport.pgsql
+importar base de datos psql -U gitpod example < dbexport.pgsql
