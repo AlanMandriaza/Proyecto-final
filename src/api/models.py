@@ -127,6 +127,13 @@ class Product(db.Model):
             "quantity": self.quantity
         }
 
+    def reduce_quantity(self, quantity):
+        if self.quantity >= quantity:
+            self.quantity -= quantity
+        else:
+            raise ValueError('Insufficient inventory')
+
+
 
 class PaymentItem(db.Model):
     __tablename__ = 'payment_items'

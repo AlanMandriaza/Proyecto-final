@@ -20,33 +20,34 @@ def get_product(id):
 
 @product_api.route('/', methods=['POST'])
 def create_products():
-    data_list = request.get_json()
-    result_list = []
-    for data in data_list:
-        name = data.get('name')
-        description = data.get('description')
-        price = data.get('price')
-        image = data.get('image')
-        category_name = data.get('category')
-        quantity = data.get('quantity')
+    data = request.get_json()
 
-        # Verificar si la categoría existe
-        category = Category.query.filter_by(name=category_name).first()
-        if not category:
-            return jsonify({"msg": f"Category with name {category_name} not found"}), 404
+    if not isinstance(data, dict):
+        return jsonify({"msg": "Data must be a dictionary"}), 400
 
-        # Crear el producto
-        product = Product(name=name, description=description, price=price, image=image, category=category, quantity=quantity)
+    name = data.get('name')
+    description = data.get('description')
+    price = data.get('price')
+    image = data.get('image')
+    category_name = data.get('category')
+    quantity = data.get('quantity')
 
-        try:
-            db.session.add(product)
-            db.session.commit()
-            result_list.append(product.serialize())
-        except exc.SQLAlchemyError as e:
-            db.session.rollback()
-            return jsonify({"msg": str(e)}), 400
+    # Verificar si la categoría existe
+    category = Category.query.filter_by(name=category_name).first()
+    if not category:
+        return jsonify({"msg": f"Category with name {category_name} not found"}), 404
 
-    return jsonify({"msg": "Products created successfully", "products": result_list}), 201
+    # Crear el producto
+    product = Product(name=name, description=description, price=price, image=image, category=category, quantity=quantity)
+
+    try:
+        db.session.add(product)
+        db.session.commit()
+        return jsonify(product.serialize()), 201
+    except exc.SQLAlchemyError as e:
+        db.session.rollback()
+        return jsonify({"msg": str(e)}), 400
+
 
 
 @product_api.route('/<int:id>', methods=['DELETE'])

@@ -22,12 +22,23 @@ def get_category(id):
 @category_api.route('/', methods=['POST'])
 def create_category():
     data = request.json
+    if not isinstance(data, list):
+        return jsonify({'error': 'Invalid request data'}), 400
+    
     for item in data:
-        name = item.get('name')
+        if not isinstance(item, dict) or 'name' not in item:
+            return jsonify({'error': 'Invalid category data'}), 400
+        
+        name = item['name']
+        if not isinstance(name, str) or len(name) == 0:
+            return jsonify({'error': 'Invalid category name'}), 400
+        
         category = Category(name=name)
         db.session.add(category)
+    
     db.session.commit()
     return jsonify({'message': 'Category created successfully'}), 201
+
 
 @category_api.route('/<int:id>', methods=['PUT'])
 def update_category(id):
