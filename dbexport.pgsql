@@ -506,7 +506,9 @@ COPY public.alembic_version (version_num) FROM stdin;
 --
 
 COPY public.cart_items (id, cart_id, product_id, quantity) FROM stdin;
-7	6	6	2
+43	17	1	4
+44	17	21	4
+45	17	23	4
 \.
 
 
@@ -515,7 +517,7 @@ COPY public.cart_items (id, cart_id, product_id, quantity) FROM stdin;
 --
 
 COPY public.carts (id, user_id, created_at, ordered) FROM stdin;
-6	\N	2023-04-18 05:44:28.190183	f
+17	\N	2023-04-18 22:50:42.074864	f
 \.
 
 
@@ -533,9 +535,19 @@ COPY public.categories (id, name) FROM stdin;
 7	Calcetines
 8	Ropa interior
 9	Ropa de deporte
-10	Ropa de baño
 11	Zapatillas
 12	Deporte
+10	Ropa de bano
+13	Trajes de baño
+14	Abrigos
+15	Gorros y sombreros
+16	Joyería
+17	Lencería
+18	Ropa de dormir
+19	Disfraces
+20	Ropa de trabajo
+21	Ropa para mascotas
+22	Mujer
 \.
 
 
@@ -568,7 +580,6 @@ COPY public.payments (id, amount) FROM stdin;
 --
 
 COPY public.products (id, name, description, price, image, category_id, quantity) FROM stdin;
-1	Zapatilla	zapatilla bonita	40000	https://res.cloudinary.com/dfpfb6yon/image/upload/v1680642513/cld-sample-5.jpg	11	100
 2	Zapatilla barata	zapatilla barata	5000	https://res.cloudinary.com/dfpfb6yon/image/upload/v1680642513/cld-sample-5.jpg	11	100
 3	Botas de cuero	Botas de cuero para hombre, de color marrón oscuro.	75000	https://via.placeholder.com/300x300.png?text=Botas+de+cuero	3	75
 4	Chaqueta impermeable	Chaqueta impermeable para mujer, ideal para días lluviosos.	45000	https://via.placeholder.com/300x300.png?text=Chaqueta+impermeable	4	60
@@ -590,6 +601,30 @@ COPY public.products (id, name, description, price, image, category_id, quantity
 20	Camisa a rayas	Camisa para hombre a rayas azules y blancas con cuello clásico.	25000	https://example.com/images/camisa_rayas.jpg	1	60
 21	Jersey de lana	Jersey de lana para mujer en tonos rosas con cuello redondo.	55000	https://example.com/images/jersey_lana.jpg	4	15
 22	Bikini	Bikini de dos piezas en tonos verdes con estampado de hojas.	40000	https://example.com/images/bikini.jpg	10	30
+23	Jeans ajustados1	Jeans ajustados de color negro, hechos con tela elástica de alta calidad.	55000	https://example.com/jeans-ajustados.jpg	2	100
+24	Zapatos deportivos	Zapatos cómodos y ligeros, ideales para correr o hacer ejercicio.	65000	https://example.com/zapatos-deportivos.jpg	3	100
+25	Vestido de noche	Vestido elegante y sofisticado para ocasiones especiales.	120000	https://example.com/vestido-noche.jpg	5	50
+26	Sudadera con capucha	Sudadera de algodón con capucha y bolsillo delantero.	45000	https://example.com/sudadera-capucha.jpg	9	120
+27	Boxer de algodón	Boxer cómodo y transpirable de algodón.	15000	https://example.com/boxer-algodon.jpg	8	200
+28	Chaqueta de cuero	Chaqueta de cuero de alta calidad, con cierre frontal y bolsillos laterales.	180000	https://example.com/chaqueta-cuero.jpg	4	30
+29	Gorra de béisbol	Gorra clásica de béisbol, de algodón y con cierre ajustable.	25000	https://example.com/gorra-beisbol.jpg	6	80
+30	Jeans ajustados	Jeans ajustados de alta calidad, de color negro y con detalles desgastados.	75000	https://example.com/jeans-ajustados.jpg	2	60
+31	Blusa de seda	Blusa elegante de seda, con cuello redondo y mangas cortas.	110000	https://example.com/blusa-seda.jpg	5	40
+32	Calcetines deportivos	Calcetines deportivos de alta calidad, transpirables y con soporte para el arco del pie.	20000	https://example.com/calcetines-deportivos.jpg	7	150
+33	Traje de baño	Traje de baño de una pieza, con estampado floral y tirantes ajustables.	90000	https://example.com/traje-bano.jpg	10	20
+34	Jersey de lana	Jersey de lana suave y cálida, de corte holgado y cuello redondo.	95000	https://example.com/jersey-lana.jpg	9	90
+35	Sandalias de cuero	Sandalias cómodas y elegantes de cuero, con correa ajustable en el tobillo.	78000	https://example.com/sandalias-cuero.jpg	3	70
+36	Pantalón corto de algodón	Pantalón corto de algodón transpirable, con bolsillos laterales y cintura elástica.	35000	https://example.com/pantalon-corto.jpg	9	120
+37	Blazer de lino	Blazer ligero de lino, con cierre de botón y bolsillos con solapa.	140000	https://example.com/blazer-lino.jpg	4	40
+38	Bolso de cuero	Bolso de cuero elegante y práctico, con asas y correa desmontable.	175000	https://example.com/bolso-cuero.jpg	6	25
+39	Chaqueta de mezclilla	Chaqueta de mezclilla clásica, de corte holgado y con botones de metal.	85000	https://example.com/chaqueta-mezclilla.jpg	4	55
+40	Botas de cuero	Botas de cuero resistentes, con suela antideslizante y cierre con cordones.	120000	https://example.com/botas-cuero.jpg	3	30
+41	Top de encaje	Top de encaje delicado, con tirantes ajustables y escote en V.	65000	https://example.com/top-encaje.jpg	5	80
+42	Gorra de lana	Gorra de lana suave y cálida, con diseño de rayas y pompón en la parte superior.	30000	https://example.com/gorra-lana.jpg	6	100
+43	Pantalón cargo	Pantalón cargo resistente, de tela gruesa y con múltiples bolsillos.	95000	https://example.com/pantalon-cargo.jpg	2	50
+44	Tennis clásicos	Tennis clásicos de lona, con suela de goma y cierre con cordones.	90000	https://example.com/tennis-clasicos.jpg	11	50
+45	Sudadera con capucha	Sudadera con capucha suave y cálida, de tela gruesa y bolsillo frontal.	75000	https://example.com/sudadera-capucha.jpg	9	60
+1	Zapatilla	zapatilla bonita	40000	https://res.cloudinary.com/dfpfb6yon/image/upload/v1680642513/cld-sample-5.jpg	1	100
 \.
 
 
@@ -672,6 +707,8 @@ COPY public.users (id, email, password, is_active, first_name, last_name, date_o
 47	julia.lopez@example.com	pbkdf2:sha256:260000$NZq5so1pnOM0ulDh$09a406ae498fe72b6810412f016fbec65caa773aeb362c5baf29e4b35cc37765	t	Julia	Lopez	1993-05-22	123 Main St	Madrid	Spain	+34 555-123-456	https://res.cloudinary.com/dfpfb6yon/image/upload/v1681787189/mujer_m14usj.jpg
 49	carla.fernandez@example.com	pbkdf2:sha256:260000$oT3EirFKLrbgjKpw$6fdef2dc7dc15d0698ff6f2640b873154f5930c8f3174592ce0a79bf2394145e	t	Carla	Fernandez	1988-09-15	123 Main St	Barcelona	Spain	+34 555-123-456	https://res.cloudinary.com/dfpfb6yon/image/upload/v1681787189/mujer_m14usj.jpg
 51	lucia.garcia@example.com	pbkdf2:sha256:260000$df2W5UYS0Y94brnF$eb3f105142b60eaa517df85127a326399ac923c2ec2288baa80547302307ccca	t	Lucia	Garcia	1992-12-05	123 Main St	Madrid	Spain	+34 555-123-456	https://res.cloudinary.com/dfpfb6yon/image/upload/v1681787189/mujer_m14usj.jpg
+52	usuario@ejemplo.com	pbkdf2:sha256:260000$hhDDsHnONR0FcYDh$5df0efbb67a90cc01fa86df3fdf1c324dd7a98dcff07193c1667ad1e7d85b56e	t	\N	\N	\N	\N	\N	\N	\N	\N
+53	1usuario@ejemplo.com	pbkdf2:sha256:260000$GfoPjH9TKXjtI12N$e570dfbff7ca5a243eb4561b7a24dd62d5ba676b0863458264f1bd796e6e9ca8	t	\N	\N	\N	\N	\N	\N	\N	\N
 \.
 
 
@@ -679,21 +716,21 @@ COPY public.users (id, email, password, is_active, first_name, last_name, date_o
 -- Name: cart_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitpod
 --
 
-SELECT pg_catalog.setval('public.cart_items_id_seq', 7, true);
+SELECT pg_catalog.setval('public.cart_items_id_seq', 45, true);
 
 
 --
 -- Name: carts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitpod
 --
 
-SELECT pg_catalog.setval('public.carts_id_seq', 6, true);
+SELECT pg_catalog.setval('public.carts_id_seq', 17, true);
 
 
 --
 -- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitpod
 --
 
-SELECT pg_catalog.setval('public.categories_id_seq', 11, true);
+SELECT pg_catalog.setval('public.categories_id_seq', 21, true);
 
 
 --
@@ -721,7 +758,7 @@ SELECT pg_catalog.setval('public.payments_id_seq', 1, false);
 -- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitpod
 --
 
-SELECT pg_catalog.setval('public.products_id_seq', 22, true);
+SELECT pg_catalog.setval('public.products_id_seq', 48, true);
 
 
 --
@@ -742,7 +779,7 @@ SELECT pg_catalog.setval('public.roles_id_seq', 1, false);
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gitpod
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 51, true);
+SELECT pg_catalog.setval('public.users_id_seq', 53, true);
 
 
 --
