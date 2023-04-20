@@ -2,28 +2,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			message: null,
-
-			cart: [
-				{
-				  nombre: "Polera Hombre",
-				  precio: 16990,
-				  cantidad: 5,
-				  img: "https://cdn.shopify.com/s/files/1/0249/8255/2638/products/33_2000x.png?v=1668118317",
-				},
-				{
-				  nombre: "Poleron Mujer",
-				  precio: 22990,
-				  cantidad: 1,
-				  img: "https://cdn.shopify.com/s/files/1/0249/8255/2638/products/poleronmujer6_2000x.png?v=1670009392",
-				},
-				{
-				  nombre: "Pantalón cargo Mujer",
-				  precio: 22990,
-				  cantidad: 1,
-				  img: "https://cdn.shopify.com/s/files/1/0249/8255/2638/products/cargomujer8_5000x.png?v=1670018111",
-				},
-			  ],
-			  
 			demo: [
 				{
 					title: "FIRST",

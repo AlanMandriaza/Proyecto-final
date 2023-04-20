@@ -31,15 +31,24 @@ def login():
     refresh_token = create_refresh_token(identity=user.id)
     return jsonify({'message': 'Login successful', 'access_token': access_token, 'refresh_token': refresh_token}), 200
 
-
 @user_api.route('/<int:user_id>', methods=['GET'])
 @jwt_required()
 def get_user_by_id(user_id):
-    user = User.query.get(user_id)
-    if user:
-        return jsonify(user.serialize()), 200
+    current_user_id = get_jwt_identity()
+    if current_user_id is None:
+        return jsonify({'error': 'Authentication required'}), 401
+
+    if user_id == current_user_id:
+        user = User.query.get(user_id)
+        if user:
+            return jsonify(user.serialize()), 200
+        else:
+            return jsonify({'error': 'User not found'}), 404
     else:
-        return jsonify({'error': 'User not found'}), 404
+        return jsonify({'error': 'Unauthorized access'}), 401
+
+
+
 
 @user_api.route('/signup', methods=['POST'])
 def create_user():
@@ -49,14 +58,6 @@ def create_user():
 
     email = data.get('email')
     password = data.get('password')
-    first_name = data.get('first_name')
-    last_name = data.get('last_name')
-    date_of_birth = data.get('date_of_birth')
-    address = data.get('address')
-    city = data.get('city')
-    country = data.get('country')
-    phone_number = data.get('phone_number')
-    avatar = data.get('avatar')
 
     if not email or not password:
         return jsonify({'error': 'Email and password are required'}), 400
@@ -65,12 +66,11 @@ def create_user():
         return jsonify({'error': 'Email already exists'}), 400
 
     hashed_password = generate_password_hash(password)
-    user = User(email=email, password=hashed_password, first_name=first_name, last_name=last_name, date_of_birth=date_of_birth, address=address, city=city, country=country, phone_number=phone_number, avatar=avatar)
+    user = User(email=email, password=hashed_password)
     db.session.add(user)
     db.session.commit()
 
     return jsonify({'message': 'User created successfully'}), 201
-
 
 
 @user_api.route('/<int:user_id>', methods=['PUT'])
@@ -110,5 +110,4 @@ def delete_user(user_id):
     db.session.commit()
 
     return jsonify({'message': 'User deleted successfully'}), 200
-
 

@@ -71,3 +71,21 @@ def delete_cart_item(item_id):
 
 
 
+@cart_items_api.route('/<int:item_id>', methods=['PUT'])
+def update_cart_item(item_id):
+    # Obtener el item de carrito a través del ID
+    cart_item = CartItem.query.get_or_404(item_id)
+
+    # Actualizar la cantidad del item de carrito
+    request_data = request.get_json()
+    quantity = request_data.get('quantity')
+    if quantity is None:
+        return jsonify({'error': 'Quantity is missing.'}), 400
+    cart_item.quantity = quantity
+
+    # Guardar los cambios en la base de datos
+    db.session.commit()
+
+    # Retornar el item de carrito actualizado como JSON
+    result = cart_item.serialize()
+    return jsonify(result), 200, {'msg': 'Cart item updated'}
