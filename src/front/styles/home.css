@@ -5,3 +5,10 @@
     one more css for each page that will contain the selected used 
     on that page only (the ones not reused in other pages).
 */
+.imagen-circulo{
+    width: 250px;
+    border: solid 2px grey;
+    margin: 30px 60px 30px 60px;
+    border-radius: 20px;
+    
+}
