@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 
 import MainNavbar from "./pages/navbar";
-import Cart from "./pages/cart";
 import { Home } from "./pages/home";
 import { Cart } from "./pages/cart";
 import { Demo } from "./pages/demo";
