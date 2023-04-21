@@ -1,6 +1,20 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 
+
+
+const updateTotal = () => {
+  fetch('https://3001-alanmandria-proyectofin-tk7brxzjw8e.ws-us94.gitpod.io/api/cart/17')
+    .then(response => response.json())
+    .then(data => {
+      setTotal(data.cart_total);
+    })
+    .catch(error => {
+      console.error('Error al obtener el total del carrito:', error);
+    });
+};
+
+
 export const Cart = () => {
   const { store, actions } = useContext(Context);
   const [total, setTotal] = useState(0);
@@ -40,39 +54,43 @@ export const Cart = () => {
             }
             return cartItem;
           }));
+
+          updateTotal(); // actualizar el total del carrito
+
           setTotal(data.cart_total);
+
         })
         .catch(error => {
           console.error('Error al actualizar la cantidad del producto:', error);
         });
     }
+
   }
   const handleIncrease = (item) => {
     // Aumentar la cantidad de un producto en el carrito
     const newQuantity = item.quantity + 1;
     fetch(`https://3001-alanmandria-proyectofin-tk7brxzjw8e.ws-us94.gitpod.io/api/cart_items/${item.id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ quantity: newQuantity })
-    })
-    .then(response => response.json())
-    .then(data => {
-        setCartItems(cartItems.map(cartItem => {
-            if (cartItem.id === item.id) {
-                cartItem.quantity = newQuantity;
-            }
-            return cartItem;
-        }));
-        setTotal(data.cart_total);
-    })
-    .catch(error => {
-        console.error('Error al actualizar la cantidad del producto:', error);
-    });
-}
 
-  
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ quantity: newQuantity })
+    })
+      .then(response => response.json())
+      .then(data => {
+        setCartItems(cartItems.map(cartItem => {
+          if (cartItem.id === item.id) {
+            cartItem.quantity = newQuantity;
+          }
+          return cartItem;
+        }));
+        setTotal(data.cart_total); // Aquí se actualiza el estado de total
+      })
+      .catch(error => {
+        console.error('Error al actualizar la cantidad del producto:', error);
+      });
+  };
   
   return (
     <div className="container">
@@ -121,4 +139,6 @@ export const Cart = () => {
    );
   };
   
+
   export default Cart;
+

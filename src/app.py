@@ -85,7 +85,7 @@ def serve_any_other_file(path):
 @jwt_required()
 def protected():
     # Your protected view code here
-    return 'You are authorized to see this page!'
+    return 'ola'
 
 
 # this only runs if `$ python src/main.py` is executed

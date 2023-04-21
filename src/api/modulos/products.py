@@ -19,8 +19,11 @@ def get_product(id):
         return jsonify({"msg": "Product not found"}), 404
 
 @product_api.route('/', methods=['POST'])
-def create_product():
+def create_products():
     data = request.get_json()
+
+    if not isinstance(data, dict):
+        return jsonify({"msg": "Data must be a dictionary"}), 400
 
     name = data.get('name')
     description = data.get('description')
@@ -40,10 +43,12 @@ def create_product():
     try:
         db.session.add(product)
         db.session.commit()
-        return jsonify({"msg": "Product created successfully", "product": product.serialize()}), 201
+        return jsonify(product.serialize()), 201
     except exc.SQLAlchemyError as e:
         db.session.rollback()
         return jsonify({"msg": str(e)}), 400
+
+
 
 @product_api.route('/<int:id>', methods=['DELETE'])
 def delete_product(id):

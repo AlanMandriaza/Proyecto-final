@@ -13,7 +13,9 @@ export const Footer = () => (
 				<ul>
 					<li>Tiendas</li>
 					<li>Blog</li>
+
 					<li>Contacto</li>
+
 					<li>Políticas de privacidad</li>
 				</ul>
 			</div>
@@ -34,4 +36,7 @@ export const Footer = () => (
 		</div>
 
 	</div>
+
+
 );
+

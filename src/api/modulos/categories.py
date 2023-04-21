@@ -19,21 +19,26 @@ def get_category(id):
     else:
         return jsonify({'error': 'Categoría no encontrada'}), 404
 
-@category_api.route('', methods=['POST'])
+@category_api.route('/', methods=['POST'])
 def create_category():
-    data = request.get_json()
-    if not data:
-        return jsonify({'error': 'No se proporcionaron datos'}), 400
+    data = request.json
+    if not isinstance(data, list):
+        return jsonify({'error': 'Invalid request data'}), 400
     
-    name = data.get('name')
-    if not name:
-        return jsonify({'error': 'Falta el nombre de la categoría'}), 400
+    for item in data:
+        if not isinstance(item, dict) or 'name' not in item:
+            return jsonify({'error': 'Invalid category data'}), 400
+        
+        name = item['name']
+        if not isinstance(name, str) or len(name) == 0:
+            return jsonify({'error': 'Invalid category name'}), 400
+        
+        category = Category(name=name)
+        db.session.add(category)
     
-    category = Category(name=name)
-    db.session.add(category)
     db.session.commit()
-    serialized_category = category.serialize()
-    return jsonify(serialized_category), 201
+    return jsonify({'message': 'Category created successfully'}), 201
+
 
 @category_api.route('/<int:id>', methods=['PUT'])
 def update_category(id):

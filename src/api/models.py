@@ -25,10 +25,19 @@ class User(db.Model):
     avatar = db.Column(db.String(120), unique=False, nullable=True)
     roles = db.relationship('Role', secondary='user_roles')
 
-    def __init__(self, email, password, is_active=True, **kwargs):
+    def __init__(self, email, password, is_active=True, first_name=None, last_name=None, date_of_birth=None,
+                 address=None, city=None, country=None, phone_number=None, avatar=None, **kwargs):
         self.email = email
+        self.password = password
         self.is_active = is_active
-        self.password = password  # Ahora almacenamos la contraseña sin cifrar
+        self.first_name = first_name
+        self.last_name = last_name
+        self.date_of_birth = date_of_birth
+        self.address = address
+        self.city = city
+        self.country = country
+        self.phone_number = phone_number
+        self.avatar = avatar
         super(User, self).__init__(**kwargs)
 
     def __repr__(self):
@@ -47,6 +56,7 @@ class User(db.Model):
             "phone_number": self.phone_number,
             "avatar": self.avatar
         }
+
 
 class Role(db.Model):
     __tablename__ = 'roles'
@@ -117,6 +127,13 @@ class Product(db.Model):
             "quantity": self.quantity
         }
 
+    def reduce_quantity(self, quantity):
+        if self.quantity >= quantity:
+            self.quantity -= quantity
+        else:
+            raise ValueError('Insufficient inventory')
+
+
 
 class PaymentItem(db.Model):
     __tablename__ = 'payment_items'
@@ -170,6 +187,7 @@ class Cart(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
     user = db.relationship('User', backref='carts')
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    ordered = db.Column(db.Boolean(), nullable=False, default=False)
     items = db.relationship('CartItem', backref='cart', lazy=True)
 
     def serialize(self):
@@ -177,8 +195,10 @@ class Cart(db.Model):
             'id': self.id,
             'user_id': self.user_id,
             'created_at': self.created_at.isoformat(),
+            'ordered': self.ordered,
             'items': [item.serialize() for item in self.items]
         }
+
 
 
 class CartItem(db.Model):
@@ -192,3 +212,10 @@ class CartItem(db.Model):
 
     def __repr__(self):
         return f'<CartItem {self.id}>'
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'product': self.product.serialize(),
+            'quantity': self.quantity
+        }

@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 from datetime import datetime
 
 from app import db
-from models import Order, Payment, User
+from models import Order, Payment, User, Product
 
 orders_bp = Blueprint('orders', __name__, url_prefix='/orders')
 
@@ -27,8 +27,20 @@ def create_order():
 
     order = Order(user_id=user_id, payment_id=payment_id, created_at=datetime.utcnow())
     db.session.add(order)
+
+    # Recorrer los elementos de la orden y actualizar la cantidad en inventario correspondiente
+    for item in data.get('items', []):
+        product = Product.query.get(item['product_id'])
+        if product:
+            try:
+                product.reduce_quantity(item['quantity'])
+            except ValueError as e:
+                db.session.rollback()
+                return jsonify({'error': str(e)}), 400
+
     db.session.commit()
     return jsonify(order.serialize()), 201
+
 
 @orders_bp.route('/<int:id>', methods=['PUT'])
 def update_order(id):

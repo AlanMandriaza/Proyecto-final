@@ -31,15 +31,24 @@ def login():
     refresh_token = create_refresh_token(identity=user.id)
     return jsonify({'message': 'Login successful', 'access_token': access_token, 'refresh_token': refresh_token}), 200
 
-
 @user_api.route('/<int:user_id>', methods=['GET'])
 @jwt_required()
 def get_user_by_id(user_id):
-    user = User.query.get(user_id)
-    if user:
-        return jsonify(user.serialize()), 200
+    current_user_id = get_jwt_identity()
+    if current_user_id is None:
+        return jsonify({'error': 'Authentication required'}), 401
+
+    if user_id == current_user_id:
+        user = User.query.get(user_id)
+        if user:
+            return jsonify(user.serialize()), 200
+        else:
+            return jsonify({'error': 'User not found'}), 404
     else:
-        return jsonify({'error': 'User not found'}), 404
+        return jsonify({'error': 'Unauthorized access'}), 401
+
+
+
 
 @user_api.route('/signup', methods=['POST'])
 def create_user():
@@ -105,5 +114,4 @@ def delete_user(user_id):
     db.session.commit()
 
     return jsonify({'message': 'User deleted successfully'}), 200
-
 

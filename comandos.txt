@@ -1,5 +1,4 @@
-
-pipenv install
+Comandos Alan:pipenv install
 npm install
 pip install --upgrade jwt
 pipenv install PyJWT
@@ -11,10 +10,12 @@ pipenv run upgrade
 pipenv run start
 
 
+
 npm install
 npm run start
 
 
 crear archivo pg_dump -U gitpod example > dbexport.pgsql
-importar base de datos 
-psql -U gitpod example < dbexport.pgsql 
+
+importar base de datos psql -U gitpod example < dbexport.pgsql
+

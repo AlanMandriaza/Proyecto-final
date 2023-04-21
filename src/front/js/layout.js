@@ -5,6 +5,7 @@ import ScrollToTop from "./component/scrollToTop";
 import MainNavbar from "./pages/navbar";
 import Cart from "./pages/cart";
 import { Home } from "./pages/home";
+import { Cart } from "./pages/cart";
 import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
