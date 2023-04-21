@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 
 
+
 const updateTotal = () => {
   fetch('https://3001-alanmandria-proyectofin-tk7brxzjw8e.ws-us94.gitpod.io/api/cart/17')
     .then(response => response.json())
@@ -12,6 +13,7 @@ const updateTotal = () => {
       console.error('Error al obtener el total del carrito:', error);
     });
 };
+
 
 export const Cart = () => {
   const { store, actions } = useContext(Context);
@@ -52,17 +54,23 @@ export const Cart = () => {
             }
             return cartItem;
           }));
+
           updateTotal(); // actualizar el total del carrito
+
+          setTotal(data.cart_total);
+
         })
         .catch(error => {
           console.error('Error al actualizar la cantidad del producto:', error);
         });
     }
-  };
+
+  }
   const handleIncrease = (item) => {
     // Aumentar la cantidad de un producto en el carrito
     const newQuantity = item.quantity + 1;
     fetch(`https://3001-alanmandria-proyectofin-tk7brxzjw8e.ws-us94.gitpod.io/api/cart_items/${item.id}`, {
+
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -83,9 +91,6 @@ export const Cart = () => {
         console.error('Error al actualizar la cantidad del producto:', error);
       });
   };
-  
-
-  
   
   return (
     <div className="container">
@@ -134,4 +139,6 @@ export const Cart = () => {
    );
   };
   
-  
+
+  export default Cart;
+

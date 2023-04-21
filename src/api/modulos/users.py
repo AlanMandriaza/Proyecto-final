@@ -53,11 +53,15 @@ def get_user_by_id(user_id):
 @user_api.route('/signup', methods=['POST'])
 def create_user():
     data = request.get_json()
+
     if not data:
         return jsonify({'error': 'No data provided'}), 400
 
+
     email = data.get('email')
     password = data.get('password')
+    first_name = data.get('first_name')
+    last_name = data.get('last_name')
 
     if not email or not password:
         return jsonify({'error': 'Email and password are required'}), 400
@@ -66,7 +70,7 @@ def create_user():
         return jsonify({'error': 'Email already exists'}), 400
 
     hashed_password = generate_password_hash(password)
-    user = User(email=email, password=hashed_password)
+    user = User(email=email, password=hashed_password, first_name=first_name, last_name=last_name)
     db.session.add(user)
     db.session.commit()
 
