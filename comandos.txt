@@ -6,6 +6,15 @@ pipenv install PyJWT
 pipenv install flask_jwt
 pipenv install flask-bcrypt
 
+<<<<<<< Updated upstream
+=======
+
+
+psql -U gitpod example < dbexport.pgsql
+pipenv run migrate
+pipenv run upgrade
+pipenv run start
+>>>>>>> Stashed changes
 
 
 
