@@ -10,7 +10,7 @@ import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
 import Formulario from "./pages/formulario";
 import FormularioRegister from "./pages/formularioRegister";
-
+import Admin from './Admin/Admin';
 
 import { Footer } from "./component/footer";
 import Correo from "./component/correo";
@@ -33,6 +33,7 @@ const Layout = () => {
             <Route element={<Formulario />} path="/login" />
             <Route element={<FormularioRegister />} path="/register" />
             <Route element={<Single />} path="/single/:theid" />
+            <Route element={<Admin />} path="/admin" />
             <Route element={<h1>Not found!</h1>} />
           </Routes>
           <Correo />

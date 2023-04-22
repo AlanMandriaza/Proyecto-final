@@ -70,5 +70,3 @@ def delete_category(id):
     return jsonify({'message': 'Categoría eliminada correctamente'}), 200
 
 
-#https://3001-alanmandria-proyectofin-dhrgwg8k4gb.ws-us94.gitpod.io/api/categories
-#{"name": "Nueva categoría"}
