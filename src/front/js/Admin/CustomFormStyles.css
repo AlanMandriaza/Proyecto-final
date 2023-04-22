@@ -1,0 +1,20 @@
+.custom-form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+  }
+  
+  .custom-btn {
+    background-color: #E74C25;
+    border-color: #E74C25;
+    color: white;
+  }
+  
+  .custom-btn:hover {
+    background-color: #d4411d;
+    border-color: #d4411d;
+    color: white;
+  }
+  

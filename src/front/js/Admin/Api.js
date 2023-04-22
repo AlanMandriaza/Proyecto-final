@@ -1,4 +1,4 @@
-const BASE_URL = 'https://3001-alanmandria-proyectofin-hdiuzx5yfab.ws-us95.gitpod.io';
+const BASE_URL = 'https://3001-alanmandria-proyectofin-18ur8x594on.ws-us95.gitpod.io';
 
 const api = {
   addProduct: (product) => {
