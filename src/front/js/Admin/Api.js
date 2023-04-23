@@ -1,6 +1,8 @@
-const BASE_URL = 'https://3001-alanmandria-proyectofin-ib69jorzjjo.ws-us95.gitpod.io';
+const BASE_URL = 'https://3001-alanmandria-proyectofin-kh0viqu2tpo.ws-us95.gitpod.io';
 
 const api = {
+
+  
   getProducts: () => {
     return fetch(`${BASE_URL}/api/products`)
       .then((response) => {
@@ -14,6 +16,36 @@ const api = {
         throw error;
       });
   },
+  
+getCategories: () => {
+    return fetch(`${BASE_URL}/api/categories`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error al obtener las categorías');
+        }
+        return response.json();
+      })
+      .catch((error) => {
+        console.error('Error al obtener las categorías:', error);
+        throw error;
+      });
+  },
+
+  addCategory: (name) => {
+    return fetch(`${BASE_URL}/api/categories`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name }),
+    })
+      .then((response) => response.json())
+      .catch((error) => {
+        console.error('Error al agregar la categoría:', error);
+        throw error;
+      });
+  },
+
 
   getProductById: (productId) => {
     return fetch(`${BASE_URL}/api/products/${productId}`)
@@ -70,31 +102,18 @@ const api = {
       });
   },
 
-  getCategories: () => {
-    return fetch(`${BASE_URL}/api/categories`)
+
+  
+  getCategoryById: (categoryId) => {
+    return fetch(`${BASE_URL}/api/categories/${categoryId}`)
       .then((response) => {
         if (!response.ok) {
-          throw new Error('Error al obtener las categorías');
+          throw new Error('Error al obtener la categoría');
         }
         return response.json();
       })
       .catch((error) => {
-        console.error('Error al obtener las categorías:', error);
-        throw error;
-      });
-  },
-
-  addCategory: (name) => {
-    return fetch(`${BASE_URL}/api/categories`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name }),
-    })
-      .then((response) => response.json())
-      .catch((error) => {
-        console.error('Error al agregar la categoría:', error);
+        console.error('Error al obtener la categoría:', error);
         throw error;
       });
   },
@@ -112,11 +131,12 @@ const api = {
         throw error;
       });
   },
+
   addProductQuantity: (productId, quantity) => {
     return fetch(`${BASE_URL}/api/products/${productId}/add`, {
-      method: "PUT",
+      method: 'PUT',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ quantity }),
     })
@@ -132,11 +152,25 @@ const api = {
       });
   },
 
+  getProductsByCategory: (categoryId) => {
+    return fetch(`${BASE_URL}/api/categories/${categoryId}/products`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error al obtener los productos de la categoría');
+        }
+        return response.json();
+      })
+      .catch((error) => {
+        console.error('Error al obtener los productos de la categoría:', error);
+        throw error;
+      });
+  },
+
   subtractProductQuantity: (productId, quantity) => {
     return fetch(`${BASE_URL}/api/products/${productId}/remove`, {
-      method: "PUT",
+      method: 'PUT',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ quantity }),
     })
@@ -148,6 +182,20 @@ const api = {
       })
       .catch((error) => {
         console.error('Error al restar cantidad al producto:', error);
+        throw error;
+      });
+  },
+
+  getProductCountByCategory: (categoryId) => {
+    return fetch(`${BASE_URL}/api/categories/${categoryId}/product_count`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error al obtener la cantidad de productos para la categoría');
+        }
+        return response.json();
+      })
+      .catch((error) => {
+        console.error('Error al obtener la cantidad de productos para la categoría:', error);
         throw error;
       });
   },

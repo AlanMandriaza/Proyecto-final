@@ -144,8 +144,9 @@ const Inventory = () => {
                                     }
                                     style={{ width: '70px' }}
                                 />
-                                <button onClick={() => handleAdd(product.id)}>+</button>
                                 <button onClick={() => handleRemove(product.id)}>-</button>
+                                <button onClick={() => handleAdd(product.id)}>+</button>
+                                
                             </td>
                             <td>
                                 <button

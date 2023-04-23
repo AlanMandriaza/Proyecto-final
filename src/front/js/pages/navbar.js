@@ -1,8 +1,31 @@
-import React from "react";
-import { Link, useLocation, Outlet } from "react-router-dom";
 
+import React, { useState, useEffect } from "react";
+import { Link, useLocation, Outlet } from "react-router-dom";
+import api from "../Admin/Api"
 const MainNavbar = () => {
+ 
   const location = useLocation();
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    api.getCategories()
+      .then((categories) => setCategories(categories))
+      .catch((error) => console.error('Error al obtener las categorías:', error));
+
+    // Obtener la cantidad de productos por categoría
+    const promises = categories.map((category) => {
+      return api.getProductCountByCategory(category.id)
+        .then((productCount) => {
+          return {
+            ...category,
+            product_count: productCount
+          };
+        })
+        .catch((error) => console.error(`Error al obtener la cantidad de productos para la categoría ${category.id}:`, error));
+    });
+    Promise.all(promises)
+      .then((categoriesWithProductCount) => setCategories(categoriesWithProductCount));
+  }, []);
   return (
     <>
       <ul className="nav mb-3">
@@ -62,6 +85,20 @@ const MainNavbar = () => {
             <span className="navItem">SALE</span>
           </Link>
         </li>
+        <li className="nav-item dropdown">
+              <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Categorías
+              </a>
+              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                {categories.map((category) => (
+                  <li key={category.id}>
+                    <Link className="dropdown-item" to={`/category/${category.id}`}>
+                      {category.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </li>
         <div className="d-inline-flex justify-content-end flex-grow-1">
           <li className="nav-item py-3">
             <Link

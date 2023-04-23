@@ -69,3 +69,21 @@ def delete_category(id):
     return jsonify({'message': 'Categoría eliminada correctamente'}), 200
 
 
+@category_api.route('/<int:category_id>/products', methods=['GET'])
+def get_products_by_category(category_id):
+    category = Category.query.get(category_id)
+    if not category:
+        return jsonify({'error': 'Categoría no encontrada'}), 404
+
+    products = category.products
+    serialized_products = [product.serialize() for product in products]
+    return jsonify(serialized_products), 200
+
+@category_api.route('/<int:id>/product_count', methods=['GET'])
+def get_product_count_by_category(id):
+    category = Category.query.get(id)
+    if not category:
+        return jsonify({'error': 'Categoría no encontrada'}), 404
+
+    product_count = len(category.products)
+    return jsonify({'product_count': product_count}), 200

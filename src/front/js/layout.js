@@ -12,6 +12,8 @@ import Formulario from "./pages/formulario";
 import FormularioRegister from "./pages/formularioRegister";
 import Admin from './Admin/Admin';
 
+import Category from "./component/categorias";
+
 import { Footer } from "./component/footer";
 import Correo from "./component/correo";
 import Inventory from "./Admin/Inventory";
@@ -37,6 +39,7 @@ const Layout = () => {
             <Route element={<Admin />} path="/admin" />
             <Route element={<Inventory />} path="/inventario" />
             <Route element={<h1>Not found!</h1>} />
+            <Route path="/category/:categoryId" element={<Category />} />
           </Routes>
           <Correo />
           <Footer />

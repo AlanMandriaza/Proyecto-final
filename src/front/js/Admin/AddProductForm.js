@@ -32,43 +32,50 @@ const AddProductForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null); // Limpiar el error antes de enviar el formulario
+    setError(null);
+  
     try {
-      const response = await api.addProduct(productData);
-      if (response.success) {
-        console.log("Producto agregado:", response.message);
-        // Puedes resetear el formulario aquí si lo deseas
-        setProductData({
-          name: "",
-          description: "",
-          category: "",
-          price: "",
-          image: "",
-          quantity: "",
-        });
+      // Verificar si el nombre del producto ya existe, ignorando mayúsculas y minúsculas
+      const existingProduct = productList.find(
+        (product) =>
+          product.name.toLowerCase() === productData.name.toLowerCase()
+      );
+  
+      if (existingProduct) {
+        setError("Este producto ya existe");
       } else {
-        setError(response.message);
+        const response = await api.addProduct(productData);
+        if (response.success) {
+          console.log("Producto agregado:", response.message);
+          setProductData({
+            name: "",
+            description: "",
+            category: "",
+            price: "",
+            image: "",
+            quantity: "",
+          });
+        } else {
+          setError(response.message);
+        }
       }
     } catch (err) {
       setError("Error al agregar el producto");
     }
   };
-
-  const handleNewCategoryChange = (e) => {
-    setNewCategory(e.target.value);
-  };
-
+  
   const handleNewCategorySubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
+      // Verificar si la categoría ya existe, ignorando mayúsculas y minúsculas
       const existingCategory = categories.find(
         (category) =>
           category.name.toLowerCase() === newCategory.toLowerCase()
       );
-
+  
       if (existingCategory) {
-        setError("La categoría ya existe");
+        setError("Esta categoría ya existe");
       } else {
         const createdCategory = await api.addCategory(newCategory);
         setCategories([...categories, { ...createdCategory, key: createdCategory.id }]);
@@ -79,6 +86,13 @@ const AddProductForm = () => {
       setError("Error al agregar la categoría");
     }
   };
+  
+
+  const handleNewCategoryChange = (e) => {
+    setNewCategory(e.target.value);
+  };
+
+  
 
   return (
     <>
