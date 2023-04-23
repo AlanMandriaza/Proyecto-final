@@ -14,6 +14,7 @@ import Admin from './Admin/Admin';
 
 import { Footer } from "./component/footer";
 import Correo from "./component/correo";
+import Inventory from "./Admin/Inventory";
 
 //create your first component
 const Layout = () => {
@@ -34,6 +35,7 @@ const Layout = () => {
             <Route element={<FormularioRegister />} path="/register" />
             <Route element={<Single />} path="/single/:theid" />
             <Route element={<Admin />} path="/admin" />
+            <Route element={<Inventory />} path="/inventario" />
             <Route element={<h1>Not found!</h1>} />
           </Routes>
           <Correo />

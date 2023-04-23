@@ -1,0 +1,10 @@
+  .boton {
+    background-color: #d4411d;
+  }
+  .table {
+    width: 80%;
+    margin: 0 auto;
+    border: 1px solid #d4411d;
+    border-radius: 50%;
+}
+

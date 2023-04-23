@@ -1,21 +1,6 @@
-const BASE_URL = 'https://3001-alanmandria-proyectofin-18ur8x594on.ws-us95.gitpod.io';
+const BASE_URL = 'https://3001-alanmandria-proyectofin-ib69jorzjjo.ws-us95.gitpod.io';
 
 const api = {
-  addProduct: (product) => {
-    return fetch(`${BASE_URL}/api/products`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(product),
-    })
-      .then((response) => response.json())
-      .catch((error) => {
-        console.error('Error al agregar el producto:', error);
-        throw error;
-      });
-  },
-
   getProducts: () => {
     return fetch(`${BASE_URL}/api/products`)
       .then((response) => {
@@ -40,6 +25,21 @@ const api = {
       })
       .catch((error) => {
         console.error('Error al obtener el producto:', error);
+        throw error;
+      });
+  },
+
+  addProduct: (product) => {
+    return fetch(`${BASE_URL}/api/products`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(product),
+    })
+      .then((response) => response.json())
+      .catch((error) => {
+        console.error('Error al agregar el producto:', error);
         throw error;
       });
   },
@@ -98,8 +98,59 @@ const api = {
         throw error;
       });
   },
-  
 
+  getInventory: () => {
+    return fetch(`${BASE_URL}/api/products`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error al obtener el inventario');
+        }
+        return response.json();
+      })
+      .catch((error) => {
+        console.error('Error al obtener el inventario:', error);
+        throw error;
+      });
+  },
+  addProductQuantity: (productId, quantity) => {
+    return fetch(`${BASE_URL}/api/products/${productId}/add`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ quantity }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error al agregar cantidad al producto');
+        }
+        return response.json();
+      })
+      .catch((error) => {
+        console.error('Error al agregar cantidad al producto:', error);
+        throw error;
+      });
+  },
+
+  subtractProductQuantity: (productId, quantity) => {
+    return fetch(`${BASE_URL}/api/products/${productId}/remove`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ quantity }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error al restar cantidad al producto');
+        }
+        return response.json();
+      })
+      .catch((error) => {
+        console.error('Error al restar cantidad al producto:', error);
+        throw error;
+      });
+  },
 };
 
 export default api;

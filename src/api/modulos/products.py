@@ -115,3 +115,36 @@ def update_product(id):
 
     else:
         return jsonify({"mensaje": "El producto no ha sido modificado"}), 200
+
+
+@product_api.route('/<int:id>/add', methods=['PUT'])
+def add_product_quantity(id):
+    data = request.get_json()
+    quantity = data.get('quantity', 1)
+    
+    product = Product.query.get(id)
+    if not product:
+        return jsonify({"msg": "Product not found"}), 404
+
+    product.quantity += quantity
+    db.session.commit()
+
+    return jsonify(product.serialize()), 200
+
+
+@product_api.route('/<int:id>/remove', methods=['PUT'])
+def remove_product_quantity(id):
+    data = request.get_json()
+    quantity = data.get('quantity', 1)
+    
+    product = Product.query.get(id)
+    if not product:
+        return jsonify({"msg": "Product not found"}), 404
+
+    product.quantity -= quantity
+    if product.quantity < 0:
+        product.quantity = 0
+
+    db.session.commit()
+
+    return jsonify(product.serialize()), 200
