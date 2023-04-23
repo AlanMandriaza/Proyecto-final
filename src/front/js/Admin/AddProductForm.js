@@ -30,11 +30,28 @@ const AddProductForm = () => {
     setProductData({ ...productData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    api.addProduct(productData).then((newProduct) => {
-      console.log("Producto agregado:", newProduct);
-    });
+    setError(null); // Limpiar el error antes de enviar el formulario
+    try {
+      const response = await api.addProduct(productData);
+      if (response.success) {
+        console.log("Producto agregado:", response.message);
+        // Puedes resetear el formulario aquí si lo deseas
+        setProductData({
+          name: "",
+          description: "",
+          category: "",
+          price: "",
+          image: "",
+          quantity: "",
+        });
+      } else {
+        setError(response.message);
+      }
+    } catch (err) {
+      setError("Error al agregar el producto");
+    }
   };
 
   const handleNewCategoryChange = (e) => {
@@ -62,6 +79,7 @@ const AddProductForm = () => {
       setError("Error al agregar la categoría");
     }
   };
+
   return (
     <>
       <form onSubmit={handleSubmit} className="custom-form">
@@ -104,10 +122,10 @@ const AddProductForm = () => {
           >
             <option value="">Seleccione una categoría</option>
             {categories.map((category, index) => (
-  <option key={`category-${index}`} value={category.name}>
-    {category.name}
-  </option>
-))}
+              <option key={`category-${index}`} value={category.name}>
+                {category.name}
+              </option>
+            ))}
 
           </select>
         </div>
@@ -153,8 +171,9 @@ const AddProductForm = () => {
         <button type="submit" className="btn custom-btn">
           Agregar producto
         </button>
+        {error && <p>{error}</p>}
       </form>
-  
+
       <form onSubmit={handleNewCategorySubmit} className="custom-form">
         <div className="mb-3">
           <label htmlFor="newCategory" className="form-label">
@@ -174,10 +193,9 @@ const AddProductForm = () => {
         </button>
         {error && <p>{error}</p>}
       </form>
-  
-  </>
+
+    </>
   );
 };
 
 export default AddProductForm;
-  

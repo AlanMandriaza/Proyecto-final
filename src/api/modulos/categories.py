@@ -34,7 +34,8 @@ def create_category():
     db.session.commit()
     
     serialized_category = category.serialize()
-    return jsonify(serialized_category), 201
+    return jsonify({'success': 'Category created', 'category': serialized_category}), 201
+
 
 
 

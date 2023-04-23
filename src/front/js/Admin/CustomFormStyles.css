@@ -16,5 +16,39 @@
 .custom-btn:hover {
   background-color: #d4411d;
   border-color: #d4411d;
-  color: white;
+  color: rgb(7, 0, 0);
+}
+
+.custom-dropdown-toggle {
+  background-color: #d4411d;
+  border-color:#d4411d;
+  color: rgb(175, 85, 85);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+}
+
+.custom-dropdown-toggle:hover {
+  background-color:#b92d2d;
+  border-color: #b92d2d;
+  color: rgb(19, 2, 2);
+}
+
+.custom-dropdown-menu {
+  background-color: #b92d2d;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  padding: 0.5rem 0;
+}
+
+.custom-dropdown-item {
+  background-color: #b92d2d;
+  color: #333;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.custom-dropdown-item:hover {
+  background-color: #b92d2d;
+  color: #333;
 }

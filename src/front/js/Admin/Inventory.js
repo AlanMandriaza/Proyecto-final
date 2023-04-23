@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./inventario.css";
 import api from "./Api";
+import { Dropdown } from "react-bootstrap";
+
+
 
 const Inventory = () => {
     const [inventory, setInventory] = useState([]);
@@ -68,59 +71,98 @@ const Inventory = () => {
             setError("Error al actualizar la cantidad del producto");
         }
     };
-
-    const sortByPrice = () => {
+    const sortByPriceAsc = () => {
         setInventory([...inventory].sort((a, b) => a.price - b.price));
     };
 
-    const sortByQuantity = () => {
+    const sortByPriceDesc = () => {
+        setInventory([...inventory].sort((a, b) => b.price - a.price));
+    };
+
+    const sortByQuantityAsc = () => {
         setInventory([...inventory].sort((a, b) => a.quantity - b.quantity));
     };
+
+    const sortByQuantityDesc = () => {
+        setInventory([...inventory].sort((a, b) => b.quantity - a.quantity));
+    };
+
 
     return (
         <div>
             <h1>Inventario</h1>
-            <table className="table">
-            <button onClick={sortByPrice}>Ordenar por precio</button>
-            <button onClick={sortByQuantity}>Ordenar por cantidad</button>
-           
-                <thead className="cell">
-                    <tr className="cell">
-                        <th className="cell">Nombre</th>
-                        <th className="cell">Descripción</th>
-                        <th className="cell">Categoría</th>
-                        <th className="cell">Precio</th>
-                        <th className="cell">Stock</th>
-                        <th className="cell">Acciones</th>
+            <table className="table table-striped">
+                <div className="col">
+                    {error && <p>{error}</p>}
+                    <Dropdown>
+                    <Dropdown.Toggle className="custom-dropdown-toggle">
+                            Ordenar por
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu className="custom-dropdown-menu">
+                            <Dropdown.Item onClick={sortByPriceAsc} className="custom-dropdown-item">
+                                Precio ascendente
+                            </Dropdown.Item>
+                            <Dropdown.Item onClick={sortByPriceDesc} className="custom-dropdown-item">
+                                Precio descendente
+                            </Dropdown.Item>
+                            <Dropdown.Item onClick={sortByQuantityAsc} className="custom-dropdown-item">
+                                Cantidad ascendente
+                            </Dropdown.Item>
+                            <Dropdown.Item onClick={sortByQuantityDesc} className="custom-dropdown-item">
+                                Cantidad descendente
+                            </Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+
+                </div>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Categoría</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody >
+                <tbody>
                     {inventory.map((product) => (
-                        <tr key={product.id} className="cell">
-                            <td className="cell">{product.name}</td>
-                            <td className="cell">{product.description}</td>
-                            <td className="cell">{product.category}</td>
-                            <td className="cell">{product.price}</td>
-                            <td className="cell">
+                        <tr key={product.id}>
+                            <td>{product.name}</td>
+                            <td>{product.description}</td>
+                            <td>{product.category}</td>
+                            <td>{product.price}</td>
+                            <td>
                                 <input
                                     type="number"
                                     min="0"
+                                    step="1"
                                     value={product.quantity}
-                                    onChange={(e) => handleSetQuantity(product.id, parseInt(e.target.value))}
-                                    style={{ width: "70px" }} />
+                                    onChange={(e) =>
+                                        handleSetQuantity(product.id, parseInt(e.target.value))
+                                    }
+                                    style={{ width: '70px' }}
+                                />
                                 <button onClick={() => handleAdd(product.id)}>+</button>
                                 <button onClick={() => handleRemove(product.id)}>-</button>
                             </td>
                             <td>
-                                <button onClick={() => handleDelete(product.id)} className="boton">Eliminar</button>
+                                <button
+                                    onClick={() => handleDelete(product.id)}
+                                    className="btn btn-primary boton"
+                                >
+                                    Eliminar
+                                </button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            {error && <p>{error}</p>}
+
         </div>
     );
+
 };
 
 export default Inventory;
