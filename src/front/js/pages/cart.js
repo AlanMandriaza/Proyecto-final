@@ -8,7 +8,7 @@ export const Cart = () => {
 
   useEffect(() => {
     // Hacer una solicitud a la API para obtener los datos del carrito
-    fetch('https://3001-alanmandria-proyectofin-tk7brxzjw8e.ws-us94.gitpod.io/api/cart/17')
+    fetch('https://3001-alanmandria-proyectofin-0be2of3ggya.ws-us95.gitpod.io/api/cart/17')
       .then(response => response.json())
       .then(data => {
         setCartItems(data.cart_items);
@@ -25,7 +25,7 @@ export const Cart = () => {
     if (newQuantity === 0) {
       handleDelete(item.id);
     } else {
-      fetch(`https://3001-alanmandria-proyectofin-tk7brxzjw8e.ws-us94.gitpod.io/api/cart_items/${item.id}`, {
+      fetch(`https://3001-alanmandria-proyectofin-0be2of3ggya.ws-us95.gitpod.io/api/cart_items/${item.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -50,7 +50,7 @@ export const Cart = () => {
   const handleIncrease = (item) => {
     // Aumentar la cantidad de un producto en el carrito
     const newQuantity = item.quantity + 1;
-    fetch(`https://3001-alanmandria-proyectofin-tk7brxzjw8e.ws-us94.gitpod.io/api/cart_items/${item.id}`, {
+    fetch(`https://3001-alanmandria-proyectofin-0be2of3ggya.ws-us95.gitpod.io/api/cart_items/${item.id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -72,7 +72,25 @@ export const Cart = () => {
     });
 }
 
-  
+const handleDelete = (itemId) => {
+  fetch(`https://3001-alanmandria-proyectofin-0be2of3ggya.ws-us95.gitpod.io/api/cart_items/${itemId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => response.json())
+    .then(data => {
+      setCartItems(cartItems.filter(cartItem => cartItem.id !== itemId));
+      setTotal(data.cart_total);
+    })
+    .catch(error => {
+      console.error('Error al eliminar el producto:', error);
+    });
+}
+
+
+
   
   return (
     <div className="container">

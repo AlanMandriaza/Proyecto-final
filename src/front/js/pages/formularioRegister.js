@@ -26,7 +26,7 @@ const Formulario = (props) => {
     }
    
    
-    fetch("https://3001-alanmandria-proyectofin-na0p9oacdmc.ws-us95.gitpod.io/api/users/signup", {
+    fetch("https://3001-alanmandria-proyectofin-0be2of3ggya.ws-us95.gitpod.io/users/singup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
