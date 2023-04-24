@@ -23,7 +23,7 @@ def create_products():
     data = request.get_json()
 
     if not isinstance(data, dict):
-        return jsonify({"msg": "Data must be a dictionary"}), 400
+        return jsonify({"error": "Data must be a dictionary"}), 400
 
     name = data.get('name')
     description = data.get('description')
@@ -35,7 +35,7 @@ def create_products():
     # Verificar si la categoría existe
     category = Category.query.filter_by(name=category_name).first()
     if not category:
-        return jsonify({"msg": f"Category with name {category_name} not found"}), 404
+        return jsonify({"error": f"Category with name '{category_name}' not found"}), 404
 
     # Crear el producto
     product = Product(name=name, description=description, price=price, image=image, category=category, quantity=quantity)
@@ -43,10 +43,11 @@ def create_products():
     try:
         db.session.add(product)
         db.session.commit()
-        return jsonify(product.serialize()), 201
+        return jsonify({"message": "Producto creado", "product": product.serialize()}), 201
     except exc.SQLAlchemyError as e:
         db.session.rollback()
-        return jsonify({"msg": str(e)}), 400
+        return jsonify({"error": str(e)}), 400
+
 
 
 

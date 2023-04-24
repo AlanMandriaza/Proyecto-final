@@ -39,6 +39,17 @@ def create_cart_item():
     return jsonify(result), 201, {'msg': msg}
 
 
+@cart_items_api.route('/<int:product_id>', methods=['DELETE'])
+def delete_cart_items_by_product(product_id):
+    # Obtener los items de carrito para ese producto
+    cart_items = CartItem.query.filter_by(product_id=product_id).all()
+
+    # Eliminar los items de carrito de la base de datos
+    for cart_item in cart_items:
+        db.session.delete(cart_item)
+    db.session.commit()
+
+    return jsonify({'msg': f'Cart items with product ID {product_id} deleted.'}), 200
 
 
 

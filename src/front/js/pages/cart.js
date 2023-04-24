@@ -24,6 +24,7 @@ export const Cart = () => {
     setTotal(cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0));
   }, [cartItems, total]);
 
+  
   const handleDecrease = (item) => {
     // Disminuir la cantidad de un producto en el carrito
     const newQuantity = item.quantity - 1;
@@ -53,49 +54,79 @@ export const Cart = () => {
     }
   }
 
+
   const handleIncrease = (item) => {
     // Aumentar la cantidad de un producto en el carrito
     const newQuantity = item.quantity + 1;
     fetch(`https://3001-alanmandria-proyectofin-ra9cxn7a50r.ws-us95.gitpod.io/api/cart_items/${item.id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ quantity: newQuantity })
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ quantity: newQuantity })
     })
-    .then(response => response.json())
-    .then(data => {
-        setCartItems(cartItems.map(cartItem => {
-            if (cartItem.id === item.id) {
-                cartItem.quantity = newQuantity;
+      .then(response => response.json())
+      .then(data => {
+        const updatedCartItems = cartItems.map(cartItem => {
+          if (cartItem.id === item.id) {
+            return {
+              ...cartItem,
+              quantity: newQuantity
             }
-            return cartItem;
-        }));
+          }
+          return cartItem;
+        });
+        setCartItems(updatedCartItems);
         setTotal(data.cart_total);
-    })
-    .catch(error => {
+      })
+      .catch(error => {
         console.error('Error al actualizar la cantidad del producto:', error);
-    });
-}
+      });
+  }
+  
 
-const handleDelete = (itemId) => {
-  fetch(`https://3001-alanmandria-proyectofin-ra9cxn7a50r.ws-us95.gitpod.io/api/cart_items/${itemId}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json'
+  const handleDelete = (itemId) => {
+    // Obtener el item que se va a eliminar
+    const itemToDelete = cartItems.find(item => item.id === itemId);
+    if (itemToDelete) {
+      const quantityToDelete = itemToDelete.quantity;
+  
+      // Obtener la cantidad total del producto en el carrito
+      fetch(`https://3001-alanmandria-proyectofin-ra9cxn7a50r.ws-us95.gitpod.io/api/cart/${itemToDelete.product.id}`)
+        .then(response => response.json())
+        .then(data => {
+          const totalQuantity = data.cart_item ? data.cart_item.quantity : 0;
+  
+          // Enviar una solicitud DELETE con la cantidad total del producto a eliminar
+          fetch(`https://3001-alanmandria-proyectofin-ra9cxn7a50r.ws-us95.gitpod.io/api/cart_items/${itemToDelete.product.id}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ quantity: totalQuantity })
+          })
+            .then(response => response.json())
+            .then(data => {
+              // Restar el precio total del producto eliminado del total del carrito
+              setTotal(total - itemToDelete.product.price * quantityToDelete);
+  
+              // Eliminar los items de carrito del producto
+              const updatedCartItems = cartItems.filter(cartItem => cartItem.product.id !== itemToDelete.product.id);
+              setCartItems(updatedCartItems);
+            })
+            .catch(error => {
+              console.error('Error al eliminar el producto:', error);
+            });
+        })
+        .catch(error => {
+          console.error('Error al obtener la cantidad total del producto en el carrito:', error);
+        });
     }
-  })
-    .then(response => response.json())
-    .then(data => {
-      setCartItems(cartItems.filter(cartItem => cartItem.id !== itemId));
-      setTotal(data.cart_total);
-    })
-    .catch(error => {
-      console.error('Error al eliminar el producto:', error);
-    });
-}
+  }
+  
+  
 
-
+  
   
   return (
     <div className="container">
@@ -141,7 +172,7 @@ const handleDelete = (itemId) => {
         </div>
       </div>
     </div>
-   );
-  };
-  
-  export default Cart;
+  );
+};
+
+export default Cart;

@@ -11,16 +11,21 @@ const AddProductForm = () => {
     image: "",
     quantity: "",
   });
-
+  const [productSuccessMsg, setProductSuccessMsg] = useState(null);
+  const [productList, setProductList] = useState([]);
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState("");
+  const [categorySuccessMsg, setCategorySuccessMsg] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    api.getProducts().then((products) => {
+      setProductList(products);
+    });
     api.getCategories().then((categories) => {
       const updatedCategories = categories.map((category) => ({
         ...category,
-        key: category.id // Agregar una propiedad 'key' única a cada categoría
+        key: category.id,
       }));
       setCategories(updatedCategories);
     });
@@ -33,14 +38,14 @@ const AddProductForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-  
+
     try {
       // Verificar si el nombre del producto ya existe, ignorando mayúsculas y minúsculas
       const existingProduct = productList.find(
         (product) =>
           product.name.toLowerCase() === productData.name.toLowerCase()
       );
-  
+
       if (existingProduct) {
         setError("Este producto ya existe");
       } else {
@@ -55,6 +60,8 @@ const AddProductForm = () => {
             image: "",
             quantity: "",
           });
+          setProductList([...productList, productData]);
+          setProductSuccessMsg("Producto creado exitosamente");
         } else {
           setError(response.message);
         }
@@ -63,36 +70,34 @@ const AddProductForm = () => {
       setError("Error al agregar el producto");
     }
   };
-  
+
   const handleNewCategorySubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       // Verificar si la categoría ya existe, ignorando mayúsculas y minúsculas
       const existingCategory = categories.find(
         (category) =>
           category.name.toLowerCase() === newCategory.toLowerCase()
       );
-  
+
       if (existingCategory) {
         setError("Esta categoría ya existe");
       } else {
         const createdCategory = await api.addCategory(newCategory);
         setCategories([...categories, { ...createdCategory, key: createdCategory.id }]);
         setNewCategory("");
+        setCategorySuccessMsg("Categoría creada exitosamente");
         setError(null);
       }
     } catch (error) {
       setError("Error al agregar la categoría");
     }
   };
-  
 
   const handleNewCategoryChange = (e) => {
     setNewCategory(e.target.value);
   };
-
-  
 
   return (
     <>
@@ -140,7 +145,6 @@ const AddProductForm = () => {
                 {category.name}
               </option>
             ))}
-
           </select>
         </div>
         <div className="mb-3">
@@ -186,6 +190,7 @@ const AddProductForm = () => {
           Agregar producto
         </button>
         {error && <p>{error}</p>}
+        {productSuccessMsg && <p>{productSuccessMsg}</p>}
       </form>
 
       <form onSubmit={handleNewCategorySubmit} className="custom-form">
@@ -205,11 +210,14 @@ const AddProductForm = () => {
         <button type="submit" className="btn custom-btn">
           Agregar categoría
         </button>
-        {error && <p>{error}</p>}
+      
+        {categorySuccessMsg && <p>{categorySuccessMsg}</p>}
       </form>
-
     </>
   );
+
+
+  
 };
 
 export default AddProductForm;

@@ -1,8 +1,9 @@
 const BASE_URL = 'https://3001-alanmandria-proyectofin-ra9cxn7a50r.ws-us95.gitpod.io';
 
+
 const api = {
 
-  
+
   getProducts: () => {
     return fetch(`${BASE_URL}/api/products`)
       .then((response) => {
@@ -16,8 +17,8 @@ const api = {
         throw error;
       });
   },
-  
-getCategories: () => {
+
+  getCategories: () => {
     return fetch(`${BASE_URL}/api/categories`)
       .then((response) => {
         if (!response.ok) {
@@ -91,6 +92,7 @@ getCategories: () => {
       });
   },
 
+
   deleteProduct: (productId) => {
     return fetch(`${BASE_URL}/api/products/${productId}`, {
       method: 'DELETE',
@@ -103,7 +105,7 @@ getCategories: () => {
   },
 
 
-  
+
   getCategoryById: (categoryId) => {
     return fetch(`${BASE_URL}/api/categories/${categoryId}`)
       .then((response) => {
