@@ -8,7 +8,7 @@ export const Cart = () => {
 
   useEffect(() => {
     // Hacer una solicitud a la API para obtener los datos del carrito
-    fetch('https://3001-alanmandria-proyectofin-0be2of3ggya.ws-us95.gitpod.io/api/cart/17')
+    fetch('https://3001-alanmandria-proyectofin-ra9cxn7a50r.ws-us95.gitpod.io/api/cart/17')
       .then(response => response.json())
       .then(data => {
         setCartItems(data.cart_items);
@@ -19,13 +19,18 @@ export const Cart = () => {
       });
   }, []);
 
+  useEffect(() => {
+    // Actualizar el total cada vez que se actualiza el estado de cartItems o total
+    setTotal(cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0));
+  }, [cartItems, total]);
+
   const handleDecrease = (item) => {
     // Disminuir la cantidad de un producto en el carrito
     const newQuantity = item.quantity - 1;
     if (newQuantity === 0) {
       handleDelete(item.id);
     } else {
-      fetch(`https://3001-alanmandria-proyectofin-0be2of3ggya.ws-us95.gitpod.io/api/cart_items/${item.id}`, {
+      fetch(`https://3001-alanmandria-proyectofin-ra9cxn7a50r.ws-us95.gitpod.io/api/cart_items/${item.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -47,10 +52,11 @@ export const Cart = () => {
         });
     }
   }
+
   const handleIncrease = (item) => {
     // Aumentar la cantidad de un producto en el carrito
     const newQuantity = item.quantity + 1;
-    fetch(`https://3001-alanmandria-proyectofin-0be2of3ggya.ws-us95.gitpod.io/api/cart_items/${item.id}`, {
+    fetch(`https://3001-alanmandria-proyectofin-ra9cxn7a50r.ws-us95.gitpod.io/api/cart_items/${item.id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -73,7 +79,7 @@ export const Cart = () => {
 }
 
 const handleDelete = (itemId) => {
-  fetch(`https://3001-alanmandria-proyectofin-0be2of3ggya.ws-us95.gitpod.io/api/cart_items/${itemId}`, {
+  fetch(`https://3001-alanmandria-proyectofin-ra9cxn7a50r.ws-us95.gitpod.io/api/cart_items/${itemId}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'
@@ -88,7 +94,6 @@ const handleDelete = (itemId) => {
       console.error('Error al eliminar el producto:', error);
     });
 }
-
 
 
   
