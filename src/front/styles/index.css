@@ -22,3 +22,12 @@
 .footerColor{
     background: #d9d9d9;
 }
+
+.bienvenido{
+   position: absolute;
+   right: 300px;
+   top: 50px;
+    color :white;
+
+}
+

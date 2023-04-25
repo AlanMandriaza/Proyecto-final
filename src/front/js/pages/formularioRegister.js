@@ -10,23 +10,26 @@ import {
   Label,
   Input
 } from "reactstrap";
-
+import Alerta from "../component/alert";
 import "../../styles/formularioRegister.css";
 
-const Formulario = (props) => {
+const FormularioRegister = (props) => {
   console.log("here");
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
+  const [statusError, setstatusError] = React.useState(false);
+  const [color, setColor] = React.useState("");
+  const [texto, setTexto] = React.useState("");
+  
   const loginHandler = (ev) => {
     ev.preventDefault();
     if (!username || !password) {
       return;
     }
    
-   
-    fetch("https://3001-alanmandria-proyectofin-0be2of3ggya.ws-us95.gitpod.io/users/singup", {
+    fetch("https://3001-alanmandria-proyectofin-na0p9oacdmc.ws-us95.gitpod.io/api/users/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -40,9 +43,19 @@ const Formulario = (props) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("RESPONSE from login success ", data);
-        window.location.href = "/";
-        //setLoggedin(true);
+        //console.log("RESPONSE from login success ", data);
+        if (data.user) {
+          setColor("primary")
+          setTexto("se creo satisfactoriamente el usuario")
+          setstatusError(true);
+          localStorage.setItem('user', data.user);
+          window.location.href = "/";
+        } else {
+          console.log(data);
+          setColor("danger")
+          setTexto("Usuario no creado ")
+          setstatusError(true);
+        } 
     
       });
      
@@ -52,6 +65,9 @@ const Formulario = (props) => {
 
   return (
     <Container className="d-grid w-50 mb-5">
+       {statusError && (
+        <Alerta texto={texto} color={color} />
+      )}
       <Row>
         <Col>
             <CardBody>
@@ -116,4 +132,4 @@ const Formulario = (props) => {
   );
 };
 
-export default Formulario;
+export default FormularioRegister;

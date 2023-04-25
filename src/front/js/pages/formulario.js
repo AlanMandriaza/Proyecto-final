@@ -21,6 +21,7 @@ const Formulario = (props) => {
   const [statusError, setstatusError] = React.useState(false);
   const [color, setColor] = React.useState("");
   const [texto, setTexto] = React.useState("");
+ 
 
   const loginHandler = (ev) => {
     ev.preventDefault();
@@ -29,7 +30,7 @@ const Formulario = (props) => {
     }
 
     fetch(
-      "https://3001-alanmandria-proyectofin-0be2of3ggya.ws-us95.gitpod.io/api/users/login",
+      "https://3001-alanmandria-proyectofin-na0p9oacdmc.ws-us95.gitpod.io/api/users/login",
       {
         method: "POST",
         headers: {
@@ -49,14 +50,15 @@ const Formulario = (props) => {
           setColor("primary")
           setTexto("usuario correcto")
           setstatusError(true);
+          localStorage.setItem('user', data.user);
           window.location.href = "/";
         } else {
           console.log(data);
           setColor("danger")
           setTexto("Clave o usuario incorrecto")
           setstatusError(true);
-        }
-        //setLoggedin(true);
+        } 
+        
       });
 
     // console.log(username, password);

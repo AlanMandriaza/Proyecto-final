@@ -14,6 +14,8 @@ import Admin from './Admin/Admin';
 
 import Category from "./component/categorias";
 
+
+
 import { Footer } from "./component/footer";
 import Correo from "./component/correo";
 import Inventory from "./Admin/Inventory";
