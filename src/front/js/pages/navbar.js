@@ -1,7 +1,13 @@
 import React from "react";
 import { Link, useLocation, Outlet } from "react-router-dom";
 
-const MainNavbar = () => {
+
+const MainNavbar = (props) => {
+  const logout = () => {
+    console.log("entre a la funcion logout");
+    localStorage.removeItem("user");
+    window.location.href = "/";
+  };
   const location = useLocation();
   return (
     <>
@@ -62,6 +68,7 @@ const MainNavbar = () => {
             <span className="navItem">SALE</span>
           </Link>
         </li>
+
         <div className="d-inline-flex justify-content-end flex-grow-1">
           <li className="nav-item py-3">
             <Link
@@ -97,8 +104,7 @@ const MainNavbar = () => {
           <li className="nav-item py-3">
             <Link
               className={
-                "nav-link " +
-                (location.pathname === "/cart" ? "active" : "")
+                "nav-link " + (location.pathname === "/cart" ? "active" : "")
               }
               to="/cart"
             >
@@ -117,31 +123,22 @@ const MainNavbar = () => {
             >
               <i className="fa-solid fa-user text-light"></i>
             </a>
-            <ul className="dropdown-menu">
-              <Link to="/login">
-                <a className="dropdown-item" href="#">
+            <ul className="dropdown-menu ">
+              <Link className="dropdown-item" href="#" to="/login">
                   Iniciar Sesión
-                </a>
               </Link>
-
-              <Link to="/register">
-                <a className="dropdown-item" href="#">
+              <Link className="dropdown-item" href="#" to="/register">
                   Registrarse
-                </a>
               </Link>
-
-              <li>
-                <hr className="dropdown-divider" />
-              </li>
-              <li>
-                <a className="dropdown-item text-danger" href="#">
+              <li className="dropdown-item" href="#" onClick={logout}>
                   Cerrar Sesión
-                </a>
               </li>
             </ul>
           </li>
-        </div>
-        <p className="mt-50px">Bienvenido,Yurbanis Briceño</p>
+          </div>
+        {localStorage.getItem("user") && (
+          <p className="bienvenido">Bienvenido, {localStorage.getItem("user")}</p>
+        )}
       </ul>
       <Outlet />
     </>

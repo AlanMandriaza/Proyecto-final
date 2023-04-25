@@ -12,6 +12,8 @@ import Formulario from "./pages/formulario";
 import FormularioRegister from "./pages/formularioRegister";
 
 
+
+
 import { Footer } from "./component/footer";
 import Correo from "./component/correo";
 

@@ -9,17 +9,17 @@ import {
 
 const items = [
   {
-    src:'https://static.eldiario.es/clip/a169422c-b292-4c46-9a1d-082f46b9220e_16-9-discover-aspect-ratio_default_0.jpg',
+    src:'https://img.freepik.com/foto-gratis/mujer-sonriente-estilo-atractivo-elegir-ropa-tienda-ropa_285396-4642.jpg?w=740&t=st=1682391995~exp=1682392595~hmac=a3a926bc91389f48d7ec7496a6a401aa568bb161fce74571b79c37c68e03e870',
     altText: 'imagen 1'
     
   },
   {
-    src: 'https://static.eldiario.es/clip/a169422c-b292-4c46-9a1d-082f46b9220e_16-9-discover-aspect-ratio_default_0.jpg',
+    src: 'https://www.angelalarcon.com/themes/b2calarcon/assets/img/modules/appagebuilder/images/zapatos-stiletto-primavera-verano-ss23.jpg',
     altText: 'imagen 2'
     
   },
   {
-    src: 'https://static.eldiario.es/clip/a169422c-b292-4c46-9a1d-082f46b9220e_16-9-discover-aspect-ratio_default_0.jpg',
+    src: 'https://e00-elmundo.uecdn.es/assets/multimedia/imagenes/2023/01/12/16735442163121.jpg',
     altText: 'imagen 3'
     
   }
