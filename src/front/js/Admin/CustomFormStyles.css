@@ -1,3 +1,10 @@
+.btn-left {
+  display: block;
+
+  margin-bottom: 0.5rem;
+}
+
+
 .custom-form {
   max-width: 600px;
   margin: 0 auto;
