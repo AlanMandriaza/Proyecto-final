@@ -1,0 +1,25 @@
+  .boton {
+    background-color: #d4411d;
+  }
+  .table {
+    width: 80%;
+    margin: 0 auto;
+    border: 1px solid #d4411d;
+    border-radius: 50%;
+}
+
+/* App.css */
+.boton {
+    background-color: #d4411d; /* Cambia el color de fondo a #d4411d */
+    border-color: #d4411d; /* Cambia el color del borde para que coincida con el fondo */
+  }
+  
+  .boton:hover,
+  .boton:focus {
+    background-color: #df5934; /* Cambia el color de fondo al pasar el cursor por encima o al enfocar */
+    border-color: #b03a1a; /* Cambia el color del borde al pasar el cursor por encima o al enfocar */
+  }
+
+
+  
+  

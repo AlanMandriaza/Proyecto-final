@@ -22,22 +22,21 @@ def get_category(id):
 @category_api.route('/', methods=['POST'])
 def create_category():
     data = request.json
-    if not isinstance(data, list):
-        return jsonify({'error': 'Invalid request data'}), 400
+    if not data or 'name' not in data:
+        return jsonify({'error': 'Invalid category data'}), 400
     
-    for item in data:
-        if not isinstance(item, dict) or 'name' not in item:
-            return jsonify({'error': 'Invalid category data'}), 400
-        
-        name = item['name']
-        if not isinstance(name, str) or len(name) == 0:
-            return jsonify({'error': 'Invalid category name'}), 400
-        
-        category = Category(name=name)
-        db.session.add(category)
+    name = data['name']
+    if not isinstance(name, str) or len(name) == 0:
+        return jsonify({'error': 'Invalid category name'}), 400
     
+    category = Category(name=name)
+    db.session.add(category)
     db.session.commit()
-    return jsonify({'message': 'Category created successfully'}), 201
+    
+    serialized_category = category.serialize()
+    return jsonify({'success': 'Category created', 'category': serialized_category}), 201
+
+
 
 
 @category_api.route('/<int:id>', methods=['PUT'])
@@ -70,5 +69,21 @@ def delete_category(id):
     return jsonify({'message': 'Categoría eliminada correctamente'}), 200
 
 
-#https://3001-alanmandria-proyectofin-dhrgwg8k4gb.ws-us94.gitpod.io/api/categories
-#{"name": "Nueva categoría"}
+@category_api.route('/<int:category_id>/products', methods=['GET'])
+def get_products_by_category(category_id):
+    category = Category.query.get(category_id)
+    if not category:
+        return jsonify({'error': 'Categoría no encontrada'}), 404
+
+    products = category.products
+    serialized_products = [product.serialize() for product in products]
+    return jsonify(serialized_products), 200
+
+@category_api.route('/<int:id>/product_count', methods=['GET'])
+def get_product_count_by_category(id):
+    category = Category.query.get(id)
+    if not category:
+        return jsonify({'error': 'Categoría no encontrada'}), 404
+
+    product_count = len(category.products)
+    return jsonify({'product_count': product_count}), 200

@@ -23,7 +23,7 @@ def create_products():
     data = request.get_json()
 
     if not isinstance(data, dict):
-        return jsonify({"msg": "Data must be a dictionary"}), 400
+        return jsonify({"error": "Data must be a dictionary"}), 400
 
     name = data.get('name')
     description = data.get('description')
@@ -35,7 +35,7 @@ def create_products():
     # Verificar si la categoría existe
     category = Category.query.filter_by(name=category_name).first()
     if not category:
-        return jsonify({"msg": f"Category with name {category_name} not found"}), 404
+        return jsonify({"error": f"Category with name '{category_name}' not found"}), 404
 
     # Crear el producto
     product = Product(name=name, description=description, price=price, image=image, category=category, quantity=quantity)
@@ -43,10 +43,11 @@ def create_products():
     try:
         db.session.add(product)
         db.session.commit()
-        return jsonify(product.serialize()), 201
+        return jsonify({"message": "Producto creado", "product": product.serialize()}), 201
     except exc.SQLAlchemyError as e:
         db.session.rollback()
-        return jsonify({"msg": str(e)}), 400
+        return jsonify({"error": str(e)}), 400
+
 
 
 
@@ -115,3 +116,36 @@ def update_product(id):
 
     else:
         return jsonify({"mensaje": "El producto no ha sido modificado"}), 200
+
+
+@product_api.route('/<int:id>/add', methods=['PUT'])
+def add_product_quantity(id):
+    data = request.get_json()
+    quantity = data.get('quantity', 1)
+    
+    product = Product.query.get(id)
+    if not product:
+        return jsonify({"msg": "Product not found"}), 404
+
+    product.quantity += quantity
+    db.session.commit()
+
+    return jsonify(product.serialize()), 200
+
+
+@product_api.route('/<int:id>/remove', methods=['PUT'])
+def remove_product_quantity(id):
+    data = request.get_json()
+    quantity = data.get('quantity', 1)
+    
+    product = Product.query.get(id)
+    if not product:
+        return jsonify({"msg": "Product not found"}), 404
+
+    product.quantity -= quantity
+    if product.quantity < 0:
+        product.quantity = 0
+
+    db.session.commit()
+
+    return jsonify(product.serialize()), 200
