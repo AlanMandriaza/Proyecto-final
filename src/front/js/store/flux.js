@@ -2,6 +2,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			message: null,
+			productos: [],
+			mujer: [],
+			hombre: [],
+			infante: [],
 			demo: [
 				{
 					title: "FIRST",
@@ -46,6 +50,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
+			},
+			getProducts: async () => {
+				const store = getStore()
+				try{
+					const resp = await fetch("https://3001-biocishere-proyectofina-diufpoj736b.ws-us95.gitpod.io/api/products")
+					const data = await resp.json()
+					setStore({ productos: data })
+
+					for(let i = 0; i < store.productos.length; i++){
+						if(store.productos[i].genere === "Mujer"){
+							let newArray1 = store.mujer.concat(store.productos[i])
+							setStore({ mujer: newArray1 })
+						} else if(store.productos[i].genere === "Hombre"){
+							let newArray2 = store.hombre.concat(store.productos[i])
+							setStore({ hombre: newArray2 })
+						} else {
+							let newArray3 = store.infante.concat(store.productos[i])
+							setStore({ infante: newArray3 })
+						}
+					}
+
+				} catch(error) {
+					console.log("Error loading message from backend", error)
+				}
 			}
 		}
 	};
