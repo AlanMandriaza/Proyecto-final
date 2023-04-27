@@ -22,7 +22,17 @@
 .footerColor{
     background: #d9d9d9;
 }
-
+.card-img-top{
+    width: 286px;
+    height: 300px;
+    object-fit: contain;
+}
+.icon-color{
+    color: #e74c25;
+}
+.button-color{
+    background-color: #e74c25;
+}
 .bienvenido{
    position: absolute;
    right: 300px;

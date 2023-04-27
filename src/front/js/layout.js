@@ -19,6 +19,8 @@ import Category from "./component/categorias";
 import { Footer } from "./component/footer";
 import Correo from "./component/correo";
 import Inventory from "./Admin/Inventory";
+import { ProductosMujer } from "./pages/productosMujer";
+import { ProductosHombre } from "./pages/productosHombre";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -37,6 +39,8 @@ const Layout = () => {
             <Route element={<Single />} path="/single/:theid" />
             <Route element={<Admin />} path="/admin" />
             <Route element={<Inventory />} path="/inventario" />
+            <Route element={<ProductosMujer />} path="/mujer" />
+            <Route element={<ProductosHombre />} path="/hombre" />
             <Route element={<h1>Not found!</h1>} />
             <Route path="/category/:categoryId" element={<Category />} />
           </Routes>

@@ -102,6 +102,21 @@ class Category(db.Model):
         }
 
 
+class Genere(db.Model):
+    __tablename__ = 'generes'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+
+    def __repr__(self):
+        return f'<Genere {self.name}>'
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+        }    
+
+
 class Product(db.Model):
     __tablename__ = 'products'
     id = db.Column(db.Integer, primary_key=True)
@@ -109,6 +124,8 @@ class Product(db.Model):
     description = db.Column(db.String(500), nullable=False)
     price = db.Column(db.Float, nullable=False)
     image = db.Column(db.String(500), nullable=False)
+    genere_id = db.Column(db.Integer, ForeignKey('generes.id'))
+    genere = db.relationship('Genere', backref=db.backref('products', lazy=True))
     category_id = db.Column(db.Integer, ForeignKey('categories.id'))
     category = db.relationship('Category', backref=db.backref('products', lazy=True))
     quantity = db.Column(db.Integer, nullable=False, default=0)
@@ -123,6 +140,7 @@ class Product(db.Model):
             "description": self.description,
             "price": self.price,
             "image": self.image,
+            "genere": self.genere.name,
             "category": self.category.name,
             "quantity": self.quantity
         }
