@@ -23,6 +23,28 @@ const Formulario = (props) => {
   const [color, setColor] = React.useState("");
   const [texto, setTexto] = React.useState("");
 
+  const roles = (rol) => {
+    
+    fetch(
+      `https://3001-alanmandria-proyectofin-na0p9oacdmc.ws-us96.gitpod.io/api/users/roles/${rol}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+
+        if (data[0].name) {
+          localStorage.setItem("rol", data[0].name);
+        } else {
+          console.log(data);
+        }
+      });
+  }
+
   const loginHandler = (ev) => {
     ev.preventDefault();
 
@@ -34,7 +56,7 @@ const Formulario = (props) => {
     }
 
     fetch(
-      "https://3001-alanmandria-proyectofin-na0p9oacdmc.ws-us95.gitpod.io/api/users/login",
+      "https://3001-alanmandria-proyectofin-na0p9oacdmc.ws-us96.gitpod.io/api/users/login",
       {
         method: "POST",
         headers: {
@@ -51,11 +73,14 @@ const Formulario = (props) => {
         console.log("RESPONSE from login success ", data);
 
         if (data.access_token) {
+          roles(data.id)
           setColor("primary");
           setTexto("usuario correcto");
           setstatusError(true);
           localStorage.setItem("user", data.user);
-          window.location.href = "/";
+          setTimeout(() => {
+            window.location.href = "/";
+          }, 2000);
         } else {
           console.log(data);
           setColor("danger");

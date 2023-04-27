@@ -6,6 +6,7 @@ const MainNavbar = (props) => {
   const logout = () => {
     console.log("entre a la funcion logout");
     localStorage.removeItem("user");
+    localStorage.removeItem("rol");
     window.location.href = "/";
   };
 
@@ -83,16 +84,6 @@ const MainNavbar = (props) => {
         <li className="nav-item py-3">
           <Link
             className={
-              "nav-link " + (location.pathname === "/calzado" ? "active" : "")
-            }
-            to="/calzado"
-          >
-            <span className="navItem">Calzado</span>
-          </Link>
-        </li>
-        <li className="nav-item py-3">
-          <Link
-            className={
               "nav-link " + (location.pathname === "/sale" ? "active" : "")
             }
             to="/sale"
@@ -142,11 +133,6 @@ const MainNavbar = (props) => {
               </span>
             </Link>
           </li>
-          <li className="nav-item py-4">
-            <span className="navItem">
-              <i className="fa-sharp fa-solid fa-magnifying-glass mx-3"></i>
-            </span>
-          </li>
           <li className="nav-item py-3">
             <Link
               className={
@@ -189,9 +175,11 @@ const MainNavbar = (props) => {
               <Link className="dropdown-item" href="#" to="/register">
                 Registrarse
               </Link>
-              <Link className="dropdown-item" href="#" to="/admin">
-                Administrador
-              </Link>
+              {localStorage.getItem("rol") === 'admin' && (
+                 <Link className="dropdown-item" href="#" to="/admin">
+                 Administrador
+               </Link>
+              ) }
               {localStorage.getItem("user") && (
                 <li className="dropdown-item" href="#" onClick={logout}>
                   Cerrar Sesión
