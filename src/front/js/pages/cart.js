@@ -8,7 +8,8 @@ export const Cart = () => {
 
   useEffect(() => {
     // Hacer una solicitud a la API para obtener los datos del carrito
-    fetch('https://3001-alanmandria-proyectofin-ra9cxn7a50r.ws-us95.gitpod.io/api/cart/17')
+    fetch(`${process.env.BACKEND_URL}/api/cart/17`)
+    
       .then(response => response.json())
       .then(data => {
         setCartItems(data.cart_items);
@@ -31,7 +32,7 @@ export const Cart = () => {
     if (newQuantity === 0) {
       handleDelete(item.id);
     } else {
-      fetch(`https://3001-alanmandria-proyectofin-ra9cxn7a50r.ws-us95.gitpod.io/api/cart_items/${item.id}`, {
+      fetch(`${process.env.BACKEND_URL}/api/cart_items/${item.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -58,7 +59,7 @@ export const Cart = () => {
   const handleIncrease = (item) => {
     // Aumentar la cantidad de un producto en el carrito
     const newQuantity = item.quantity + 1;
-    fetch(`https://3001-alanmandria-proyectofin-ra9cxn7a50r.ws-us95.gitpod.io/api/cart_items/${item.id}`, {
+    fetch(`${process.env.BACKEND_URL}/api/cart_items/${item.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -92,13 +93,13 @@ export const Cart = () => {
       const quantityToDelete = itemToDelete.quantity;
   
       // Obtener la cantidad total del producto en el carrito
-      fetch(`https://3001-alanmandria-proyectofin-ra9cxn7a50r.ws-us95.gitpod.io/api/cart/${itemToDelete.product.id}`)
+      fetch(`${process.env.BACKEND_URL}/api/cart/${itemToDelete.product.id}`)
         .then(response => response.json())
         .then(data => {
           const totalQuantity = data.cart_item ? data.cart_item.quantity : 0;
   
           // Enviar una solicitud DELETE con la cantidad total del producto a eliminar
-          fetch(`https://3001-alanmandria-proyectofin-ra9cxn7a50r.ws-us95.gitpod.io/api/cart_items/${itemToDelete.product.id}`, {
+          fetch(`${process.env.BACKEND_URL}/api/cart_items/${itemToDelete.product.id}`, {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json'

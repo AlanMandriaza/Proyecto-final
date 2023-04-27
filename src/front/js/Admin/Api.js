@@ -1,8 +1,21 @@
-const BASE_URL = 'https://3001-alanmandria-proyectofin-2xo5u565d54.ws-us95.gitpod.io';
+const BASE_URL = 'https://3001-alanmandria-proyectofin-74s3lpn3eme.ws-us96.gitpod.io';
 
 
 const api = {
 
+  getProductosByGenere: (genere) => {
+    return fetch(`${BASE_URL}/api/products?genere=${genere}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error al obtener los productos por género');
+        }
+        return response.json();
+      })
+      .catch((error) => {
+        console.error('Error al obtener los productos por género:', error);
+        throw error;
+      });
+  },
 
 
  deleteCategory: async (categoryId) => {
@@ -217,6 +230,7 @@ const api = {
         throw error;
       });
   },
+  
 };
 
 export default api;

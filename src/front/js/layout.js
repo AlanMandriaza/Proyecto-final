@@ -1,26 +1,22 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import ScrollToTop from "./component/scrollToTop";
-
-import MainNavbar from "./pages/navbar";
-import { Home } from "./pages/home";
-import { Cart } from "./pages/cart";
-import { Demo } from "./pages/demo";
-import { Single } from "./pages/single";
-import injectContext from "./store/appContext";
+import Admin from './Admin/Admin';
+import Category from "./component/categorias";
+import Correo from "./component/correo";
+import { Footer } from "./component/footer";
 import Formulario from "./pages/formulario";
 import FormularioRegister from "./pages/formularioRegister";
-import Admin from './Admin/Admin';
-
-import Category from "./component/categorias";
-
-
-
-import { Footer } from "./component/footer";
-import Correo from "./component/correo";
+import { Cart } from "./pages/cart";
+import { Demo } from "./pages/demo";
+import { Home } from "./pages/home";
+import injectContext from "./store/appContext";
 import Inventory from "./Admin/Inventory";
-import { ProductosMujer } from "./pages/productosMujer";
-import { ProductosHombre } from "./pages/productosHombre";
+import MainNavbar from "./pages/navbar";
+import ProductDetails from './component/ProductDetails.jsx';
+import ProductosHombre from './pages/productosHombre';
+import ProductosMujer from './pages/productosMujer';
+import ScrollToTop from "./component/scrollToTop";
+import { Single } from "./pages/single";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -41,6 +37,7 @@ const Layout = () => {
             <Route element={<Inventory />} path="/inventario" />
             <Route element={<ProductosMujer />} path="/mujer" />
             <Route element={<ProductosHombre />} path="/hombre" />
+            <Route path="/productos/:id" element={<ProductDetails />} />
             <Route element={<h1>Not found!</h1>} />
             <Route path="/category/:categoryId" element={<Category />} />
           </Routes>

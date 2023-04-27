@@ -141,7 +141,7 @@ class Product(db.Model):
             "price": self.price,
             "image": self.image,
             "genere": self.genere.name,
-            "category": self.category.name,
+            "category_id": self.category_id, 
             "quantity": self.quantity
         }
 

@@ -10,6 +10,7 @@ const AddProductForm = () => {
     price: "",
     image: "",
     quantity: "",
+    genere: "",
   });
   const [productSuccessMsg, setProductSuccessMsg] = useState(null);
   const [productList, setProductList] = useState([]);
@@ -33,16 +34,17 @@ const AddProductForm = () => {
     setProductData({ ...productData, [e.target.name]: e.target.value });
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-
+  
     try {
       const existingProduct = productList.find(
         (product) =>
           product.name.toLowerCase() === productData.name.toLowerCase()
       );
-
+  
       if (existingProduct) {
         setError("Este producto ya existe");
       } else {
@@ -57,7 +59,11 @@ const AddProductForm = () => {
             image: "",
             quantity: "",
           });
-          setProductList([...productList, productData]);
+          const newProduct = {
+            ...productData,
+            id: response.id,
+          };
+          setProductList([...productList, newProduct]);
           setProductSuccessMsg("Producto creado exitosamente");
         } else {
           setError(response.message);
@@ -67,6 +73,7 @@ const AddProductForm = () => {
       setError("Error al agregar el producto");
     }
   };
+  
 
   return (
     <>
@@ -117,6 +124,23 @@ const AddProductForm = () => {
           </select>
         </div>
         <div className="mb-3">
+          <label htmlFor="genere" className="form-label">
+            Género:
+          </label>
+          <select
+            id="genere"
+            name="genere"
+            value={productData.genere}
+            onChange={handleInputChange}
+            className="form-select"
+          >
+            <option value="">Seleccione el género</option>
+            <option value="Mujer">Mujer</option>
+            <option value="Hombre">Hombre</option>
+          </select>
+        </div>
+
+        <div className="mb-3">
           <label htmlFor="price" className="form-label">
             Precio:
           </label>
@@ -160,12 +184,12 @@ const AddProductForm = () => {
         </button>
         {error && <p>{error}</p>}
         {productSuccessMsg && <p>{productSuccessMsg}</p>}
-        </form>
+      </form>
     </>
   );
 
 
-  
+
 };
 
 export default AddProductForm;

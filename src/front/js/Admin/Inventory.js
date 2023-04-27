@@ -131,7 +131,8 @@ const Inventory = () => {
                         <tr key={product.id}>
                             <td>{product.name}</td>
                             <td>{product.description}</td>
-                            <td>{product.category}</td>
+                            <td>{product.category.name}</td>
+
                             <td>{product.price}</td>
                             <td>
                                 <input

@@ -20,7 +20,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			]
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
+			// Use getActions to call a function within a function
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
@@ -54,19 +54,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getProducts: async () => {
 				const store = getStore()
 				try{
-					const resp = await fetch("https://3001-biocishere-proyectofina-gly0d14cubq.ws-us96.gitpod.io/api/products/")
+					const resp = await fetch(process.env.BACKEND_URL + "/api/products/")
 					const data = await resp.json()
 					setStore({ productos: data })
 
-					for(let i = 0; i < store.productos.length; i++){
-						if(store.productos[i].genere === "Mujer"){
-							let newArray1 = store.mujer.concat(store.productos[i])
+					for(let i = 0; i < data.length; i++){
+						if(data[i].genere === "Mujer"){
+							let newArray1 = store.mujer.concat(data[i])
 							setStore({ mujer: newArray1 })
-						} else if(store.productos[i].genere === "Hombre"){
-							let newArray2 = store.hombre.concat(store.productos[i])
+						} else if(data[i].genere === "Hombre"){
+							let newArray2 = store.hombre.concat(data[i])
 							setStore({ hombre: newArray2 })
 						} else {
-							//let newArray3 = store.infante.concat(store.productos[i])
+							//let newArray3 = store.infante.concat(data[i])
 							//setStore({ infante: newArray3 })
 							console.log("no hay productos infante")
 						}
