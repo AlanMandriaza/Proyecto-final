@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { AiFillStar, AiOutlineStar, AiOutlineHeart } from "react-icons/ai"
 import { Context } from "../store/appContext";
+import { Link } from "react-router-dom";
 
 export const ProductosHombre = () => {
     const { store, actions } = useContext(Context);
@@ -231,11 +232,11 @@ export const ProductosHombre = () => {
                                 {store.hombre.map((item, index) => (
                                     <div className="col" key={index}>
                                         <div className="card" style={{ width: "18rem" }}>
-                                            <img src={item.image} className="card-img-top" />
+                                            <Link to="/"><img src={item.image} className="card-img-top" /></Link>
                                             <div className="card-body">
-                                                <h4 className="card-title">{item.name}</h4>
+                                                <Link to="/" className="text-decoration-none text-dark"><h5 className="card-title">{item.name}</h5></Link>
                                                 <span className="card-text fs-4">${item.price}</span><span className="card-text float-end icon-color fs-4"><AiOutlineHeart /></span><br />
-                                                <button type="button" className="btn btn-lg w-100 text-light button-color">Agreagar al carrito</button>
+                                                <button type="button" className="btn btn-lg w-100 text-light button-color" onClick={() => alert("hola")}>Agreagar al carrito</button>
                                             </div>
                                         </div>
                                     </div>
@@ -386,11 +387,11 @@ export const ProductosHombre = () => {
                                 {store.hombre.map((item, index) => (
                                     <div className={turnIntoClass(item)} key={index}>
                                         <div className="card" style={{ width: "18rem" }}>
-                                            <img src={item.image} className="card-img-top" />
+                                            <Link to="/"><img src={item.image} className="card-img-top" /></Link>
                                             <div className="card-body">
-                                                <h3 className="card-title">{item.name}</h3>
+                                                <Link to="/" className="text-decoration-none text-dark"><h5 className="card-title">{item.name}</h5></Link>
                                                 <span className="card-text fs-4">${item.price}</span><span className="card-text float-end icon-color fs-4"><AiOutlineHeart /></span><br />
-                                                <button type="button" className="btn btn-lg w-100 text-light button-color">Agreagar al carrito</button>
+                                                <button type="button" className="btn btn-lg w-100 text-light button-color" onClick={() => alert("hola")}>Agreagar al carrito</button>
                                             </div>
                                         </div>
                                     </div>

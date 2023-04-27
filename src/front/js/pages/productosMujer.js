@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { AiFillStar, AiOutlineStar, AiOutlineHeart } from "react-icons/ai"
 import { Context } from "../store/appContext";
+import { Link } from "react-router-dom";
 
 export const ProductosMujer = () => {
     const { store, actions } = useContext(Context);
@@ -67,24 +68,24 @@ export const ProductosMujer = () => {
             return (isDeporte ? ("col") : ("col d-none"))
         } else if (item.category === "Ropa de bano") {
             return (isRopaDeBano ? ("col") : ("col d-none"))
-        } else if (item.category === "Trajes de baño"){
+        } else if (item.category === "Trajes de baño") {
             return (isTrajeDeBaño ? ("col") : ("col d-none"))
-        } else if (item.category === "Abrigos"){
+        } else if (item.category === "Abrigos") {
             return (isAbrigos ? ("col") : ("col d-none"))
-        } else if (item.category === "Gorros y sombreros"){
+        } else if (item.category === "Gorros y sombreros") {
             return (isGorrosYSombreros ? ("col") : ("col d-none"))
-        } else if (item.category === "Joyeria"){
-            return ( isJoyeria ? ("col") : ("col d-none"))
-        } else if (item.category === "Lanceria"){
+        } else if (item.category === "Joyeria") {
+            return (isJoyeria ? ("col") : ("col d-none"))
+        } else if (item.category === "Lanceria") {
             return (isLanceria ? ("col") : ("col d-none"))
-        } else if (item.category === "Ropa de dormir"){
+        } else if (item.category === "Ropa de dormir") {
             return (isRopaDeDormir ? ("col") : ("col d-none"))
-        } else if (item.category === "Disfraces"){
+        } else if (item.category === "Disfraces") {
             return (isDisfraces ? ("col") : ("col d-none"))
-        } else if (item.category === "Ropa de trabajo"){
+        } else if (item.category === "Ropa de trabajo") {
             return (isRopaDeTrabajo ? ("col") : ("col d-none"))
-        } else if (item.category === "Ropa para mascotas"){
-            return(isRopaParaMascotas ? ("col") : ("col d-none"))
+        } else if (item.category === "Ropa para mascotas") {
+            return (isRopaParaMascotas ? ("col") : ("col d-none"))
         }
     }
 
@@ -231,13 +232,14 @@ export const ProductosMujer = () => {
                                 {store.mujer.map((item, index) => (
                                     <div className="col" key={index}>
                                         <div className="card" style={{ width: "18rem" }}>
-                                            <img src={item.image} className="card-img-top" />
+                                            <Link to="/"><img src={item.image} className="card-img-top" /></Link>
                                             <div className="card-body">
-                                                <h4 className="card-title">{item.name}</h4>
+                                                <Link to="/" className="text-decoration-none text-dark"><h5 className="card-title">{item.name}</h5></Link>
                                                 <span className="card-text fs-4">${item.price}</span><span className="card-text float-end icon-color fs-4"><AiOutlineHeart /></span><br />
-                                                <button type="button" className="btn btn-lg w-100 text-light button-color">Agreagar al carrito</button>
+                                                <button type="button" className="btn btn-lg w-100 text-light button-color" onClick={() => alert("hola")}>Agreagar al carrito</button>
                                             </div>
                                         </div>
+
                                     </div>
                                 ))}
                             </div>
@@ -252,7 +254,7 @@ export const ProductosMujer = () => {
                 <div className="mx-4">
                     <div className="row">
                         <div className="col-3 border border-success">
-                        <h3>Ropa Mujer</h3>
+                            <h3>Ropa Mujer</h3>
                             <h5>Categorias</h5>
                             <div className="form-check">
                                 <input className="form-check-input" type="checkbox" value="" id="categoria1" onClick={() => setIsCamisetas(!isCamisetas)} />
@@ -386,11 +388,11 @@ export const ProductosMujer = () => {
                                 {store.mujer.map((item, index) => (
                                     <div className={turnIntoClass(item)} key={index}>
                                         <div className="card" style={{ width: "18rem" }}>
-                                            <img src={item.image} className="card-img-top" />
+                                            <Link to="/"><img src={item.image} className="card-img-top" /></Link>
                                             <div className="card-body">
-                                                <h3 className="card-title">{item.name}</h3>
+                                                <Link to="/" className="text-decoration-none text-dark"><h5 className="card-title">{item.name}</h5></Link>
                                                 <span className="card-text fs-4">${item.price}</span><span className="card-text float-end icon-color fs-4"><AiOutlineHeart /></span><br />
-                                                <button type="button" className="btn btn-lg w-100 text-light button-color">Agreagar al carrito</button>
+                                                <button type="button" className="btn btn-lg w-100 text-light button-color" onClick={() => alert("hola")}>Agreagar al carrito</button>
                                             </div>
                                         </div>
                                     </div>
