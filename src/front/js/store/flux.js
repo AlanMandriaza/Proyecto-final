@@ -28,7 +28,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getMessage: async () => {
 				try{
 					// fetching data from the backend
-					const resp = await fetch("https://3001-alanmandria-proyectofin-2pdsxmfwi69.ws-us96.gitpod.io/api/hello")
+					//const resp = await fetch("https://3001-alanmandria-proyectofin-2pdsxmfwi69.ws-us96.gitpod.io/api/hello")
 					const data = await resp.json()
 					setStore({ message: data.message })
 					// don't forget to return something, that is how the async resolves
@@ -54,7 +54,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getProducts: async () => {
 				const store = getStore()
 				try{
-					const resp = await fetch("https://3001-alanmandria-proyectofin-2pdsxmfwi69.ws-us96.gitpod.io")
+					const resp = await fetch("https://3000-alanmandria-proyectofin-td6upm10qqm.ws-us96.gitpod.io")
 					const data = await resp.json()
 					setStore({ productos: data })
 

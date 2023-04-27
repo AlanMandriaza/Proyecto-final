@@ -6,7 +6,7 @@ import Correo from "./component/correo";
 import { Footer } from "./component/footer";
 import Formulario from "./pages/formulario";
 import FormularioRegister from "./pages/formularioRegister";
-import { Cart } from "./pages/cart";
+import  Cart  from "./pages/cart";
 import { Demo } from "./pages/demo";
 import { Home } from "./pages/home";
 import injectContext from "./store/appContext";

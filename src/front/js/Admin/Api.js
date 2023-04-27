@@ -1,4 +1,4 @@
-const BASE_URL = 'https://3001-alanmandria-proyectofin-2pdsxmfwi69.ws-us96.gitpod.io';
+export const BASE_URL = 'https://3001-alanmandria-proyectofin-td6upm10qqm.ws-us96.gitpod.io';
 
 
 const api = {

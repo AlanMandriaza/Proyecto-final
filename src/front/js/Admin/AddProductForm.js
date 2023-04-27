@@ -139,6 +139,22 @@ const AddProductForm = () => {
               </select>
             </div>
             <div className="mb-3">
+          <label htmlFor="genere" className="form-label">
+            Género:
+          </label>
+          <select
+            id="genere"
+            name="genere"
+            value={productData.genere}
+            onChange={handleInputChange}
+            className="form-select"
+          >
+            <option value="">Seleccione el género</option>
+            <option value="Mujer">Mujer</option>
+            <option value="Hombre">Hombre</option>
+          </select>
+        </div>
+            <div className="mb-3">
               <label htmlFor="price" className="form-label">
                 Precio:
               </label>
