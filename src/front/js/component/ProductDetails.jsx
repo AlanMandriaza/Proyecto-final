@@ -11,6 +11,7 @@ const ProductDetails = () => {
     api.getProductById(id)
       .then(product => setProduct(product))
       .catch(error => console.error('Error al obtener los detalles del producto:', error));
+      console.log(product.name)
   }, [id]);
 
   return (

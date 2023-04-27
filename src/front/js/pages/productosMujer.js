@@ -96,9 +96,10 @@ const ProductosMujer = () => {
                 productosFiltrados.map((item, index) => (
                   <div className="col" key={index}>
                     <div className="card" style={{ width: "18rem" }}>
-                      <Link to="/">
-                        <img src={item.image} className="card-img-top" alt={item.name} />
-                      </Link>
+                    <Link to={`/productos/${item.id}`}>
+  <img src={item.image} className="card-img-top" alt={item.name} />
+</Link>
+
                       <div className="card-body">
                         <Link to="/" className="text-decoration-none text-dark">
                           <h5 className="card-title">{item.name}</h5>

@@ -8,7 +8,7 @@ export const Cart = () => {
 
   useEffect(() => {
     // Hacer una solicitud a la API para obtener los datos del carrito
-    fetch(`${process.env.BACKEND_URL}/api/cart/17`)
+    fetch(`${BASE_URL}/api/cart/17`)
     
       .then(response => response.json())
       .then(data => {
@@ -32,7 +32,7 @@ export const Cart = () => {
     if (newQuantity === 0) {
       handleDelete(item.id);
     } else {
-      fetch(`${process.env.BACKEND_URL}/api/cart_items/${item.id}`, {
+      fetch(`${BASE_URL}/api/cart_items/${item.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -59,7 +59,7 @@ export const Cart = () => {
   const handleIncrease = (item) => {
     // Aumentar la cantidad de un producto en el carrito
     const newQuantity = item.quantity + 1;
-    fetch(`${process.env.BACKEND_URL}/api/cart_items/${item.id}`, {
+    fetch(`${BASE_URL}/api/cart_items/${itemToDelete.product.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -93,13 +93,13 @@ export const Cart = () => {
       const quantityToDelete = itemToDelete.quantity;
   
       // Obtener la cantidad total del producto en el carrito
-      fetch(`${process.env.BACKEND_URL}/api/cart/${itemToDelete.product.id}`)
+      fetch(`${BASE_URL}/api/cart/${itemToDelete.product.id}`)
         .then(response => response.json())
         .then(data => {
           const totalQuantity = data.cart_item ? data.cart_item.quantity : 0;
   
           // Enviar una solicitud DELETE con la cantidad total del producto a eliminar
-          fetch(`${process.env.BACKEND_URL}/api/cart_items/${itemToDelete.product.id}`, {
+          fetch(`$${BASE_URL}/api/cart_items/${itemToDelete.product.id}`, {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json'
