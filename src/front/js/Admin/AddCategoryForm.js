@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
 import "./CustomFormStyles.css";
 import api from "./Api";
+import { Container, Row, Col } from "reactstrap";
+import Alerta from "../component/alert";
 
 const CategoriesForm = () => {
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState("");
-  const [categorySuccessMsg, setCategorySuccessMsg] = useState(null);
-  const [error, setError] = useState(null);
+  // const [categorySuccessMsg, setCategorySuccessMsg] = useState(null);
+  // const [error, setError] = useState(null);
   const [reloadCategories, setReloadCategories] = useState(false);
+  const [statusError, setstatusError] = React.useState(false);
+  const [color, setColor] = React.useState("");
+  const [texto, setTexto] = React.useState("");
 
   useEffect(() => {
     api.getCategories().then((categories) => {
@@ -24,23 +29,36 @@ const CategoriesForm = () => {
 
     try {
       const existingCategory = categories.find(
-        (category) =>
-          category.name.toLowerCase() === newCategory.toLowerCase()
+        (category) => category.name.toLowerCase() === newCategory.toLowerCase()
       );
 
       if (existingCategory) {
-        setError("Esta categoría ya existe");
+        setColor("danger");
+        setTexto("Este producto ya existe");
+        setstatusError(true);
       } else {
-        const createdCategory = await api.addCategory(newCategory);
-        setCategories([...categories, { ...createdCategory, key: createdCategory.id }]);
-        setNewCategory("");
-        setCategorySuccessMsg("Categoría creada exitosamente");
-        setError(null);
-        setReloadCategories(!reloadCategories);
+        if(!newCategory){
+          setColor("danger");
+          setTexto("Debe agregar una categoria");
+          setstatusError(true);
+        }else {
+          const createdCategory = await api.addCategory(newCategory);
+          setCategories([
+            ...categories,
+            { ...createdCategory, key: createdCategory.id },
+          ]);
+          setNewCategory("");
+          setColor("primary");
+          setTexto("Categoría creada exitosamente");
+          setstatusError(true);
+          setReloadCategories(!reloadCategories);
+        }
         
       }
     } catch (error) {
-      setError("Error al agregar la categoría");
+      setColor("danger");
+      setTexto("Error al agregar la categoría");
+      setstatusError(true);
     }
   };
 
@@ -53,7 +71,6 @@ const CategoriesForm = () => {
       const products = await api.getProductsByCategory(categoryId);
       return products.length > 0;
     } catch (error) {
-        
       throw new Error("Error al obtener productos asociados con la categoría");
     }
   };
@@ -61,65 +78,85 @@ const CategoriesForm = () => {
   const handleDeleteCategory = async (categoryId) => {
     try {
       const hasProducts = await handleCheckCategoryProducts(categoryId);
-  
+
       if (hasProducts) {
-        setError("No se puede eliminar una categoría asociada a un producto");
+        setColor("danger");
+        setTexto("No se puede eliminar una categoría asociada a un producto");
+        setstatusError(true);
       } else {
         const response = await api.deleteCategory(categoryId);
-  
+
         if (response.success) {
-          const updatedCategories = categories.filter((category) => category.id !== categoryId);
+          const updatedCategories = categories.filter(
+            (category) => category.id !== categoryId
+          );
           setCategories(updatedCategories);
+          setColor("primary");
+          setTexto("Se elimino Categoría exitosamente");
+          setstatusError(true);
         } else {
-          setError("Error al eliminar la categoría");
+          setColor("danger");
+          setTexto("Error al eliminar la categoría");
+          setstatusError(true);
         }
       }
     } catch (error) {
-      setError("Error al eliminar la categoría");
+      setColor("danger");
+      setTexto("Error al eliminar la categoría");
+      setstatusError(true);
     } finally {
       setTimeout(() => {
         setError(null);
       }, 3000); // Establecer el temporizador en 3 segundos (3000 ms)
     }
   };
-  
 
   return (
-    <>
-      <form onSubmit={handleNewCategorySubmit} className="custom-form">
-        <div className="mb-3">
-          <label htmlFor="newCategory" className="form-label">
-            Agregar categoría:
-          </label>
-          <input
-            type="text"
-            id="newCategory"
-            name="newCategory"
-            value={newCategory}
-            onChange={handleNewCategoryChange}
-            className="form-control"
-          />
-        </div>
-        <button type="submit" className="btn custom-btn">
-          Agregar categoría
-        </button>
-        {categorySuccessMsg && <p>{categorySuccessMsg}</p>}
-        {error && <p>{error}</p>}
-      </form>
-      <div className="mt-4">
-        <h4>Categorías</h4>
-        <ul className="list-group">
-          {categories.map((category) => (
-            <li key={category.id} className="list-group-item d-flex justify-content-between align-items-center">
-              {category.name}
-              <button className="btn btn-danger btn-sm" onClick={() => handleDeleteCategory(category.id)}>
-                Eliminar
-              </button>
-            </li>
-          ))}
-        </ul>
-        </div>
-    </>
+    <Container className="d-grid w-50 mb-5">
+      {statusError && <Alerta texto={texto} color={color} />}
+      <Row>
+        <Col>
+          <h1 className="text-center mb-3"> Agregar Categoría</h1>
+          <form onSubmit={handleNewCategorySubmit} className="custom-form">
+            <div className="mb-3">
+              <label htmlFor="newCategory" className="form-label">
+                Nombre de categoría:
+              </label>
+              <input
+                type="text"
+                id="newCategory"
+                name="newCategory"
+                value={newCategory}
+                onChange={handleNewCategoryChange}
+                className="form-control"
+              />
+            </div>
+            <button type="submit" className="btn custom-btn">
+              Agregar categoría
+            </button>
+          </form>
+          <div className="row justify-content-md-center mt-4 mb-4">
+            <h4>Categorías</h4>
+            <ul className="list-group">
+              {categories.map((category) => (
+                <li
+                  key={category.id}
+                  className="list-group-item d-flex justify-content-between align-items-center"
+                >
+                  {category.name}
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => handleDeleteCategory(category.id)}
+                  >
+                    Eliminar
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

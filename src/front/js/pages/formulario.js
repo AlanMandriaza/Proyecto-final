@@ -11,6 +11,7 @@ import {
   Input,
 } from "reactstrap";
 import Alerta from "../component/alert";
+import { Link } from "react-router-dom";
 
 import "../../styles/formulario.css";
 
@@ -21,12 +22,15 @@ const Formulario = (props) => {
   const [statusError, setstatusError] = React.useState(false);
   const [color, setColor] = React.useState("");
   const [texto, setTexto] = React.useState("");
- 
 
   const loginHandler = (ev) => {
     ev.preventDefault();
+
     if (!username || !password) {
-      return;
+      setColor("danger");
+      setTexto("Debes llenar todos los campos");
+      setstatusError(true);
+      return
     }
 
     fetch(
@@ -47,68 +51,68 @@ const Formulario = (props) => {
         console.log("RESPONSE from login success ", data);
 
         if (data.access_token) {
-          setColor("primary")
-          setTexto("usuario correcto")
+          setColor("primary");
+          setTexto("usuario correcto");
           setstatusError(true);
-          localStorage.setItem('user', data.user);
+          localStorage.setItem("user", data.user);
           window.location.href = "/";
         } else {
           console.log(data);
-          setColor("danger")
-          setTexto("Clave o usuario incorrecto")
+          setColor("danger");
+          setTexto("Clave o usuario incorrecto");
           setstatusError(true);
-        } 
-        
+        }
       });
 
     // console.log(username, password);
   };
 
   return (
-    <Container className="d-grid w-50 mb-5">
-      {statusError && (
-        <Alerta texto={texto} color={color} />
-      )}
-      
-      <Row>
-        <Col>
-          <CardBody>
-            <Form onSubmit={loginHandler}>
-              <h1 className="text-center mt-5">Ingresar</h1>
-              <FormGroup className="pb-2 mr-sm-2 mb-sm-0">
-                <Label for="exampleEmail" className="mr-sm-2">
-                  Correo electronico
-                </Label>
-                <Input
-                  type="email"
-                  name="email"
-                  id="exampleEmail"
-                  placeholder="ejemplo@ejemplo.com"
-                  onChange={(ev) => setUsername(ev.currentTarget.value)}
-                />
-              </FormGroup>
-              <FormGroup className="pb-2 mr-sm-2 mb-sm-0">
-                <Label for="examplePassword" className="mr-sm-2">
-                  Contraseña
-                </Label>
-                <Input
-                  type="password"
-                  name="password"
-                  id="examplePassword"
-                  placeholder="Contraseña"
-                  onChange={(ev) => setPassword(ev.currentTarget.value)}
-                />
-              </FormGroup>
-              <p className="text-center mt-3">¿Olvidó su contraseña?</p>
-              <Button type="submit" className="colorBoton">
-                Ingresar
-              </Button>
-              <p className="text-center mt-2">Crear cuenta</p>
-            </Form>
-          </CardBody>
-        </Col>
-      </Row>
-    </Container>
+    <>
+      <h1 className="text-center mt-5">Ingresar</h1>
+      <Container className="d-grid w-50 mb-5 boderFomulario">
+        {statusError && <Alerta texto={texto} color={color} />}
+        <Row>
+          <Col>
+            <CardBody>
+              <Form onSubmit={loginHandler}>
+                <FormGroup className="pb-2 mr-sm-2 mb-sm-0">
+                  <Label for="exampleEmail" className="mr-sm-2">
+                    Correo electronico
+                  </Label>
+                  <Input
+                    type="email"
+                    name="email"
+                    id="exampleEmail"
+                    placeholder="ejemplo@ejemplo.com"
+                    onChange={(ev) => setUsername(ev.currentTarget.value)}
+                  />
+                </FormGroup>
+                <FormGroup className="pb-2 mr-sm-2 mb-sm-0">
+                  <Label for="examplePassword" className="mr-sm-2">
+                    Contraseña
+                  </Label>
+                  <Input
+                    type="password"
+                    name="password"
+                    id="examplePassword"
+                    placeholder="Contraseña"
+                    onChange={(ev) => setPassword(ev.currentTarget.value)}
+                  />
+                </FormGroup>
+                <p className="text-center mt-3">¿Olvidó su contraseña?</p>
+                <Button type="submit" className="colorBoton">
+                  Ingresar
+                </Button>
+                <Link className="text-center mt-5" to="/register">
+                  <p>Crear cuenta</p>
+                </Link>
+              </Form>
+            </CardBody>
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 };
 

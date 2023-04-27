@@ -8,6 +8,21 @@
 .navItem{
     color: white;
 }
+
+.categoria{
+    color: white;
+    margin-top: 15px;
+}
+
+.categoria:hover{
+    color: white;
+}
+
+.scroll-categoria{
+    height: 400px;
+	overflow-y: scroll;
+}
+
 .logoName{
     font-family: 'Libre Baskerville', serif;
 }

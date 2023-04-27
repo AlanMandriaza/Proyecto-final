@@ -8,7 +8,7 @@ import {
   Form,
   FormGroup,
   Label,
-  Input
+  Input,
 } from "reactstrap";
 import Alerta from "../component/alert";
 import "../../styles/formularioRegister.css";
@@ -22,57 +22,60 @@ const FormularioRegister = (props) => {
   const [statusError, setstatusError] = React.useState(false);
   const [color, setColor] = React.useState("");
   const [texto, setTexto] = React.useState("");
-  
+
   const loginHandler = (ev) => {
     ev.preventDefault();
-    if (!username || !password) {
+    if (!username || !password || !firstName || !lastName) {
+      setColor("danger");
+      setTexto("Debes llenar todos los campos");
+      setstatusError(true);
       return;
     }
-   
-    fetch("https://3001-alanmandria-proyectofin-na0p9oacdmc.ws-us95.gitpod.io/api/users/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        email: username,
-        password: password,
-        first_name: firstName,
-        last_name: lastName
-      })
-    })
+
+    fetch(
+      "https://3001-alanmandria-proyectofin-na0p9oacdmc.ws-us95.gitpod.io/api/users/signup",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: username,
+          password: password,
+          first_name: firstName,
+          last_name: lastName,
+        }),
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         //console.log("RESPONSE from login success ", data);
         if (data.user) {
-          setColor("primary")
-          setTexto("se creo satisfactoriamente el usuario")
+          setColor("primary");
+          setTexto("se creo satisfactoriamente el usuario");
           setstatusError(true);
-          localStorage.setItem('user', data.user);
+          localStorage.setItem("user", data.user);
           window.location.href = "/";
         } else {
           console.log(data);
-          setColor("danger")
-          setTexto("Usuario no creado ")
+          setColor("danger");
+          setTexto("Usuario no creado ");
           setstatusError(true);
-        } 
-    
+        }
       });
-     
 
-     //console.log(username, password);
+    //console.log(username, password);
   };
 
   return (
-    <Container className="d-grid w-50 mb-5">
-       {statusError && (
-        <Alerta texto={texto} color={color} />
-      )}
-      <Row>
-        <Col>
+    <>
+      <h1 className="text-center mt-5">Crear cuenta</h1>
+      <Container className="d-grid w-50 mb-5 boderFomulario">
+        {statusError && <Alerta texto={texto} color={color} />}
+        <Row>
+          <Col>
             <CardBody>
               <Form onSubmit={loginHandler}>
-                <h1 className="text-center mt-5">Crear cuenta</h1>
                 <FormGroup className="pb-2 mr-sm-2 mb-sm-0">
                   <Label for="exampleEmail" className="mr-sm-2">
                     Nombre
@@ -126,9 +129,10 @@ const FormularioRegister = (props) => {
                 </Button>
               </Form>
             </CardBody>
-        </Col>
-      </Row>
-    </Container>
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 };
 

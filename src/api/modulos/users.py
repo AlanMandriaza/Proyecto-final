@@ -117,3 +117,9 @@ def delete_user(user_id):
 
     return jsonify({'message': 'User deleted successfully'}), 200
 
+@user_api.route('/<int:user_id>/roles', methods=['GET'])
+def get_user_roles(user_id):
+    user = User.query.get_or_404(user_id)
+    roles = [role.serialize() for role in user.roles]
+    return jsonify(roles), 200
+

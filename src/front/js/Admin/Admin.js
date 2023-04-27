@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
-import AddProductForm from './AddProductForm';
-import AddCategoryForm from './AddCategoryForm';
-import Inventory from './Inventory';
-
+import React, { useState } from "react";
+import AddProductForm from "./AddProductForm";
+import AddCategoryForm from "./AddCategoryForm";
+import Inventory from "./Inventory";
 
 const Admin = () => {
-  const [activeView, setActiveView] = useState('addProduct');
+  const [activeView, setActiveView] = useState("addProduct");
 
   const handleViewChange = (view) => {
     setActiveView(view);
@@ -13,11 +12,11 @@ const Admin = () => {
 
   const renderView = () => {
     switch (activeView) {
-      case 'addProduct':
+      case "addProduct":
         return <AddProductForm />;
-      case 'categories':
+      case "categories":
         return <AddCategoryForm />;
-      case 'inventario':
+      case "inventario":
         return <Inventory />;
       default:
         return <AddProductForm />;
@@ -25,29 +24,41 @@ const Admin = () => {
   };
 
   return (
-    <div>
-      <h1>Panel de Administrador</h1>
-      <div className="d-flex mb-3">
-        <button
-          className={`btn ${activeView === 'addProduct' ? 'btn-primary' : 'btn-secondary'} btn-left`}
-          onClick={() => handleViewChange('addProduct')}
+    <div className="container">
+      <div className=" row justify-content-md-center">
+      <div className="btn-group mb-5 ">
+        <a
+          href="#"
+          className={`btn ${
+            activeView === "addProduct" ? "btn-primary" : "btn-secondary"
+          } btn-left`}
+          onClick={() => handleViewChange("addProduct")}
+          aria-current="page"
         >
-          Agregar producto
-        </button>
-        <button
-          className={`btn ${activeView === 'categories' ? 'btn-primary' : 'btn-secondary'} btn-left`}
-          onClick={() => handleViewChange('categories')}
+          Producto
+        </a>
+        <a
+          href="#"
+          className={`btn ${
+            activeView === "categories" ? "btn-primary" : "btn-secondary"
+          } btn-left`}
+          onClick={() => handleViewChange("categories")}
         >
           Categorías
-        </button>
-        <button
-          className={`btn ${activeView === 'inventario' ? 'btn-primary' : 'btn-secondary'} btn-left`}
-          onClick={() => handleViewChange('inventario')}
+        </a>
+        <a
+          href="#"
+          className={`btn ${
+            activeView === "inventario" ? "btn-primary" : "btn-secondary"
+          } btn-left`}
+          onClick={() => handleViewChange("inventario")}
         >
           Gestor de inventario
-        </button>
+        </a>
       </div>
+      
       {renderView()}
+      </div>
     </div>
   );
 };

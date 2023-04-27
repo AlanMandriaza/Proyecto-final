@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, Outlet } from "react-router-dom";
-import api from "../Admin/Api"
+import api from "../Admin/Api";
 
 const MainNavbar = (props) => {
   const logout = () => {
@@ -8,29 +8,38 @@ const MainNavbar = (props) => {
     localStorage.removeItem("user");
     window.location.href = "/";
   };
- 
 
   const location = useLocation();
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    api.getCategories()
+    api
+      .getCategories()
       .then((categories) => setCategories(categories))
-      .catch((error) => console.error('Error al obtener las categorías:', error));
+      .catch((error) =>
+        console.error("Error al obtener las categorías:", error)
+      );
 
     // Obtener la cantidad de productos por categoría
     const promises = categories.map((category) => {
-      return api.getProductCountByCategory(category.id)
+      return api
+        .getProductCountByCategory(category.id)
         .then((productCount) => {
           return {
             ...category,
-            product_count: productCount
+            product_count: productCount,
           };
         })
-        .catch((error) => console.error(`Error al obtener la cantidad de productos para la categoría ${category.id}:`, error));
+        .catch((error) =>
+          console.error(
+            `Error al obtener la cantidad de productos para la categoría ${category.id}:`,
+            error
+          )
+        );
     });
-    Promise.all(promises)
-      .then((categoriesWithProductCount) => setCategories(categoriesWithProductCount));
+    Promise.all(promises).then((categoriesWithProductCount) =>
+      setCategories(categoriesWithProductCount)
+    );
   }, []);
   return (
     <>
@@ -92,19 +101,33 @@ const MainNavbar = (props) => {
           </Link>
         </li>
         <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Categorías
-              </a>
-              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                {!!categories && categories.length > 0 && categories.map((category) => (
-                  <li key={category.id}>
-                    <Link className="dropdown-item" to={`/category/${category.id}`}>
-                      {category.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </li>
+          <a
+            className="nav-link dropdown-toggle categoria"
+            id="navbarDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Categorías
+          </a>
+          <ul
+            className="dropdown-menu scroll-categoria"
+            aria-labelledby="navbarDropdown"
+          >
+            {!!categories &&
+              categories.length > 0 &&
+              categories.map((category) => (
+                <li key={category.id}>
+                  <Link
+                    className="dropdown-item"
+                    to={`/category/${category.id}`}
+                  >
+                    {category.name}
+                  </Link>
+                </li>
+              ))}
+          </ul>
+        </li>
         <div className="d-inline-flex justify-content-end flex-grow-1">
           <li className="nav-item py-3">
             <Link
@@ -161,19 +184,26 @@ const MainNavbar = (props) => {
             </a>
             <ul className="dropdown-menu ">
               <Link className="dropdown-item" href="#" to="/login">
-                  Iniciar Sesión
+                Iniciar Sesión
               </Link>
               <Link className="dropdown-item" href="#" to="/register">
-                  Registrarse
+                Registrarse
               </Link>
-              <li className="dropdown-item" href="#" onClick={logout}>
+              <Link className="dropdown-item" href="#" to="/admin">
+                Administrador
+              </Link>
+              {localStorage.getItem("user") && (
+                <li className="dropdown-item" href="#" onClick={logout}>
                   Cerrar Sesión
-              </li>
+                </li>
+              )}
             </ul>
           </li>
-          </div>
+        </div>
         {localStorage.getItem("user") && (
-          <p className="bienvenido">Bienvenido, {localStorage.getItem("user")}</p>
+          <p className="bienvenido">
+            Bienvenido, {localStorage.getItem("user")}
+          </p>
         )}
       </ul>
       <Outlet />
