@@ -29,7 +29,8 @@ def login():
 
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
-    return jsonify({'message': 'Login successful', 'access_token': access_token, 'refresh_token': refresh_token}), 200
+    userName = user.first_name +' '+ user.last_name
+    return jsonify({'message': 'Login successful' , 'user': userName, 'access_token': access_token, 'refresh_token': refresh_token}), 200
 
 @user_api.route('/<int:user_id>', methods=['GET'])
 @jwt_required()
@@ -73,8 +74,9 @@ def create_user():
     user = User(email=email, password=hashed_password, first_name=first_name, last_name=last_name)
     db.session.add(user)
     db.session.commit()
+    userNameLogin = first_name + " " + last_name
 
-    return jsonify({'message': 'User created successfully'}), 201
+    return jsonify({'message': 'User created successfully', "user": userNameLogin}), 201
 
 
 @user_api.route('/<int:user_id>', methods=['PUT'])

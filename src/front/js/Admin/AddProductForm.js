@@ -14,8 +14,6 @@ const AddProductForm = () => {
   const [productSuccessMsg, setProductSuccessMsg] = useState(null);
   const [productList, setProductList] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [newCategory, setNewCategory] = useState("");
-  const [categorySuccessMsg, setCategorySuccessMsg] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -40,7 +38,6 @@ const AddProductForm = () => {
     setError(null);
 
     try {
-      // Verificar si el nombre del producto ya existe, ignorando mayúsculas y minúsculas
       const existingProduct = productList.find(
         (product) =>
           product.name.toLowerCase() === productData.name.toLowerCase()
@@ -69,34 +66,6 @@ const AddProductForm = () => {
     } catch (err) {
       setError("Error al agregar el producto");
     }
-  };
-
-  const handleNewCategorySubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      // Verificar si la categoría ya existe, ignorando mayúsculas y minúsculas
-      const existingCategory = categories.find(
-        (category) =>
-          category.name.toLowerCase() === newCategory.toLowerCase()
-      );
-
-      if (existingCategory) {
-        setError("Esta categoría ya existe");
-      } else {
-        const createdCategory = await api.addCategory(newCategory);
-        setCategories([...categories, { ...createdCategory, key: createdCategory.id }]);
-        setNewCategory("");
-        setCategorySuccessMsg("Categoría creada exitosamente");
-        setError(null);
-      }
-    } catch (error) {
-      setError("Error al agregar la categoría");
-    }
-  };
-
-  const handleNewCategoryChange = (e) => {
-    setNewCategory(e.target.value);
   };
 
   return (
@@ -191,28 +160,7 @@ const AddProductForm = () => {
         </button>
         {error && <p>{error}</p>}
         {productSuccessMsg && <p>{productSuccessMsg}</p>}
-      </form>
-
-      <form onSubmit={handleNewCategorySubmit} className="custom-form">
-        <div className="mb-3">
-          <label htmlFor="newCategory" className="form-label">
-            Agregar categoría:
-          </label>
-          <input
-            type="text"
-            id="newCategory"
-            name="newCategory"
-            value={newCategory}
-            onChange={handleNewCategoryChange}
-            className="form-control"
-          />
-        </div>
-        <button type="submit" className="btn custom-btn">
-          Agregar categoría
-        </button>
-      
-        {categorySuccessMsg && <p>{categorySuccessMsg}</p>}
-      </form>
+        </form>
     </>
   );
 

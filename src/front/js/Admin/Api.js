@@ -1,9 +1,25 @@
-const BASE_URL = 'https://3001-alanmandria-proyectofin-ra9cxn7a50r.ws-us95.gitpod.io';
+const BASE_URL = 'https://3001-alanmandria-proyectofin-na0p9oacdmc.ws-us95.gitpod.io';
 
 
 const api = {
 
 
+
+ deleteCategory: async (categoryId) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/categories/${categoryId}`, {
+      method: "DELETE",
+    });
+
+    if (response.ok) {
+      return { success: true };
+    } else {
+      return { success: false, message: "Error al eliminar la categoría" };
+    }
+  } catch (error) {
+    return { success: false, message: "Error al eliminar la categoría" };
+  }
+},
   getProducts: () => {
     return fetch(`${BASE_URL}/api/products`)
       .then((response) => {

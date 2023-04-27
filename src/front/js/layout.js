@@ -14,16 +14,15 @@ import Admin from './Admin/Admin';
 
 import Category from "./component/categorias";
 
+
+
 import { Footer } from "./component/footer";
 import Correo from "./component/correo";
 import Inventory from "./Admin/Inventory";
 import { ProductosMujer } from "./pages/productosMujer";
 import { ProductosHombre } from "./pages/productosHombre";
 
-//create your first component
 const Layout = () => {
-  //the basename is used when your project is published in a subdirectory and not in the root of the domain
-  // you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
   const basename = process.env.BASENAME || "";
 
   return (

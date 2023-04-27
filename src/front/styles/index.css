@@ -33,3 +33,11 @@
 .button-color{
     background-color: #e74c25;
 }
+.bienvenido{
+   position: absolute;
+   right: 300px;
+   top: 50px;
+    color :white;
+
+}
+

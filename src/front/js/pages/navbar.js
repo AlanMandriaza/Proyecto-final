@@ -1,9 +1,15 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, Outlet } from "react-router-dom";
 import api from "../Admin/Api"
-const MainNavbar = () => {
+
+const MainNavbar = (props) => {
+  const logout = () => {
+    console.log("entre a la funcion logout");
+    localStorage.removeItem("user");
+    window.location.href = "/";
+  };
  
+
   const location = useLocation();
   const [categories, setCategories] = useState([]);
 
@@ -90,7 +96,7 @@ const MainNavbar = () => {
                 Categorías
               </a>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                {categories.map((category) => (
+                {!!categories && categories.length > 0 && categories.map((category) => (
                   <li key={category.id}>
                     <Link className="dropdown-item" to={`/category/${category.id}`}>
                       {category.name}
@@ -134,8 +140,7 @@ const MainNavbar = () => {
           <li className="nav-item py-3">
             <Link
               className={
-                "nav-link " +
-                (location.pathname === "/cart" ? "active" : "")
+                "nav-link " + (location.pathname === "/cart" ? "active" : "")
               }
               to="/cart"
             >
@@ -154,31 +159,22 @@ const MainNavbar = () => {
             >
               <i className="fa-solid fa-user text-light"></i>
             </a>
-            <ul className="dropdown-menu">
-              <Link to="/login">
-                <a className="dropdown-item" href="#">
+            <ul className="dropdown-menu ">
+              <Link className="dropdown-item" href="#" to="/login">
                   Iniciar Sesión
-                </a>
               </Link>
-
-              <Link to="/register">
-                <a className="dropdown-item" href="#">
+              <Link className="dropdown-item" href="#" to="/register">
                   Registrarse
-                </a>
               </Link>
-
-              <li>
-                <hr className="dropdown-divider" />
-              </li>
-              <li>
-                <a className="dropdown-item text-danger" href="#">
+              <li className="dropdown-item" href="#" onClick={logout}>
                   Cerrar Sesión
-                </a>
               </li>
             </ul>
           </li>
-        </div>
-        <p className="mt-50px">Bienvenido,Yurbanis Briceño</p>
+          </div>
+        {localStorage.getItem("user") && (
+          <p className="bienvenido">Bienvenido, {localStorage.getItem("user")}</p>
+        )}
       </ul>
       <Outlet />
     </>
