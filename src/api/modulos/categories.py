@@ -11,13 +11,14 @@ def get_categories():
     return jsonify(serialized_categories), 200
 
 @category_api.route('/<int:id>', methods=['GET'])
-def get_category(id):
+def get_category_by_id(id):
     category = Category.query.get(id)
     if category:
         serialized_category = category.serialize()
         return jsonify(serialized_category), 200
     else:
         return jsonify({'error': 'Categoría no encontrada'}), 404
+
 
 @category_api.route('/', methods=['POST'])
 def create_category():

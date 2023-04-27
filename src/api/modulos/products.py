@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from sqlalchemy import exc
-from api.models import Product, Category
+from api.models import Product, Category, Genere
 from app import db
 
 product_api = Blueprint('product_api', __name__, url_prefix='/products')
@@ -29,6 +29,7 @@ def create_products():
     description = data.get('description')
     price = data.get('price')
     image = data.get('image')
+    genere_name = data.get('genere')
     category_name = data.get('category')
     quantity = data.get('quantity')
 
@@ -37,8 +38,12 @@ def create_products():
     if not category:
         return jsonify({"error": f"Category with name '{category_name}' not found"}), 404
 
+    genere = Genere.query.filter_by(name=genere_name).first()
+    if not genere:
+        return jsonify({"error" : f"Genere with name '{genere_name}' not found"}), 400    
+
     # Crear el producto
-    product = Product(name=name, description=description, price=price, image=image, category=category, quantity=quantity)
+    product = Product(name=name, description=description, price=price, image=image, genere=genere, category=category, quantity=quantity)
 
     try:
         db.session.add(product)
@@ -83,6 +88,7 @@ def update_product(id):
     old_description = product.description
     old_price = product.price
     old_image = product.image
+    old_genere = product.genere
     old_category = product.category
     old_quantity = product.quantity
 
@@ -100,6 +106,14 @@ def update_product(id):
             db.session.add(category)
         product.category = category
 
+    genere_name = data.get('genere')
+    if genere_name and genere_name != old_genere.name:
+        genere = Genere.query.filter_by(name=genere_name).first()
+        if not genere:
+            genere = Genere(name=genere_name)
+            db.session.add(genere)
+        product.genere = genere        
+
     product.quantity = data.get('quantity', old_quantity)
 
     db.session.commit()
@@ -109,6 +123,7 @@ def update_product(id):
         product.description != old_description or
         product.price != old_price or
         product.image != old_image or
+        product.genere != old_genere or
         product.category != old_category or
         product.quantity != old_quantity):
 

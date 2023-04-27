@@ -13,6 +13,7 @@ const AddProductForm = () => {
     price: "",
     image: "",
     quantity: "",
+    genere: "",
   });
  
   const [productList, setProductList] = useState([]);
@@ -38,6 +39,7 @@ const AddProductForm = () => {
     setProductData({ ...productData, [e.target.name]: e.target.value });
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -46,7 +48,7 @@ const AddProductForm = () => {
         (product) =>
           product.name.toLowerCase() === productData.name.toLowerCase()
       );
-
+  
       if (existingProduct) {
         setColor("danger");
         setTexto("Este producto ya existe");
@@ -63,10 +65,12 @@ const AddProductForm = () => {
             image: "",
             quantity: "",
           });
+
           setProductList([...productList, productData]);
           setColor("primary");
           setTexto("Producto creado exitosamente");
           setstatusError(true);
+
         } else {
           setColor("danger");
           setTexto("Debes llenar todos los campos");
@@ -79,8 +83,10 @@ const AddProductForm = () => {
       setstatusError(true);
     }
   };
+  
 
   return (
+
     <Container className="d-grid w-50 mb-5">
       {statusError && <Alerta texto={texto} color={color} />}
       <Row>
@@ -179,6 +185,7 @@ const AddProductForm = () => {
       </Row>
     </Container>
   );
+
 };
 
 export default AddProductForm;
