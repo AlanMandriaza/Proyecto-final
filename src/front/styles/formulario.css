@@ -10,3 +10,12 @@
   margin-left: 40%;
   width: 100px;
 }
+
+
+.boderFomulario {
+  max-width: 600px;
+  margin: auto;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d4411d;
+}

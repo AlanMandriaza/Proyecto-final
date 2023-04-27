@@ -90,32 +90,33 @@ const Inventory = () => {
 
     return (
         <div>
-            <h1>Inventario</h1>
-            <table className="table table-striped">
-                <div className="col">
+            <h1 className="text-center mb-3"> Inventario</h1>
+            <div className="col-md-12">
                     {error && <p>{error}</p>}
-                    <Dropdown>
-                    <Dropdown.Toggle className="custom-dropdown-toggle">
+                    <Dropdown className="mb-4">
+                    <Dropdown.Toggle className="custom-dropdown-toggle text-white">
                             Ordenar por
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu className="custom-dropdown-menu">
-                            <Dropdown.Item onClick={sortByPriceAsc} className="custom-dropdown-item">
+                            <Dropdown.Item onClick={sortByPriceAsc} className="custom-dropdown-item text-white">
                                 Precio ascendente
                             </Dropdown.Item>
-                            <Dropdown.Item onClick={sortByPriceDesc} className="custom-dropdown-item">
+                            <Dropdown.Item onClick={sortByPriceDesc} className="custom-dropdown-item text-white">
                                 Precio descendente
                             </Dropdown.Item>
-                            <Dropdown.Item onClick={sortByQuantityAsc} className="custom-dropdown-item">
+                            <Dropdown.Item onClick={sortByQuantityAsc} className="custom-dropdown-item text-white">
                                 Cantidad ascendente
                             </Dropdown.Item>
-                            <Dropdown.Item onClick={sortByQuantityDesc} className="custom-dropdown-item">
+                            <Dropdown.Item onClick={sortByQuantityDesc} className="custom-dropdown-item text-white">
                                 Cantidad descendente
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
 
                 </div>
+            <table className="table table-striped">
+               
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -130,7 +131,7 @@ const Inventory = () => {
                     {inventory.map((product) => (
                         <tr key={product.id}>
                             <td>{product.name}</td>
-                            <td>{product.description}</td>
+                            <td style={{ width: '350px' }}>{product.description}</td>
                             <td>{product.category}</td>
                             <td>{product.price}</td>
                             <td>
@@ -142,7 +143,7 @@ const Inventory = () => {
                                     onChange={(e) =>
                                         handleSetQuantity(product.id, parseInt(e.target.value))
                                     }
-                                    style={{ width: '70px' }}
+                                    style={{ width: '50px' }}
                                 />
                                 <button onClick={() => handleRemove(product.id)}>-</button>
                                 <button onClick={() => handleAdd(product.id)}>+</button>
