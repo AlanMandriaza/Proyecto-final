@@ -88,6 +88,7 @@ def update_product(id):
     old_description = product.description
     old_price = product.price
     old_image = product.image
+    old_genere = product.genere
     old_category = product.category
     old_quantity = product.quantity
 
@@ -105,6 +106,14 @@ def update_product(id):
             db.session.add(category)
         product.category = category
 
+    genere_name = data.get('genere')
+    if genere_name and genere_name != old_genere.name:
+        genere = Genere.query.filter_by(name=genere_name).first()
+        if not genere:
+            genere = Genere(name=genere_name)
+            db.session.add(genere)
+        product.genere = genere        
+
     product.quantity = data.get('quantity', old_quantity)
 
     db.session.commit()
@@ -114,6 +123,7 @@ def update_product(id):
         product.description != old_description or
         product.price != old_price or
         product.image != old_image or
+        product.genere != old_genere or
         product.category != old_category or
         product.quantity != old_quantity):
 
