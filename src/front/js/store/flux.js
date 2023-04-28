@@ -1,83 +1,105 @@
-const getState = ({ getStore, getActions, setStore }) => {
-	return {
-		store: {
-			message: null,
-			productos: [],
-			mujer: [],
-			hombre: [],
-			infante: [],
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
-		},
-		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
+import {BASE_URL} from '../Admin/Api';
 
-			getMessage: async () => {
-				try{
-					// fetching data from the backend
-					const resp = await fetch("https://3001-alanmandria-proyectofin-2pdsxmfwi69.ws-us96.gitpod.io/api/hello")
-					const data = await resp.json()
-					setStore({ message: data.message })
-					// don't forget to return something, that is how the async resolves
-					return data;
-				}catch(error){
-					console.log("Error loading message from backend", error)
-				}
-			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
-			},
-			getProducts: async () => {
-				const store = getStore()
-				try{
-					const resp = await fetch("https://3001-alanmandria-proyectofin-na0p9oacdmc.ws-us96.gitpod.io")
-					const data = await resp.json()
-					setStore({ productos: data })
-
-					for(let i = 0; i < store.productos.length; i++){
-						if(store.productos[i].genere === "Mujer"){
-							let newArray1 = store.mujer.concat(store.productos[i])
-							setStore({ mujer: newArray1 })
-						} else if(store.productos[i].genere === "Hombre"){
-							let newArray2 = store.hombre.concat(store.productos[i])
-							setStore({ hombre: newArray2 })
-						} else {
-							//let newArray3 = store.infante.concat(store.productos[i])
-							//setStore({ infante: newArray3 })
-							console.log("no hay productos infante")
-						}
-					}
-
-				} catch(error) {
-					console.log("Error loading message from backend", error)
-				}
-			}
-		}
+const getState = ({ getStore, setStore }) => {
+	const initialState = {
+	  carrito: [],
+	  productos: [],
 	};
-};
-
-export default getState;
+  
+	const getStateFromLocalStorage = () => {
+	  const localStorageState = localStorage.getItem("estado");
+	  return localStorageState ? JSON.parse(localStorageState) : initialState;
+	};
+  
+	const setStateToLocalStorage = (state) => {
+	  localStorage.setItem("estado", JSON.stringify(state));
+	};
+  
+	return {
+	  store: getStateFromLocalStorage(),
+	  actions: {
+		addToCart: (item) => {
+		  const store = getStore();
+		  const itemInCart = store.carrito.find((i) => i.id === item.id);
+  
+		  if (itemInCart) {
+			const newCart = store.carrito.map((i) =>
+			  i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+			);
+			const newState = { ...store, carrito: newCart };
+			setStore(newState);
+			setStateToLocalStorage(newState);
+		  } else {
+			const newCart = [...store.carrito, { ...item, quantity: 1 }];
+			const newState = { ...store, carrito: newCart };
+			setStore(newState);
+			setStateToLocalStorage(newState);
+		  }
+		},
+		removeFromCart: (itemIndex) => {
+		  const store = getStore();
+		  const newCart = [...store.carrito];
+		  newCart.splice(itemIndex, 1);
+		  const newState = { ...store, carrito: newCart };
+		  setStore(newState);
+		  setStateToLocalStorage(newState);
+		},
+		increaseCartItemQuantity: (itemIndex) => {
+		  const store = getStore();
+		  const newCart = [...store.carrito];
+		  newCart[itemIndex].quantity += 1;
+		  const newState = { ...store, carrito: newCart };
+		  setStore(newState);
+		  setStateToLocalStorage(newState);
+		},
+		decreaseCartItemQuantity: (itemIndex) => {
+		  const store = getStore();
+		  const newCart = [...store.carrito];
+		  if (newCart[itemIndex].quantity > 1) {
+			newCart[itemIndex].quantity -= 1;
+			const newState = { ...store, carrito: newCart };
+			setStore(newState);
+			setStateToLocalStorage(newState);
+		  } else {
+			newCart.splice(itemIndex, 1);
+			const newState = { ...store, carrito: newCart };
+			setStore(newState);
+			setStateToLocalStorage(newState);
+		  }
+		},
+		getProducts: async () => {
+		  try {
+			const resp = await fetch(`${BASE_URL}`);
+			const data = await resp.json();
+			const newState = { ...getStore(), productos: data };
+			setStore(newState);
+			setStateToLocalStorage(newState);
+		  } catch (error) {
+			console.error(error);
+		  }
+		},
+		getCategoryById: async (id) => {
+			try {
+				const resp = await fetch(`${BASE_URL}/categories/${id}`);
+				
+				const category = await resp.json();
+				return category;
+			} catch (error) {
+				console.error(error);
+				return null;
+			}
+		},
+		
+	  },
+	  getters: {
+		isCartEmpty: () => {
+		  const store = getStore();
+		  return store.carrito.length === 0;
+		},
+	  },
+	};
+  };
+  
+  export default getState;
+  
