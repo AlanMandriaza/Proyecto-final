@@ -26,38 +26,42 @@ const Admin = () => {
   return (
     <div className="container">
       <div className=" row justify-content-md-center">
-      <div className="btn-group mb-5 ">
-        <a
-          href="#"
-          className={`btn ${
-            activeView === "addProduct" ? "btn-primary" : "btn-secondary"
-          } btn-left`}
-          onClick={() => handleViewChange("addProduct")}
-          aria-current="page"
-        >
-          Producto
-        </a>
-        <a
-          href="#"
-          className={`btn ${
-            activeView === "categories" ? "btn-primary" : "btn-secondary"
-          } btn-left`}
-          onClick={() => handleViewChange("categories")}
-        >
-          Categorías
-        </a>
-        <a
-          href="#"
-          className={`btn ${
-            activeView === "inventario" ? "btn-primary" : "btn-secondary"
-          } btn-left`}
-          onClick={() => handleViewChange("inventario")}
-        >
-          Gestor de inventario
-        </a>
-      </div>
-      
-      {renderView()}
+        {localStorage.getItem("rol") === "admin" && (
+          <div className="btn-group mb-5 ">
+            <a
+              href="#"
+              className={`btn ${
+                activeView === "addProduct" ? "btn-primary" : "btn-secondary"
+              } btn-left`}
+              onClick={() => handleViewChange("addProduct")}
+              aria-current="page"
+            >
+              Producto
+            </a>
+            <a
+              href="#"
+              className={`btn ${
+                activeView === "categories" ? "btn-primary" : "btn-secondary"
+              } btn-left`}
+              onClick={() => handleViewChange("categories")}
+            >
+              Categorías
+            </a>
+            <a
+              href="#"
+              className={`btn ${
+                activeView === "inventario" ? "btn-primary" : "btn-secondary"
+              } btn-left`}
+              onClick={() => handleViewChange("inventario")}
+            >
+              Gestor de inventario
+            </a>
+          </div>
+        )}
+
+        {localStorage.getItem("rol") === "admin" && renderView()}
+
+        { localStorage.getItem("rol") !== "admin" && <h1 className="text-center">Usuario no tiene privilegios</h1> }
       </div>
     </div>
   );
