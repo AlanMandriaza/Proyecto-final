@@ -6,11 +6,13 @@ pipenv install flask_jwt
 pipenv install flask-bcrypt
 
 
-
+psql -U gitpod example < final.pgsql
 pipenv run migrate
 pipenv run upgrade
 
+
 psql -U gitpod example < final.pgsql
+
 pipenv run start
 
 

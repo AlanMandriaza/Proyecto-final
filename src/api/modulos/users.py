@@ -30,7 +30,7 @@ def login():
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
     userName = user.first_name +' '+ user.last_name
-    return jsonify({'message': 'Login successful' , 'user': userName, 'access_token': access_token, 'refresh_token': refresh_token}), 200
+    return jsonify({'message': 'Login successful', 'id': user.id, 'user': userName, 'access_token': access_token, 'refresh_token': refresh_token}), 200
 
 @user_api.route('/<int:user_id>', methods=['GET'])
 @jwt_required()
@@ -117,9 +117,15 @@ def delete_user(user_id):
 
     return jsonify({'message': 'User deleted successfully'}), 200
 
-@user_api.route('/<int:user_id>/roles', methods=['GET'])
+@user_api.route('/roles/<int:user_id>', methods=['GET'])
 def get_user_roles(user_id):
     user = User.query.get_or_404(user_id)
     roles = [role.serialize() for role in user.roles]
     return jsonify(roles), 200
+
+@user_api.route('/favorite/<int:user_id>', methods=['GET'])
+def get_user_favorite(user_id):
+    user = User.query.get_or_404(user_id)
+    favorite = [favorite.serialize() for favorite in user.favorite]
+    return jsonify(favorite), 200
 

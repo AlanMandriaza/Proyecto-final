@@ -6,6 +6,7 @@ const MainNavbar = (props) => {
   const logout = () => {
     console.log("entre a la funcion logout");
     localStorage.removeItem("user");
+    localStorage.removeItem("rol");
     window.location.href = "/";
   };
 
@@ -80,26 +81,6 @@ const MainNavbar = (props) => {
             <span className="navItem">Hombre</span>
           </Link>
         </li>
-        <li className="nav-item py-3">
-          <Link
-            className={
-              "nav-link " + (location.pathname === "/calzado" ? "active" : "")
-            }
-            to="/calzado"
-          >
-            <span className="navItem">Calzado</span>
-          </Link>
-        </li>
-        <li className="nav-item py-3">
-          <Link
-            className={
-              "nav-link " + (location.pathname === "/sale" ? "active" : "")
-            }
-            to="/sale"
-          >
-            <span className="navItem">SALE</span>
-          </Link>
-        </li>
         <li className="nav-item dropdown">
           <a
             className="nav-link dropdown-toggle categoria"
@@ -142,11 +123,6 @@ const MainNavbar = (props) => {
               </span>
             </Link>
           </li>
-          <li className="nav-item py-4">
-            <span className="navItem">
-              <i className="fa-sharp fa-solid fa-magnifying-glass mx-3"></i>
-            </span>
-          </li>
           <li className="nav-item py-3">
             <Link
               className={
@@ -183,15 +159,21 @@ const MainNavbar = (props) => {
               <i className="fa-solid fa-user text-light"></i>
             </a>
             <ul className="dropdown-menu ">
-              <Link className="dropdown-item" href="#" to="/login">
-                Iniciar Sesión
-              </Link>
-              <Link className="dropdown-item" href="#" to="/register">
-                Registrarse
-              </Link>
-              <Link className="dropdown-item" href="#" to="/admin">
-                Administrador
-              </Link>
+              {!localStorage.getItem("user") && (
+                <Link className="dropdown-item" href="#" to="/login">
+                  Iniciar Sesión
+                </Link>
+              )}
+              {!localStorage.getItem("user") && (
+                <Link className="dropdown-item" href="#" to="/register">
+                  Registrarse
+                </Link>
+              )}
+              {localStorage.getItem("rol") === "admin" && (
+                <Link className="dropdown-item" href="#" to="/admin">
+                  Administrador
+                </Link>
+              )}
               {localStorage.getItem("user") && (
                 <li className="dropdown-item" href="#" onClick={logout}>
                   Cerrar Sesión
