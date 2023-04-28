@@ -7,6 +7,8 @@ import { Home } from "./pages/home";
 import { Cart } from "./pages/cart";
 import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
+import { Pago } from "./pages/pago";
+import { Envios } from "./pages/envios";
 import injectContext from "./store/appContext";
 import Formulario from "./pages/formulario";
 import FormularioRegister from "./pages/formularioRegister";
@@ -37,6 +39,8 @@ const Layout = () => {
             <Route element={<Single />} path="/single/:theid" />
             <Route element={<Admin />} path="/admin" />
             <Route element={<Inventory />} path="/inventario" />
+            <Route element={<Pago />} path="/pago" />
+            <Route element={<Envios />} path="/envios" />
             <Route element={<h1>Not found!</h1>} />
             <Route path="/category/:categoryId" element={<Category />} />
           </Routes>
