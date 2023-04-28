@@ -6,7 +6,6 @@ from sqlalchemy import text
 cart_items_api = Blueprint('cart_items_api', __name__, url_prefix='/cart_items')
 
 # Endpoint para crear un nuevo item de carrito
-# Endpoint para crear un nuevo item de carrito
 @cart_items_api.route('', methods=['POST'])
 def create_cart_item():
     # Obtener los datos del item de carrito a través del JSON de la solicitud

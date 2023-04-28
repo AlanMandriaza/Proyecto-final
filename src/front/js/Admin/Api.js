@@ -3,6 +3,7 @@ export const BASE_URL = 'https://3001-alanmandria-proyectofin-ktqm2552185.ws-us9
 
 const api = {
 
+  
   getProductosByGenere: (genere) => {
     return fetch(`${BASE_URL}/api/products?genere=${genere}`)
       .then((response) => {
@@ -16,7 +17,6 @@ const api = {
         throw error;
       });
   },
-
 
  deleteCategory: async (categoryId) => {
   try {
@@ -230,7 +230,34 @@ const api = {
         throw error;
       });
   },
+  addToCart: (productId, quantity) => {
+    return fetch(`${BASE_URL}/api/cart/items`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ productId, quantity }),
+    })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Error al agregar el producto al carrito');
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log('Producto agregado al carrito:', data);
+      return data;
+    })
+    .catch((error) => {
+      console.error('Error al agregar el producto al carrito:', error);
+      throw error;
+    });
+  }
+  
   
 };
+  
+  
+
 
 export default api;

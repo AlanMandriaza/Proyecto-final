@@ -1,8 +1,12 @@
+import { useState } from 'react';
+import { Modal, Button } from 'react-bootstrap';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
+import { useContext, useEffect } from 'react';
 import { Context } from '../store/appContext';
-import React, { useState, useEffect, useContext } from 'react';
 import api from '../Admin/Api';
+import React from 'react';
+import "../../styles/modal.css";
 
 const ProductosHombre = () => {
   const { store, actions } = useContext(Context);
@@ -11,11 +15,11 @@ const ProductosHombre = () => {
   const [categorias, setCategorias] = useState([]);
   const [checkedCategorias, setCheckedCategorias] = useState([]);
   const [productosFiltrados, setProductosFiltrados] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
-    api
-      .getProductosByGenere('Hombre')
+    api.getProductosByGenere('Hombre')
       .then((productos) => {
         if (isMounted) {
           setProductos(productos);
@@ -24,8 +28,7 @@ const ProductosHombre = () => {
       })
       .catch((error) => console.error('Error al obtener los productos:', error));
 
-    api
-      .getCategories()
+    api.getCategories()
       .then((categorias) => {
         if (isMounted) setCategorias(categorias);
       })
@@ -44,6 +47,13 @@ const ProductosHombre = () => {
       setCheckedCategorias(checkedCategorias.filter((id) => id !== categoryId));
     }
   };
+  const calculateTotal = () => {
+    let total = 0;
+    store.carrito.forEach((item) => {
+      total += item.price * item.quantity;
+    });
+    return total;
+  };
 
   useEffect(() => {
     if (checkedCategorias.length === 0) {
@@ -56,7 +66,15 @@ const ProductosHombre = () => {
       setProductosFiltrados(filteredProducts);
     }
   }, [checkedCategorias, productos]);
-  
+
+  const handleClose = () => setShowModal(false);
+  const handleShow = () => setShowModal(true);
+
+  const handleAddToCart = (item) => {
+    actions.addToCart(item);
+    handleShow();
+  };
+
   return (
     <div className="m-0 p-0 my-2">
       <div className="container-fluid">
@@ -111,7 +129,11 @@ const ProductosHombre = () => {
                           <AiOutlineHeart />
                         </span>
                         <br />
-                        <button type="button" className="btn btn-lg w-100 text-light button-color" onClick={() => alert('hola')}>
+                        <button
+                          type="button"
+                          className="btn btn-lg w-100 text-light button-color"
+                          onClick={() => handleAddToCart(item)}
+                        >
                           Agregar al carrito
                         </button>
                       </div>
@@ -127,7 +149,40 @@ const ProductosHombre = () => {
           </div>
         </div>
       </div>
-      </div>
+
+
+      <Modal show={showModal} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Producto agregado al carrito!!!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Tu carrito actual:</p>
+          {store.carrito && store.carrito.map((item, index) => (
+            <div key={index} className="cart-item">
+              <img className="cart-item-image" src={item.image} alt={item.name} />
+              <div className="cart-item-info">
+                <h5 className="cart-item-name">{item.name}</h5>
+                <p className="cart-item-quantity">Cantidad: {item.quantity}</p>
+                <p className="cart-item-price">Precio: {item.price}</p>
+              </div>
+            </div>
+          ))}
+          <hr />
+          <h5 className="font-weight-bold">Total: ${calculateTotal()}</h5>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Seguir comprando
+          </Button>
+          <Link to="/cart" className="btn btn-primary">
+            Ir al carrito
+          </Link>
+        </Modal.Footer>
+      </Modal>
+
+
+
+    </div>
   );
 };
 
