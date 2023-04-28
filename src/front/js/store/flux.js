@@ -54,7 +54,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getProducts: async () => {
 				const store = getStore()
 				try{
-					const resp = await fetch("https://3000-alanmandria-proyectofin-td6upm10qqm.ws-us96.gitpod.io")
+					const resp = await fetch("https://3001-alanmandria-proyectofin-ktqm2552185.ws-us96.gitpod.io")
 					const data = await resp.json()
 					setStore({ productos: data })
 

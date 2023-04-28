@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import api from "../Admin/Api";
-import "./categoria.css";
+import "../../styles/categoria.css";
 
 const Category = () => {
   const { categoryId } = useParams();

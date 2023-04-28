@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./CustomFormStyles.css";
+import "../../styles/CustomFormStyles.css";
 import api from "./Api";
 import { Container, Row, Col } from "reactstrap";
 
