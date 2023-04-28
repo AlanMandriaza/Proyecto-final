@@ -17,6 +17,8 @@ import ProductosHombre from './pages/productosHombre';
 import ProductosMujer from './pages/productosMujer';
 import ScrollToTop from "./component/scrollToTop";
 import { Single } from "./pages/single";
+import Favorites from "./pages/favorite";
+
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -32,6 +34,7 @@ const Layout = () => {
             <Route element={<Cart />} path="/cart" />
             <Route element={<Formulario />} path="/login" />
             <Route element={<FormularioRegister />} path="/register" />
+            <Route element={<Favorites />} path="/favoritos" />
             <Route element={<Single />} path="/single/:theid" />
             <Route element={<Admin />} path="/admin" />
             <Route element={<Inventory />} path="/inventario" />

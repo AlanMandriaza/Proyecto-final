@@ -123,3 +123,9 @@ def get_user_roles(user_id):
     roles = [role.serialize() for role in user.roles]
     return jsonify(roles), 200
 
+@user_api.route('/favorite/<int:user_id>', methods=['GET'])
+def get_user_favorite(user_id):
+    user = User.query.get_or_404(user_id)
+    favorite = [favorite.serialize() for favorite in user.favorite]
+    return jsonify(favorite), 200
+

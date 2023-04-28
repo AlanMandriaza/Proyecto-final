@@ -11,23 +11,34 @@ const ProductosMujer = () => {
   const [categorias, setCategorias] = useState([]);
   const [checkedCategorias, setCheckedCategorias] = useState([]);
   const [productosFiltrados, setProductosFiltrados] = useState([]);
+  const [isFavorite, setIsFavorite] = useState(true);
+
+  function handleClick() {
+    setIsFavorite(!isFavorite);
+  }
 
   useEffect(() => {
     let isMounted = true;
-    api.getProductosByGenere("Mujer")
+    api
+      .getProductosByGenere("Mujer")
       .then((productos) => {
         if (isMounted) {
           setProductos(productos);
           setProductosFiltrados(productos);
         }
       })
-      .catch((error) => console.error("Error al obtener los productos:", error));
+      .catch((error) =>
+        console.error("Error al obtener los productos:", error)
+      );
 
-    api.getCategories()
+    api
+      .getCategories()
       .then((categorias) => {
         if (isMounted) setCategorias(categorias);
       })
-      .catch((error) => console.error("Error al obtener las categorías:", error));
+      .catch((error) =>
+        console.error("Error al obtener las categorías:", error)
+      );
 
     return () => {
       isMounted = false;
@@ -45,9 +56,13 @@ const ProductosMujer = () => {
 
   useEffect(() => {
     if (checkedCategorias.length === 0) {
-      setProductosFiltrados(productos.filter((product) => product.genere === "Mujer"));
+      setProductosFiltrados(
+        productos.filter((product) => product.genere === "Mujer")
+      );
     } else {
-      const filteredProductsByGenere = productos.filter((product) => product.genere === "Mujer");
+      const filteredProductsByGenere = productos.filter(
+        (product) => product.genere === "Mujer"
+      );
       const filteredProducts = filteredProductsByGenere.filter((product) => {
         return checkedCategorias.includes(Number(product.category_id));
       });
@@ -58,7 +73,7 @@ const ProductosMujer = () => {
     <div className="m-0 p-0 my-2">
       <div className="container-fluid">
         <div className="row justify-content-center">
-          <div className="col-3 border border-success">
+          <div className="col-3 ">
             <h3>Productos Mujer</h3>
             <h5>Categorías</h5>
             <div className="form-check mb-2">
@@ -84,32 +99,45 @@ const ProductosMujer = () => {
                   checked={checkedCategorias.includes(Number(categoria.id))}
                   onChange={handleCheckboxChange}
                 />
-                <label className="form-check-label" htmlFor={`categoria${categoria.id}`}>
+                <label
+                  className="form-check-label"
+                  htmlFor={`categoria${categoria.id}`}
+                >
                   {categoria.name}
                 </label>
               </div>
             ))}
           </div>
-          <div className="col-9 border border-primary container-fluid">
+          <div className="col-9 container-fluid">
             <div className="row row-cols-xm-1 row-cols-sm-2 row-cols-md-3 g-4">
               {productosFiltrados.length > 0 ? (
                 productosFiltrados.map((item, index) => (
                   <div className="col" key={index}>
                     <div className="card" style={{ width: "18rem" }}>
-                    <Link to={`/productos/${item.id}`}>
-  <img src={item.image} className="card-img-top" alt={item.name} />
-</Link>
+                      <Link to={`/productos/${item.id}`}>
+                        <img
+                          src={item.image}
+                          className="card-img-top"
+                          alt={item.name}
+                        />
+                      </Link>
 
                       <div className="card-body">
                         <Link to="/" className="text-decoration-none text-dark">
                           <h5 className="card-title">{item.name}</h5>
                         </Link>
                         <span className="card-text fs-4">${item.price}</span>
-                        <span className="card-text float-end icon-color fs-4">
-                          <AiOutlineHeart />
+                        <span className="card-text float-end">
+                          <button onClick={handleClick}>
+                            {isFavorite ? "♥" : "♡"}
+                          </button>
                         </span>
                         <br />
-                        <button type="button" className="btn btn-lg w-100 text-light button-color" onClick={() => alert("hola")}>
+                        <button
+                          type="button"
+                          className="btn btn-lg w-100 text-light button-color"
+                          onClick={() => alert("hola")}
+                        >
                           Agregar al carrito
                         </button>
                       </div>

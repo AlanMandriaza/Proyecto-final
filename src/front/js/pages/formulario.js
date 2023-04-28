@@ -13,6 +13,7 @@ import {
 import Alerta from "../component/alert";
 import { Link } from "react-router-dom";
 
+
 import "../../styles/formulario.css";
 
 const Formulario = (props) => {

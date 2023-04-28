@@ -81,16 +81,6 @@ const MainNavbar = (props) => {
             <span className="navItem">Hombre</span>
           </Link>
         </li>
-        <li className="nav-item py-3">
-          <Link
-            className={
-              "nav-link " + (location.pathname === "/sale" ? "active" : "")
-            }
-            to="/sale"
-          >
-            <span className="navItem">SALE</span>
-          </Link>
-        </li>
         <li className="nav-item dropdown">
           <a
             className="nav-link dropdown-toggle categoria"
@@ -169,17 +159,21 @@ const MainNavbar = (props) => {
               <i className="fa-solid fa-user text-light"></i>
             </a>
             <ul className="dropdown-menu ">
-              <Link className="dropdown-item" href="#" to="/login">
-                Iniciar Sesión
-              </Link>
-              <Link className="dropdown-item" href="#" to="/register">
-                Registrarse
-              </Link>
-              {localStorage.getItem("rol") === 'admin' && (
-                 <Link className="dropdown-item" href="#" to="/admin">
-                 Administrador
-               </Link>
-              ) }
+              {!localStorage.getItem("user") && (
+                <Link className="dropdown-item" href="#" to="/login">
+                  Iniciar Sesión
+                </Link>
+              )}
+              {!localStorage.getItem("user") && (
+                <Link className="dropdown-item" href="#" to="/register">
+                  Registrarse
+                </Link>
+              )}
+              {localStorage.getItem("rol") === "admin" && (
+                <Link className="dropdown-item" href="#" to="/admin">
+                  Administrador
+                </Link>
+              )}
               {localStorage.getItem("user") && (
                 <li className="dropdown-item" href="#" onClick={logout}>
                   Cerrar Sesión

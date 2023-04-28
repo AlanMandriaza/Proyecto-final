@@ -18,10 +18,6 @@
     color: white;
 }
 
-.scroll-categoria{
-    height: 400px;
-	overflow-y: scroll;
-}
 
 .logoName{
     font-family: 'Libre Baskerville', serif;
@@ -54,5 +50,10 @@
    top: 50px;
     color :white;
 
+}
+
+.cart-size{
+width: 18rem;
+height: 300px;
 }
 

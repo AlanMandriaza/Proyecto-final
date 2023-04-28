@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
+import { BASE_URL } from "../Admin/Api";
 
 export const Cart = () => {
   const { store, actions } = useContext(Context);
@@ -124,11 +125,7 @@ export const Cart = () => {
         });
     }
   }
-  
-  
 
-  
-  
   return (
     <div className="container">
       <div className="d-flex justify-content-between align-items-center mb-3">
@@ -153,9 +150,9 @@ export const Cart = () => {
             </div>
           </div>
           <div className="p-2 w-10 d-flex align-items-center">
-            <button className="btn btn-outline-secondary" onClick={() => handleIncrease(item)}>+</button>
-            <span className="mx-2">{item.quantity}</span>
             <button className="btn btn-outline-secondary" onClick={() => handleDecrease(item)}>-</button>
+            <span className="mx-2">{item.quantity}</span>
+            <button className="btn btn-outline-secondary" onClick={() => handleIncrease(item)}>+</button>
           </div>
           <div className="p-2 w-20 d-flex align-items-center">${item.product.price}</div>
           <div className="p-2 w-20 d-flex align-items-center">

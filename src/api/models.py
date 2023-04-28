@@ -72,6 +72,7 @@ class Role(db.Model):
             'name': self.name
         }
 
+
 class UserRole(db.Model):
     __tablename__ = 'user_roles'
     user_id = db.Column(db.Integer, ForeignKey('users.id'), primary_key=True)
