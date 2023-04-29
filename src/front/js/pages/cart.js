@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
-
+import { Link } from "react-router-dom";
 
 export const Cart = () => {
   const { store, actions } = useContext(Context);
@@ -26,6 +26,7 @@ export const Cart = () => {
       total: total
     };
     console.log(compra);
+    actions.setTotal(compra.total)
   };
 
   const handleDecrease = (item) => {
@@ -84,8 +85,11 @@ export const Cart = () => {
           <hr />
           <div className="d-flex flex-row-reverse">
             <div className="p-2">
-              <button className="btn btn-primary" onClick={handleCompra}>Comprar</button>
+            <Link to="/pago">
+  <button className="btn btn-primary" onClick={handleCompra}>Comprar</button>
+</Link>
 
+              
             </div>
             <div className="p-2">
               <strong>Total:</strong> ${total}

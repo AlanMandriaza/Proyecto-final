@@ -1,4 +1,3 @@
-<<<<<<< Dev
 import { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { AiOutlineHeart } from 'react-icons/ai';
@@ -8,53 +7,32 @@ import { Context } from '../store/appContext';
 import api from '../Admin/Api';
 import React from 'react';
 import "../../styles/modal.css";
-=======
-import { Link } from "react-router-dom";
-import React, { useState, useEffect, useContext } from "react";
-import api from "../Admin/Api";
->>>>>>> modificar-template
 
 const ProductosHombre = () => {
+  const { store, actions } = useContext(Context);
 
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [checkedCategorias, setCheckedCategorias] = useState([]);
   const [productosFiltrados, setProductosFiltrados] = useState([]);
-<<<<<<< Dev
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
     api.getProductosByGenere('Hombre')
-=======
-  const [isFavorite, setIsFavorite] = useState(true);
-
-  function handleClick() {
-    setIsFavorite(!isFavorite);
-  }
-
-  useEffect(() => {
-    let isMounted = true;
-    api
-      .getProductosByGenere("Hombre")
->>>>>>> modificar-template
       .then((productos) => {
         if (isMounted) {
           setProductos(productos);
           setProductosFiltrados(productos);
         }
       })
-      .catch((error) =>
-        console.error("Error al obtener los productos:", error)
-      );
+      .catch((error) => console.error('Error al obtener los productos:', error));
 
     api.getCategories()
       .then((categorias) => {
         if (isMounted) setCategorias(categorias);
       })
-      .catch((error) =>
-        console.error("Error al obtener las categorías:", error)
-      );
+      .catch((error) => console.error('Error al obtener las categorías:', error));
 
     return () => {
       isMounted = false;
@@ -79,13 +57,9 @@ const ProductosHombre = () => {
 
   useEffect(() => {
     if (checkedCategorias.length === 0) {
-      setProductosFiltrados(
-        productos.filter((product) => product.genere === "Hombre")
-      );
+      setProductosFiltrados(productos.filter((product) => product.genere === 'Hombre'));
     } else {
-      const filteredProductsByGenere = productos.filter(
-        (product) => product.genere === "Hombre"
-      );
+      const filteredProductsByGenere = productos.filter((product) => product.genere === 'Hombre');
       const filteredProducts = filteredProductsByGenere.filter((product) => {
         return checkedCategorias.includes(Number(product.category_id));
       });
@@ -93,7 +67,6 @@ const ProductosHombre = () => {
     }
   }, [checkedCategorias, productos]);
 
-<<<<<<< Dev
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
 
@@ -102,13 +75,11 @@ const ProductosHombre = () => {
     handleShow();
   };
 
-=======
->>>>>>> modificar-template
   return (
     <div className="m-0 p-0 my-2">
       <div className="container-fluid">
         <div className="row justify-content-center">
-          <div className="col-3">
+          <div className="col-3 border border-success">
             <h3>Productos Hombre</h3>
             <h5>Categorías</h5>
             <div className="form-check mb-2">
@@ -134,53 +105,34 @@ const ProductosHombre = () => {
                   checked={checkedCategorias.includes(Number(categoria.id))}
                   onChange={handleCheckboxChange}
                 />
-                <label
-                  className="form-check-label"
-                  htmlFor={`categoria${categoria.id}`}
-                >
+                <label className="form-check-label" htmlFor={`categoria${categoria.id}`}>
                   {categoria.name}
                 </label>
               </div>
             ))}
           </div>
-          <div className="col-9 container-fluid">
+          <div className="col-9 border border-primary container-fluid">
             <div className="row row-cols-xm-1 row-cols-sm-2 row-cols-md-3 g-4">
               {productosFiltrados.length > 0 ? (
                 productosFiltrados.map((item, index) => (
                   <div className="col" key={index}>
-                    <div className="card" style={{ width: "18rem" }}>
-                      <Link
-                        to={`/productos/${item.id}`}
-                        className="text-decoration-none text-dark"
-                      >
-                        <img
-                          src={item.image}
-                          className="card-img-top"
-                          alt={item.name}
-                        />
+                    <div className="card" style={{ width: '18rem' }}>
+                      <Link to={`/productos/${item.id}`} className="text-decoration-none text-dark">
+                        <img src={item.image} className="card-img-top" alt={item.name} />
                       </Link>
                       <div className="card-body">
-                        <Link
-                          to={`/productos/${item.id}`}
-                          className="text-decoration-none text-dark"
-                        >
+                        <Link to={`/productos/${item.id}`} className="text-decoration-none text-dark">
                           <h5 className="card-title">{item.name}</h5>
                         </Link>
                         <span className="card-text fs-4">${item.price}</span>
-                        <span className="card-text float-end">
-                          <button onClick={handleClick}>
-                            {isFavorite ? "♥" : "♡"}
-                          </button>
+                        <span className="card-text float-end icon-color fs-4">
+                          <AiOutlineHeart />
                         </span>
                         <br />
                         <button
                           type="button"
                           className="btn btn-lg w-100 text-light button-color"
-<<<<<<< Dev
                           onClick={() => handleAddToCart(item)}
-=======
-                          onClick={() => alert("hola")}
->>>>>>> modificar-template
                         >
                           Agregar al carrito
                         </button>
@@ -197,7 +149,6 @@ const ProductosHombre = () => {
           </div>
         </div>
       </div>
-<<<<<<< Dev
 
 
       <Modal show={showModal} onHide={handleClose}>
@@ -231,8 +182,6 @@ const ProductosHombre = () => {
 
 
 
-=======
->>>>>>> modificar-template
     </div>
   );
 };

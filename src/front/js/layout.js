@@ -8,6 +8,7 @@ import Formulario from "./pages/formulario";
 import FormularioRegister from "./pages/formularioRegister";
 import  Cart  from "./pages/cart";
 import { Demo } from "./pages/demo";
+import { Pago } from "./pages/pago";
 import { Home } from "./pages/home";
 import injectContext from "./store/appContext";
 import Inventory from "./Admin/Inventory";
@@ -18,7 +19,7 @@ import ProductosMujer from './pages/productosMujer';
 import ScrollToTop from "./component/scrollToTop";
 import { Single } from "./pages/single";
 import Favorites from "./pages/favorite";
-
+import  HistorialPedidos  from "./pages/historialPedidos";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -43,6 +44,8 @@ const Layout = () => {
             <Route path="/productos/:id" element={<ProductDetails />} />
             <Route path="/category/:categoryId" element={<Category />} />
             <Route element={<h1>Not found!</h1>} />
+            <Route element={<HistorialPedidos />} path="/historialPedidos" />
+            <Route element={<Pago />} path="/pago" />
           </Routes>
           <Correo />
           <Footer />

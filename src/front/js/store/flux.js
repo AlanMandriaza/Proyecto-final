@@ -5,6 +5,7 @@ const getState = ({ getStore, setStore }) => {
 	const initialState = {
 	  carrito: [],
 	  productos: [],
+	  total:0,
 	};
   
 	const getStateFromLocalStorage = () => {
@@ -19,6 +20,10 @@ const getState = ({ getStore, setStore }) => {
 	return {
 	  store: getStateFromLocalStorage(),
 	  actions: {
+		setTotal:(valor)=>{
+			setStore({total:valor})
+		},
+
 		addToCart: (item) => {
 		  const store = getStore();
 		  const itemInCart = store.carrito.find((i) => i.id === item.id);
