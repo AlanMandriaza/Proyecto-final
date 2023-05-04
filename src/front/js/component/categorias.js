@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import api from "../Admin/Api";
 import "../../styles/categoria.css";
 
@@ -36,11 +36,12 @@ const Category = () => {
       <div className="product-cards-container">
         {products.map((product) => (
           <div key={product.id} className="product-card">
-            <img src={product.image} alt={product.name} />
+            <Link to={`/productos/${product.id}`}>
+              <img src={product.image} alt={product.name} />
+            </Link>
             <h3>{product.name}</h3>
             <p>{product.description}</p>
             <p className="product-price">${product.price}</p>
-            <button className="add-to-cart-button">Agregar al carrito</button>
           </div>
         ))}
       </div>

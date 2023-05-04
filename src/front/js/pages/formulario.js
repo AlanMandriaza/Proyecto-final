@@ -1,4 +1,5 @@
 import React from "react";
+import {BASE_URL} from "../Admin/Api";
 import {
   Container,
   Row,
@@ -27,7 +28,7 @@ const Formulario = (props) => {
   const roles = (rol) => {
     
     fetch(
-      `https://3001-alanmandria-proyectofin-tdq4mxjanom.ws-us96b.gitpod.io/api/users/roles/${rol}`,
+      `${BASE_URL}/api/users/roles/${rol}`,
       {
         method: "GET",
         headers: {
@@ -35,6 +36,7 @@ const Formulario = (props) => {
         },
       }
     )
+    
       .then((res) => res.json())
       .then((data) => {
 
@@ -57,7 +59,7 @@ const Formulario = (props) => {
     }
 
     fetch(
-      "https://3001-alanmandria-proyectofin-tdq4mxjanom.ws-us96b.gitpod.io/api/users/login",
+      `${BASE_URL}/api/users/login`,
       {
         method: "POST",
         headers: {
@@ -69,6 +71,7 @@ const Formulario = (props) => {
         }),
       }
     )
+    
       .then((res) => res.json())
       .then((data) => {
         console.log("RESPONSE from login success ", data);

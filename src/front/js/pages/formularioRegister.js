@@ -1,4 +1,6 @@
 import React from "react";
+import {BASE_URL} from "../Admin/Api";
+
 import {
   Container,
   Row,
@@ -33,8 +35,7 @@ const FormularioRegister = (props) => {
     }
 
     fetch(
-
-      "https://3001-alanmandria-proyectofin-tdq4mxjanom.ws-us96b.gitpod.io/api/users/signup",
+      `${BASE_URL}/api/users/signup`,
       {
         method: "POST",
         headers: {
@@ -48,6 +49,7 @@ const FormularioRegister = (props) => {
         }),
       }
     )
+    
       .then((res) => res.json())
       .then((data) => {
         //console.log("RESPONSE from login success ", data);
