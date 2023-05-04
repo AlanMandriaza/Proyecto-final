@@ -27,7 +27,7 @@ const Formulario = (props) => {
   const roles = (rol) => {
     
     fetch(
-      `https://3001-alanmandria-proyectofin-j9zazb76hni.ws-us96b.gitpod.io/api/users/roles/${rol}`,
+      `https://3001-alanmandria-proyectofin-tdq4mxjanom.ws-us96b.gitpod.io/api/users/roles/${rol}`,
       {
         method: "GET",
         headers: {
@@ -57,7 +57,7 @@ const Formulario = (props) => {
     }
 
     fetch(
-      "https://3001-alanmandria-proyectofin-j9zazb76hni.ws-us96b.gitpod.io/api/users/login",
+      "https://3001-alanmandria-proyectofin-tdq4mxjanom.ws-us96b.gitpod.io/api/users/login",
       {
         method: "POST",
         headers: {

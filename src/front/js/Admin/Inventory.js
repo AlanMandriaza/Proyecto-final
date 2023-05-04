@@ -3,10 +3,13 @@ import "../../styles/inventario.css";
 
 import api from "./Api";
 import { Dropdown } from "react-bootstrap";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 const Inventory = () => {
     const [inventory, setInventory] = useState([]);
     const [error, setError] = useState(null);
+    const [modal, setModal] = useState(false);
+    const [productIdToDelete, setProductIdToDelete] = useState(null);
 
     useEffect(() => {
         api.getInventory()
@@ -18,6 +21,17 @@ const Inventory = () => {
             });
     }, []);
 
+    const showDeleteConfirmation = (productId) => {
+        setProductIdToDelete(productId);
+        setModal(true);
+    };
+    const confirmDelete = () => {
+        handleDelete(productIdToDelete);
+        setModal(false);
+    };
+    const cancelDelete = () => {
+        setModal(false);
+    };
 
     const handleDelete = async (productId) => {
         try {
@@ -186,17 +200,29 @@ const Inventory = () => {
                                 </td>
                                 <td>
                                     <button
-                                        onClick={() => handleDelete(product.id)}
+                                        onClick={() => showDeleteConfirmation(product.id)}
                                         className="btn btn-primary boton"
                                     >
                                         Eliminar
                                     </button>
+
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
+            <Modal isOpen={modal} toggle={cancelDelete}>
+                <ModalHeader toggle={cancelDelete}>Confirmar eliminación</ModalHeader>
+                <ModalBody>
+                    ¿Estás seguro de que deseas eliminar este producto?
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="danger" onClick={confirmDelete}>Eliminar</Button>{' '}
+                    <Button color="secondary" onClick={cancelDelete}>Cancelar</Button>
+                </ModalFooter>
+            </Modal>
+
         </div>
     );
 };

@@ -34,7 +34,7 @@ const FormularioRegister = (props) => {
 
     fetch(
 
-      "https://3001-alanmandria-proyectofin-j9zazb76hni.ws-us96b.gitpod.io/api/users/signup",
+      "https://3001-alanmandria-proyectofin-tdq4mxjanom.ws-us96b.gitpod.io/api/users/signup",
       {
         method: "POST",
         headers: {
