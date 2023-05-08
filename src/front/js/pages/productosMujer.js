@@ -179,9 +179,6 @@ const ProductosMujer = () => {
           </Link>
         </Modal.Footer>
       </Modal>
-
-
-
     </div>
   );
 };
