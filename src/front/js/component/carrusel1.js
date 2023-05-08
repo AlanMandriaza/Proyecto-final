@@ -9,7 +9,7 @@ import {
 
 const items = [
   {
-    src:'https://img.freepik.com/foto-gratis/mujer-sonriente-estilo-atractivo-elegir-ropa-tienda-ropa_285396-4642.jpg?w=740&t=st=1682391995~exp=1682392595~hmac=a3a926bc91389f48d7ec7496a6a401aa568bb161fce74571b79c37c68e03e870',
+    src:'https://media.istockphoto.com/id/1194439772/es/foto/mujer-elegante-en-rosa-pantalones-de-piernas-anchas-zapatillas-y-blusa-de-rayas-est%C3%A1-posando.jpg?s=612x612&w=0&k=20&c=rdzwe_NSclWRKqOrMzRmv4_XfGmsCfRyIs-MZmfb5Ec=',
     altText: 'imagen 1'
     
   },

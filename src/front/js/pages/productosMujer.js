@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import { AiOutlineHeart } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
-import { useContext, useEffect } from 'react';
+import { useState } from "react";
+import { Modal, Button } from "react-bootstrap";
+import { AiOutlineHeart } from "react-icons/ai";
+import { Link } from "react-router-dom";
+import { useContext, useEffect } from "react";
 import { Context } from '../store/appContext';
-import api from '../Admin/Api';
-import React from 'react';
+import api from "../Admin/Api";
+import React from "react";
 import "../../styles/modal.css";
 
 const ProductosMujer = () => {
@@ -19,20 +19,26 @@ const ProductosMujer = () => {
 
   useEffect(() => {
     let isMounted = true;
-    api.getProductosByGenere('Mujer')
+    api
+      .getProductosByGenere("Mujer")
       .then((productos) => {
         if (isMounted) {
           setProductos(productos);
           setProductosFiltrados(productos);
         }
       })
-      .catch((error) => console.error('Error al obtener los productos:', error));
+      .catch((error) =>
+        console.error("Error al obtener los productos:", error)
+      );
 
-    api.getCategories()
+    api
+      .getCategories()
       .then((categorias) => {
         if (isMounted) setCategorias(categorias);
       })
-      .catch((error) => console.error('Error al obtener las categorías:', error));
+      .catch((error) =>
+        console.error("Error al obtener las categorías:", error)
+      );
 
     return () => {
       isMounted = false;
@@ -57,9 +63,13 @@ const ProductosMujer = () => {
 
   useEffect(() => {
     if (checkedCategorias.length === 0) {
-      setProductosFiltrados(productos.filter((product) => product.genere === 'Mujer'));
+      setProductosFiltrados(
+        productos.filter((product) => product.genere === "Mujer")
+      );
     } else {
-      const filteredProductsByGenere = productos.filter((product) => product.genere === 'Mujer');
+      const filteredProductsByGenere = productos.filter(
+        (product) => product.genere === "Mujer"
+      );
       const filteredProducts = filteredProductsByGenere.filter((product) => {
         return checkedCategorias.includes(Number(product.category_id));
       });
@@ -73,6 +83,11 @@ const ProductosMujer = () => {
   const handleAddToCart = (item) => {
     actions.addToCart(item);
     handleShow();
+  };
+
+  const AddToFavorites = (item) => {
+    console.log('llegue');
+    actions.addToFavorite(item);
   };
 
   return (
@@ -105,7 +120,10 @@ const ProductosMujer = () => {
                   checked={checkedCategorias.includes(Number(categoria.id))}
                   onChange={handleCheckboxChange}
                 />
-                <label className="form-check-label" htmlFor={`categoria${categoria.id}`}>
+                <label
+                  className="form-check-label"
+                  htmlFor={`categoria${categoria.id}`}
+                >
                   {categoria.name}
                 </label>
               </div>
@@ -116,18 +134,33 @@ const ProductosMujer = () => {
               {productosFiltrados.length > 0 ? (
                 productosFiltrados.map((item, index) => (
                   <div className="col" key={index}>
-                    <div className="card" style={{ width: '18rem' }}>
-                      <Link to={`/productos/${item.id}`} className="text-decoration-none text-dark">
-                        <img src={item.image} className="card-img-top" alt={item.name} />
+                    <div className="card" style={{ width: "18rem" }}>
+                      <Link
+                        to={`/productos/${item.id}`}
+                        className="text-decoration-none text-dark"
+                      >
+                        <img
+                          src={item.image}
+                          className="card-img-top"
+                          alt={item.name}
+                        />
                       </Link>
                       <div className="card-body">
-                        <Link to={`/productos/${item.id}`} className="text-decoration-none text-dark">
+                        <Link
+                          to={`/productos/${item.id}`}
+                          className="text-decoration-none text-dark"
+                        >
                           <h5 className="card-title">{item.name}</h5>
                         </Link>
                         <span className="card-text fs-4">${item.price}</span>
-                        <span className="card-text float-end icon-color fs-4">
-                          <AiOutlineHeart />
-                        </span>
+                        <button
+                          type="button"
+                          className="btn float-end corazon icon-color fs-4"
+                          onClick={() => AddToFavorites(item)}
+                        >
+                          <i className="far fa fa-heart"></i>
+                        </button>
+                        
                         <br />
                         <button
                           type="button"
@@ -150,23 +183,29 @@ const ProductosMujer = () => {
         </div>
       </div>
 
-
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Producto agregado al carrito!!!</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <p>Tu carrito actual:</p>
-          {store.carrito && store.carrito.map((item, index) => (
-            <div key={index} className="cart-item">
-              <img className="cart-item-image" src={item.image} alt={item.name} />
-              <div className="cart-item-info">
-                <h5 className="cart-item-name">{item.name}</h5>
-                <p className="cart-item-quantity">Cantidad: {item.quantity}</p>
-                <p className="cart-item-price">Precio: {item.price}</p>
+          {store.carrito &&
+            store.carrito.map((item, index) => (
+              <div key={index} className="cart-item">
+                <img
+                  className="cart-item-image"
+                  src={item.image}
+                  alt={item.name}
+                />
+                <div className="cart-item-info">
+                  <h5 className="cart-item-name">{item.name}</h5>
+                  <p className="cart-item-quantity">
+                    Cantidad: {item.quantity}
+                  </p>
+                  <p className="cart-item-price">Precio: {item.price}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
           <hr />
           <h5 className="font-weight-bold">Total: ${calculateTotal()}</h5>
         </Modal.Body>
@@ -179,9 +218,6 @@ const ProductosMujer = () => {
           </Link>
         </Modal.Footer>
       </Modal>
-
-
-
     </div>
   );
 };

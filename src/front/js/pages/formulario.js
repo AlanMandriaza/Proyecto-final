@@ -129,7 +129,10 @@ const Formulario = (props) => {
                     onChange={(ev) => setPassword(ev.currentTarget.value)}
                   />
                 </FormGroup>
+                <Link className="text-center mt-5" to="/resetToPasword">
                 <p className="text-center mt-3">¿Olvidó su contraseña?</p>
+                </Link>
+                
                 <Button type="submit" className="colorBoton">
                   Ingresar
                 </Button>

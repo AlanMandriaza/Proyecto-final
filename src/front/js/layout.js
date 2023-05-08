@@ -3,9 +3,13 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Admin from './Admin/Admin';
 import Category from "./component/categorias";
 import Correo from "./component/correo";
+import Pago from "./pages/pago";
+import ResetPasword from "./component/resetPasword";
+import ResetPaswordValidate from "./component/resetPaswordValidate";
 import { Footer } from "./component/footer";
 import Formulario from "./pages/formulario";
 import FormularioRegister from "./pages/formularioRegister";
+import PerfilUser from "./pages/perfil";
 import  Cart  from "./pages/cart";
 import { Demo } from "./pages/demo";
 import { Home } from "./pages/home";
@@ -33,11 +37,15 @@ const Layout = () => {
             <Route element={<Demo />} path="/demo" />
             <Route element={<Cart />} path="/cart" />
             <Route element={<Formulario />} path="/login" />
+            <Route element={<ResetPasword />} path="/resetToPasword" />
+            <Route element={<ResetPaswordValidate />} path="/validePasword" />
             <Route element={<FormularioRegister />} path="/register" />
+            <Route element={<PerfilUser />} path="/perfil" />
             <Route element={<Favorites />} path="/favoritos" />
             <Route element={<Single />} path="/single/:theid" />
             <Route element={<Admin />} path="/admin" />
             <Route element={<Inventory />} path="/inventario" />
+            <Route element={<Pago />} path="/pago" />
             <Route element={<ProductosMujer />} path="/mujer" />
             <Route element={<ProductosHombre />} path="/hombre" />
             <Route path="/productos/:id" element={<ProductDetails />} />

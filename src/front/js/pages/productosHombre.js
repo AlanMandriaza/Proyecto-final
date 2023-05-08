@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { AiOutlineHeart } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
 import { Context } from '../store/appContext';
@@ -75,6 +74,10 @@ const ProductosHombre = () => {
     handleShow();
   };
 
+  const AddToFavorites = (item) => {
+    actions.addToFavorite(item);
+  };
+
   return (
     <div className="m-0 p-0 my-2">
       <div className="container-fluid">
@@ -125,9 +128,13 @@ const ProductosHombre = () => {
                           <h5 className="card-title">{item.name}</h5>
                         </Link>
                         <span className="card-text fs-4">${item.price}</span>
-                        <span className="card-text float-end icon-color fs-4">
-                          <AiOutlineHeart />
-                        </span>
+                        <button
+                          type="button"
+                          className="btn float-end corazon icon-color fs-4"
+                          onClick={() => AddToFavorites(item)}
+                        >
+                          <i className="far fa fa-heart"></i>
+                        </button>
                         <br />
                         <button
                           type="button"

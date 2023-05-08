@@ -26,7 +26,7 @@ const Admin = () => {
   return (
     <div className="container">
       <div className=" row justify-content-md-center">
-        {localStorage.getItem("rol") === "admin" && (
+        {localStorage.getItem("rol") === "Admin" && (
           <div className="btn-group mb-5 ">
             <a
               href="#"
@@ -59,9 +59,9 @@ const Admin = () => {
           </div>
         )}
 
-        {localStorage.getItem("rol") === "admin" && renderView()}
+        {localStorage.getItem("rol") === "Admin" && renderView()}
 
-        { localStorage.getItem("rol") !== "admin" && <h1 className="text-center">Usuario no tiene privilegios</h1> }
+        { localStorage.getItem("rol") !== "Admin" && <h1 className="text-center">Usuario no tiene privilegios</h1> }
       </div>
     </div>
   );
