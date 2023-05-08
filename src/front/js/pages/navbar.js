@@ -190,7 +190,7 @@ const MainNavbar = (props) => {
         </div>
         {localStorage.getItem("user") && (
           <p className="bienvenido">
-            Bienvenido, {localStorage.getItem("user")}
+            Bienvenido, hello {localStorage.getItem("user")}
           </p>
         )}
       </ul>
