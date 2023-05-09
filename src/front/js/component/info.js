@@ -9,20 +9,20 @@ export default function Info() {
         <h2>Contacto</h2>
         <ul>
           <li>
-            <strong>Teléfono:</strong> +56 2 1234 5678
+            <strong>Teléfono:</strong> +56 2 1234 5678.
           </li>
           <li>
             <strong>Correo electrónico:</strong>{" "}
             <a href="mailto:contacto@fauxatelier.com">contacto@fauxatelier.com</a>
           </li>
           <li>
-            <strong>Dirección:</strong> Av. Presidente Eduardo Frei Montalva
-            8786, La Cisterna, Región Metropolitana
+            <strong>Dirección:</strong> Av. direccion referencial
+            8786, comuna referencial, Región Metropolitana.
           </li>
         </ul>
       </Col>
       <Col xs="12" md="6">
-        <h2>Políticas de seguridad</h2>
+        <h2>Políticas de seguridad.</h2>
         <p>
           En Faux Atelier nos tomamos muy en serio la seguridad de nuestros
           clientes. Por ello, todos los datos que nos proporcionas al momento de

@@ -34,7 +34,7 @@ const PerfilUser = (props) => {
       return;
     }
 
-    fetch(`${BASE_URL}/api/users/${localStorage.getItem("userId")}`, {
+    fetch(`${BASE_URL}/api/users/${localStorage.getItem("userID")}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
