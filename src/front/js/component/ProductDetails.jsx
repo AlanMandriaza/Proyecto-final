@@ -10,9 +10,8 @@ const ProductDetails = () => {
   const { id } = useParams();
   const { store, actions } = useContext(Context);
 
-
   const [product, setProduct] = useState({});
-  const [category, setCategory] = useState({});
+  const [category, setCategory] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
   const handleClose = () => setShowModal(false);
@@ -27,13 +26,21 @@ const ProductDetails = () => {
     api.getProductById(id)
       .then(product => {
         setProduct(product);
-        return actions.getCategoryById(product.category_id);
+        return api.getCategoryById(product.category_id);
       })
       .then(category => {
         setCategory(category);
       })
       .catch(error => console.error('Error al obtener los detalles del producto:', error));
-  }, [id, actions]);
+  }, [id]);
+
+  useEffect(() => {
+    api.getProductsByCategory(id)
+      .then((data) => {
+        setCategory(data);
+      })
+      .catch((error) => console.error("Error al cargar la categoría:", error));
+  }, [id]);
 
 
   return (
@@ -41,7 +48,7 @@ const ProductDetails = () => {
       <img className="product-image" src={product.image} alt={product.name} />
       <div className="product-info">
         <h2 className="product-name">{product.name}</h2>
-        <p className="product-category">Categoría: {category && category.name}</p>
+        <p className="product-category">Categoría: {category ? category.name : 'Cargando...'}</p>
         <p className="product-description">Descripción: {product.description}</p>
         <p className="product-genere">Género: {product.genere}</p>
         <p className="product-price">Precio: {product.price}</p>
