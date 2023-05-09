@@ -7,6 +7,7 @@ const MainNavbar = (props) => {
     console.log("entre a la funcion logout");
     localStorage.removeItem("user");
     localStorage.removeItem("rol");
+    localStorage.removeItem("userId");
     window.location.href = "/";
   };
 
@@ -169,9 +170,14 @@ const MainNavbar = (props) => {
                   Registrarse
                 </Link>
               )}
-              {localStorage.getItem("rol") === "admin" && (
+              {localStorage.getItem("rol") === "Admin" && (
                 <Link className="dropdown-item" href="#" to="/admin">
                   Administrador
+                </Link>
+              )}
+              {localStorage.getItem("user") && (
+                <Link className="dropdown-item" href="#" to="/perfil">
+                  Perfil
                 </Link>
               )}
               {localStorage.getItem("user") && (
@@ -184,7 +190,7 @@ const MainNavbar = (props) => {
         </div>
         {localStorage.getItem("user") && (
           <p className="bienvenido">
-            Bienvenido, {localStorage.getItem("user")}
+            Bienvenido, hello {localStorage.getItem("user")}
           </p>
         )}
       </ul>

@@ -80,7 +80,6 @@ def create_user():
 
 
 @user_api.route('/<int:user_id>', methods=['PUT'])
-@jwt_required()
 def update_user(user_id):
     user = User.query.get(user_id)
     if not user:
@@ -90,16 +89,12 @@ def update_user(user_id):
     if not data:
         return jsonify({'error': 'No data provided'}), 400
 
-    user.email = data.get('email', user.email)
-    user.password = data.get('password', user.password)
-    user.first_name = data.get('first_name', user.first_name)
-    user.last_name = data.get('last_name', user.last_name)
+    #user.password = data.get('password', user.password)
     user.date_of_birth = data.get('date_of_birth', user.date_of_birth)
     user.address = data.get('address', user.address)
     user.city = data.get('city', user.city)
     user.country = data.get('country', user.country)
     user.phone_number = data.get('phone_number', user.phone_number)
-    user.avatar = data.get('avatar', user.avatar)
 
     db.session.commit()
 

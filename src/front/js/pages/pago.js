@@ -61,3 +61,4 @@ export const Pago = () => {
     </>
   );
 }
+export default Pago;

@@ -97,7 +97,9 @@ export const Cart = () => {
           </div>
         </div>
       ) : (
-        <div>El carrito está vacío</div>
+        <div>
+        <h1 className="text-center">El carrito está vacío</h1>
+      </div>
       )}
     </div>
   );

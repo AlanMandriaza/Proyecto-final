@@ -1,5 +1,6 @@
 import React from "react";
-import {Form, Button, Input, InputGroup, Col } from "reactstrap";
+import { Form, Button, Input, InputGroup, Col } from "reactstrap";
+import emailjs from "@emailjs/browser";
 
 import "../../styles/correo.css";
 
@@ -11,13 +12,25 @@ const Correo = (props) => {
   const Suscribir = (ev) => {
     ev.preventDefault();
 
-    if(email){
-      setTexto(true)
+    if (email) {
+      setTexto(true);
+
+      emailjs.send("service_diy27wn","template_wy275d2",{
+        to_email: email,
+        },'HY3C-e2Cf3aB3OMl1')
+        .then(
+          (result) => {
+            console.log(result.text);
+          },
+          (error) => {
+            console.log(error.text);
+          }
+        );
+
       setTimeout(() => {
-        setTexto(false)
+        setTexto(false);
       }, 2000);
     }
-    
   };
 
   return (
@@ -39,11 +52,7 @@ const Correo = (props) => {
           </InputGroup>
         </Col>
       </Form>
-      { 
-      texto && (
-          <h5 className="">Gracias por suscribirte!!</h5>
-      )
-   }
+      {texto && <h5 className="">Gracias por suscribirte!!</h5>}
     </div>
   );
 };
