@@ -85,11 +85,9 @@ export const Cart = () => {
           <hr />
           <div className="d-flex flex-row-reverse">
             <div className="p-2">
-            <Link to="/pago">
-  <button className="btn btn-primary" onClick={handleCompra}>Comprar</button>
-</Link>
-
-              
+              <Link to="/pago">
+                <button className="btn btn-primary" onClick={handleCompra}>Comprar</button>
+              </Link>
             </div>
             <div className="p-2">
               <strong>Total:</strong> ${total}
@@ -98,8 +96,8 @@ export const Cart = () => {
         </div>
       ) : (
         <div>
-        <h1 className="text-center">El carrito está vacío</h1>
-      </div>
+          <h1 className="text-center">El carrito está vacío</h1>
+        </div>
       )}
     </div>
   );

@@ -22,6 +22,7 @@ import ProductosMujer from './pages/productosMujer';
 import ScrollToTop from "./component/scrollToTop";
 import { Single } from "./pages/single";
 import Favorites from "./pages/favorite";
+import Info from "./component/info"
 
 
 const Layout = () => {
@@ -42,6 +43,8 @@ const Layout = () => {
             <Route element={<FormularioRegister />} path="/register" />
             <Route element={<PerfilUser />} path="/perfil" />
             <Route element={<Favorites />} path="/favoritos" />
+            <Route element={<Info />} path="/info" />
+            
             <Route element={<Single />} path="/single/:theid" />
             <Route element={<Admin />} path="/admin" />
             <Route element={<Inventory />} path="/inventario" />

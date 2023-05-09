@@ -1,11 +1,15 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { Modal, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-export const Cart = () => {
+export const Favorite = () => {
   const { store, actions } = useContext(Context);
   const [showModal, setShowModal] = useState(false);
+
+  if (!store.favorite) {
+    store.favorite = [];
+  }
 
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
@@ -28,7 +32,6 @@ export const Cart = () => {
     });
     return total;
   };
-
   return (
     <div className="container">
       <div className="d-flex justify-content-between align-items-center mb-3">
@@ -41,7 +44,6 @@ export const Cart = () => {
         <div>
           <div className="d-flex flex-row">
             <div className="p-2 w-50 text-center">Producto</div>
-
             <div className="p-2 w-20">Precio</div>
             <div className="p-2 w-20"></div>
           </div>
@@ -126,4 +128,4 @@ export const Cart = () => {
   );
 };
 
-export default Cart;
+export default Favorite;

@@ -9,7 +9,7 @@ const Inventory = () => {
     const [inventory, setInventory] = useState([]);
     const [error, setError] = useState(null);
     const [modal, setModal] = useState(false);
-    const [productIdToDelete, setProductIdToDelete] = useState(null);
+    const [productToDelete, setProductToDelete] = useState(null);
 
     useEffect(() => {
         api.getInventory()
@@ -22,13 +22,15 @@ const Inventory = () => {
     }, []);
 
     const showDeleteConfirmation = (productId) => {
-        setProductIdToDelete(productId);
+        const product = inventory.find((product) => product.id === productId);
+        setProductToDelete(product);
         setModal(true);
     };
+
     const confirmDelete = () => {
-        handleDelete(productIdToDelete);
+        handleDelete(productToDelete.id);
         setModal(false);
-    };
+    };    
     const cancelDelete = () => {
         setModal(false);
     };
@@ -215,8 +217,9 @@ const Inventory = () => {
             <Modal isOpen={modal} toggle={cancelDelete}>
                 <ModalHeader toggle={cancelDelete}>Confirmar eliminación</ModalHeader>
                 <ModalBody>
-                    ¿Estás seguro de que deseas eliminar este producto?
+                    ¿Estás seguro de que deseas eliminar <strong>{productToDelete && productToDelete.name}?</strong>
                 </ModalBody>
+
                 <ModalFooter>
                     <Button color="danger" onClick={confirmDelete}>Eliminar</Button>{' '}
                     <Button color="secondary" onClick={cancelDelete}>Cancelar</Button>

@@ -2,9 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { Modal, Button } from 'react-bootstrap';
 import { useParams, Link } from "react-router-dom";
 import api from "../Admin/Api";
-import { useContext } from 'react';
-import { Context } from '../store/appContext';
-import { Modal, Button } from 'react-bootstrap';
 import "../../styles/categoria.css";
 import { Context } from "../store/appContext";
 
@@ -13,7 +10,6 @@ const Category = () => {
   const { categoryId } = useParams();
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState({ name: "" });
-
   const [showModal, setShowModal] = useState(false);
 
   const calculateTotal = () => {
@@ -23,7 +19,6 @@ const Category = () => {
     });
     return total;
   };
-
 
   useEffect(() => {
     let isMounted = true; // agregamos una variable booleana para verificar si el componente está montado o no
@@ -48,22 +43,6 @@ const Category = () => {
       isMounted = false; // actualizamos el valor de la variable booleana cuando el componente se desmonta
     };
   }, [categoryId]);
-  
-  const handleClose = () => setShowModal(false);
-  const handleShow = () => setShowModal(true);
-
-  const handleAddToCart = (item) => {
-    actions.addToCart(item);
-    handleShow();
-  };
-
-  const calculateTotal = () => {
-    let total = 0;
-    store.carrito.forEach((item) => {
-      total += item.price * item.quantity;
-    });
-    return total;
-  };
 
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
@@ -92,7 +71,6 @@ const Category = () => {
             <p className="product-price">${product.price}</p>
             <button
               type="button"
-
               className="btn float-end corazon icon-color fs-4"
               onClick={() => AddToFavorites(product)}
             >
@@ -101,7 +79,6 @@ const Category = () => {
             <br />
             <button
               type="button"
-
               className="btn btn-lg w-100 text-light button-color"
               onClick={() => handleAddToCart(product)}
             >
@@ -117,7 +94,6 @@ const Category = () => {
         </Modal.Header>
         <Modal.Body>
           <p>Tu carrito actual:</p>
-
           {store.carrito &&
             store.carrito.map((item, index) => (
               <div key={index} className="cart-item">
@@ -135,7 +111,6 @@ const Category = () => {
                 </div>
               </div>
             ))}
-
           <hr />
           <h5 className="font-weight-bold">Total: ${calculateTotal()}</h5>
         </Modal.Body>
@@ -148,9 +123,7 @@ const Category = () => {
           </Link>
         </Modal.Footer>
       </Modal>
-
     </div>
-
   );
 };
 
